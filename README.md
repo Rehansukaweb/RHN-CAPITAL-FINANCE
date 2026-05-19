@@ -7,14 +7,16 @@
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { margin: 0; background-color: #eef2f5; display: flex; height: 100vh; overflow: hidden; }
+        /* Perbaikan: Menggunakan 100dvh agar pas dengan browser HP modern */
+        body { margin: 0; background-color: #eef2f5; display: flex; height: 100dvh; overflow: hidden; }
         
         :root { --primary: #005bb5; --secondary: #ffde00; --danger: #dc3545; --success: #28a745; --dark: #343a40; --light: #f8f9fa; }
 
-        .main-app { display: flex; width: 100%; height: 100%; }
+        .main-app { display: flex; width: 100%; height: 100dvh; overflow: hidden; }
 
-        .left-panel { width: 63%; padding: 20px; overflow-y: auto; background: var(--light); }
-        .right-panel { width: 37%; background: white; border-left: 2px solid #ddd; display: flex; flex-direction: column; box-shadow: -2px 0 5px rgba(0,0,0,0.1); }
+        .left-panel { width: 63%; padding: 20px; overflow-y: auto; background: var(--light); height: 100%; }
+        /* Perbaikan: Memastikan panel kanan tidak melebihi layar */
+        .right-panel { width: 37%; background: white; border-left: 2px solid #ddd; display: flex; flex-direction: column; height: 100%; max-height: 100dvh; box-shadow: -2px 0 5px rgba(0,0,0,0.1); }
 
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--primary); color: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .header-title h1 { margin: 0; font-size: 24px; color: var(--secondary); text-transform: uppercase; }
@@ -24,17 +26,16 @@
         .barcode-input { padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc; width: 200px; outline: none; }
         .barcode-input:focus { border-color: var(--secondary); box-shadow: 0 0 5px var(--secondary); }
         
-        .btn-scan { padding: 10px 15px; background: var(--secondary); color: var(--dark); border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-scan, .btn-add { padding: 10px 15px; background: var(--secondary); color: var(--dark); border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .btn-scan:hover { background: #e6c800; transform: scale(1.05); }
-        
-        .btn-add { padding: 10px 15px; background: var(--success); color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-add { background: var(--success); color: white; }
         .btn-add:hover { background: #218838; transform: scale(1.05); }
 
         #reader-container { display: none; margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--primary); }
         #reader { width: 100%; max-width: 400px; margin: auto; }
         .btn-close-cam { background: var(--danger); color: white; border: none; padding: 10px; width: 100%; margin-top: 15px; cursor: pointer; border-radius: 5px; font-weight: bold; }
 
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding-bottom: 20px; }
         
         .product-card { position: relative; background: white; border-radius: 8px; padding: 25px 15px 15px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .product-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 4px 8px rgba(0,123,255,0.2); }
@@ -45,11 +46,12 @@
         .btn-delete-product { position: absolute; top: 5px; right: 5px; background: var(--danger); color: white; border: none; border-radius: 4px; width: 22px; height: 22px; font-size: 12px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
         .btn-delete-product:hover { background: #b02a37; transform: scale(1.1); }
 
-        .cart-header { background: var(--dark); color: white; padding: 15px; text-align: center; display: flex; justify-content: space-between; align-items: center; }
+        .cart-header { background: var(--dark); color: white; padding: 15px; text-align: center; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
         .cart-header h2 { margin: 0; font-size: 18px; }
         .btn-clear { background: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; }
 
-        .cart-items { flex-grow: 1; overflow-y: auto; padding: 10px; }
+        /* Perbaikan Penting: Menambahkan min-height: 0 agar tidak overflow di laptop kecil */
+        .cart-items { flex: 1 1 auto; overflow-y: auto; padding: 10px; min-height: 0; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
         .cart-item-info { width: 60%; }
         .cart-item-name { font-weight: bold; font-size: 14px; margin-bottom: 5px; }
@@ -57,21 +59,22 @@
         .cart-item-total { font-weight: bold; color: var(--primary); }
         .btn-del { background: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
 
-        .cart-summary { padding: 10px 20px; background: #fdfdfd; border-top: 1px solid #ddd; }
-        .summary-line { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 15px; }
-        .summary-total { font-size: 20px; font-weight: bold; color: var(--danger); border-top: 2px dashed #ccc; padding-top: 10px; margin-top: 5px; }
+        /* Perbaikan: Area Ringkasan selalu menempel di bawah */
+        .cart-summary { padding: 15px 20px 20px; background: #fdfdfd; border-top: 2px solid #ddd; box-shadow: 0 -4px 10px rgba(0,0,0,0.03); flex-shrink: 0; }
+        .summary-line { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 14px; }
+        .summary-total { font-size: 18px; font-weight: bold; color: var(--danger); border-top: 2px dashed #ccc; padding-top: 10px; margin-top: 5px; }
         
         .payment-methods { display: flex; gap: 5px; margin: 10px 0; }
         .pay-option { flex: 1; text-align: center; padding: 8px 5px; border: 2px solid #ddd; border-radius: 5px; cursor: pointer; font-size: 13px; font-weight: bold; background: white; transition: 0.2s; color: #555; }
         .pay-option.active { border-color: var(--primary); background: #e6f2ff; color: var(--primary); }
 
-        .pay-content { padding: 10px; border: 1px dashed #ccc; border-radius: 5px; margin-bottom: 10px; background: #fafafa; min-height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .payment-input { width: 100%; padding: 12px; font-size: 20px; font-weight: bold; border: 2px solid var(--primary); border-radius: 5px; text-align: right; }
+        .pay-content { padding: 10px; border: 1px dashed #ccc; border-radius: 5px; margin-bottom: 10px; background: #fafafa; min-height: 60px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .payment-input { width: 100%; padding: 10px; font-size: 18px; font-weight: bold; border: 2px solid var(--primary); border-radius: 5px; text-align: right; }
         .input-kiri { text-align: left; font-size: 16px; margin-bottom: 10px; border-color: #ccc; }
         .input-kiri:focus { border-color: var(--primary); }
         
-        .btn-pay { width: 100%; padding: 12px; font-size: 18px; font-weight: bold; background: var(--success); color: white; border: none; border-radius: 5px; cursor: pointer; transition: 0.2s; }
-        .btn-pay:hover { background: #218838; }
+        .btn-pay { width: 100%; padding: 14px; font-size: 16px; font-weight: bold; background: var(--success); color: white; border: none; border-radius: 5px; cursor: pointer; transition: 0.2s; text-transform: uppercase; box-shadow: 0 4px 6px rgba(40, 167, 69, 0.3); }
+        .btn-pay:hover { background: #218838; box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2); transform: translateY(1px); }
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
         .modal-content { background: white; padding: 30px; border-radius: 10px; text-align: center; width: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); animation: popIn 0.3s ease-out; }
@@ -84,31 +87,29 @@
 
         /* ----- ATURAN LAYAR HP ----- */
         @media screen and (max-width: 1024px) {
-            body { height: auto !important; overflow-y: auto !important; display: block !important; }
-            .main-app { flex-direction: column !important; height: auto !important; display: flex !important; }
-            .left-panel { width: 100% !important; height: auto !important; overflow: visible !important; padding: 10px !important; }
-            .right-panel { width: 100% !important; height: auto !important; border-left: none !important; border-top: 4px solid var(--primary) !important; box-shadow: 0 -4px 10px rgba(0,0,0,0.1) !important; }
+            /* Di HP, kita buat scrolling mandiri agar tata letak tetap utuh di layar */
+            body { height: 100dvh !important; overflow: hidden !important; }
+            .main-app { flex-direction: column !important; height: 100dvh !important; }
+            .left-panel { width: 100% !important; flex: 1; overflow-y: auto !important; padding: 10px !important; }
+            .right-panel { width: 100% !important; flex: 1; display: flex; flex-direction: column; border-top: 4px solid var(--primary) !important; border-left: none !important; }
+            
             .header { flex-direction: column; text-align: center; gap: 10px; }
             .input-group { width: 100%; flex-direction: column; }
             .barcode-input, .btn-scan, .btn-add { width: 100%; }
             .product-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-            .cart-items { min-height: 150px; max-height: 400px; }
+            
+            /* Membatasi tinggi keranjang di HP agar tombol bayar selalu terlihat tanpa scroll jauh */
+            .cart-items { max-height: 25vh; } 
+            
             .modal-content { width: 90%; padding: 20px; }
         }
 
         /* ----- ATURAN KHUSUS CETAK STRUK KASIR (PRINT) ----- */
         @media print {
-            /* MENGHILANGKAN HEADER/FOOTER (LINK URL & TANGGAL) DARI BROWSER */
             @page { margin: 0; size: auto; }
-            
-            body { background: white !important; margin: 0 !important; padding: 15px !important; }
-            
-            /* Sembunyikan semua elemen aplikasi */
+            body { background: white !important; margin: 0 !important; padding: 15px !important; display: block !important; height: auto !important; overflow: visible !important; }
             .main-app, .modal-overlay { display: none !important; }
-            
-            /* Tampilkan HANYA area struk */
             #printArea { display: block !important; position: relative; width: 100%; max-width: 300px; margin: 0 auto; font-size: 12px; }
-            
             .print-header { text-align: center; margin-bottom: 10px; }
             .print-header h2 { margin: 0; font-size: 18px; }
             .print-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
@@ -170,13 +171,12 @@
                 
                 <div class="pay-content" id="area-qris" style="display: none; text-align: center;">
                     <span style="font-size: 11px; margin-bottom:5px; font-weight: bold;">Scan QRIS Asli RHN CAPITAL FINANCE:</span>
-                    <img src="qris.jpg" alt="QRIS RHN Store" style="width: 140px; border-radius: 8px; border: 2px solid #ccc; margin: 5px 0;">
+                    <img src="qris.jpg" alt="QRIS RHN Store" style="width: 130px; border-radius: 8px; border: 2px solid #ccc; margin: 5px 0;">
                     <span style="font-size: 10px; color: #555;">NMID: ID1026489225353</span>
                     <div style="margin-top: 5px; padding: 5px; background: #e6f2ff; border-radius: 5px; width: 100%;">
                         <span style="font-size: 12px; color: #333;">Total yang harus dibayar:</span><br>
-                        <span style="font-size: 20px; font-weight: bold; color: var(--primary);" id="qrisAmountText">Rp 0</span>
+                        <span style="font-size: 18px; font-weight: bold; color: var(--primary);" id="qrisAmountText">Rp 0</span>
                     </div>
-                    <span style="font-size: 10px; color: var(--danger); margin-top: 5px;">*Pastikan pembeli mengisi nominal di atas dengan benar</span>
                 </div>
                 
                 <button class="btn-pay" onclick="prosesPembayaran()">PROSES BAYAR & CETAK</button>
