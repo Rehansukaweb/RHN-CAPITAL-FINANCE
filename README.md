@@ -7,26 +7,27 @@
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        /* Perbaikan: Menggunakan 100dvh agar pas dengan browser HP modern */
-        body { margin: 0; background-color: #eef2f5; display: flex; height: 100dvh; overflow: hidden; }
+        
+        body { margin: 0; padding: 0; background-color: #eef2f5; display: flex; height: 100vh; overflow: hidden; }
         
         :root { --primary: #005bb5; --secondary: #ffde00; --danger: #dc3545; --success: #28a745; --dark: #343a40; --light: #f8f9fa; }
 
-        .main-app { display: flex; width: 100%; height: 100dvh; overflow: hidden; }
+        .main-app { display: flex; width: 100%; height: 100vh; overflow: hidden; }
 
-        .left-panel { width: 63%; padding: 20px; overflow-y: auto; background: var(--light); height: 100%; }
-        /* Perbaikan: Memastikan panel kanan tidak melebihi layar */
-        .right-panel { width: 37%; background: white; border-left: 2px solid #ddd; display: flex; flex-direction: column; height: 100%; max-height: 100dvh; box-shadow: -2px 0 5px rgba(0,0,0,0.1); }
+        .left-panel { flex: 6.5; padding: 20px; overflow-y: auto; background: var(--light); height: 100%; }
+        .right-panel { flex: 3.5; background: white; border-left: 2px solid #ddd; display: flex; flex-direction: column; height: 100%; box-shadow: -2px 0 5px rgba(0,0,0,0.1); }
 
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--primary); color: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .header-title h1 { margin: 0; font-size: 24px; color: var(--secondary); text-transform: uppercase; }
         .clock { font-size: 16px; font-weight: bold; background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 5px; margin-top: 5px; display: inline-block; }
+        .badge-pembeli { font-size: 14px; font-weight: bold; background: var(--success); padding: 5px 10px; border-radius: 5px; margin-top: 5px; display: inline-block; color: white; margin-left: 10px; }
         
-        .input-group { display: flex; gap: 10px; flex-wrap: wrap; }
-        .barcode-input { padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc; width: 200px; outline: none; }
+        .input-group { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: flex-end; }
+        .barcode-input { padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc; width: 220px; outline: none; }
         .barcode-input:focus { border-color: var(--secondary); box-shadow: 0 0 5px var(--secondary); }
         
-        .btn-scan, .btn-add { padding: 10px 15px; background: var(--secondary); color: var(--dark); border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-scan, .btn-add { padding: 10px 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-scan { background: var(--secondary); color: var(--dark); }
         .btn-scan:hover { background: #e6c800; transform: scale(1.05); }
         .btn-add { background: var(--success); color: white; }
         .btn-add:hover { background: #218838; transform: scale(1.05); }
@@ -41,7 +42,11 @@
         .product-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 4px 8px rgba(0,123,255,0.2); }
         .product-card h3 { font-size: 14px; margin: 5px 0; color: var(--dark); }
         .product-card p { color: var(--primary); font-weight: bold; margin: 0; font-size: 16px; }
-        .product-card small { color: #888; font-size: 11px; }
+        .product-card small { color: #888; font-size: 11px; display: block; margin-top: 3px; }
+        
+        /* Gaya Tampilan Informasi Stok */
+        .stok-badge { font-weight: bold; color: var(--success); }
+        .stok-habis { color: var(--danger); font-weight: bold; background: #fce8e6; padding: 2px 6px; border-radius: 4px; }
 
         .btn-delete-product { position: absolute; top: 5px; right: 5px; background: var(--danger); color: white; border: none; border-radius: 4px; width: 22px; height: 22px; font-size: 12px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
         .btn-delete-product:hover { background: #b02a37; transform: scale(1.1); }
@@ -50,8 +55,7 @@
         .cart-header h2 { margin: 0; font-size: 18px; }
         .btn-clear { background: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; }
 
-        /* Perbaikan Penting: Menambahkan min-height: 0 agar tidak overflow di laptop kecil */
-        .cart-items { flex: 1 1 auto; overflow-y: auto; padding: 10px; min-height: 0; }
+        .cart-items { flex-grow: 1; overflow-y: auto; padding: 10px; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
         .cart-item-info { width: 60%; }
         .cart-item-name { font-weight: bold; font-size: 14px; margin-bottom: 5px; }
@@ -59,8 +63,7 @@
         .cart-item-total { font-weight: bold; color: var(--primary); }
         .btn-del { background: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
 
-        /* Perbaikan: Area Ringkasan selalu menempel di bawah */
-        .cart-summary { padding: 15px 20px 20px; background: #fdfdfd; border-top: 2px solid #ddd; box-shadow: 0 -4px 10px rgba(0,0,0,0.03); flex-shrink: 0; }
+        .cart-summary { padding: 15px; background: #fdfdfd; border-top: 2px solid #ddd; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); flex-shrink: 0; }
         .summary-line { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 14px; }
         .summary-total { font-size: 18px; font-weight: bold; color: var(--danger); border-top: 2px dashed #ccc; padding-top: 10px; margin-top: 5px; }
         
@@ -69,12 +72,12 @@
         .pay-option.active { border-color: var(--primary); background: #e6f2ff; color: var(--primary); }
 
         .pay-content { padding: 10px; border: 1px dashed #ccc; border-radius: 5px; margin-bottom: 10px; background: #fafafa; min-height: 60px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .payment-input { width: 100%; padding: 10px; font-size: 18px; font-weight: bold; border: 2px solid var(--primary); border-radius: 5px; text-align: right; }
+        .payment-input { width: 100%; padding: 12px; font-size: 18px; font-weight: bold; border: 2px solid var(--primary); border-radius: 5px; text-align: right; }
         .input-kiri { text-align: left; font-size: 16px; margin-bottom: 10px; border-color: #ccc; }
         .input-kiri:focus { border-color: var(--primary); }
         
-        .btn-pay { width: 100%; padding: 14px; font-size: 16px; font-weight: bold; background: var(--success); color: white; border: none; border-radius: 5px; cursor: pointer; transition: 0.2s; text-transform: uppercase; box-shadow: 0 4px 6px rgba(40, 167, 69, 0.3); }
-        .btn-pay:hover { background: #218838; box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2); transform: translateY(1px); }
+        .btn-pay { width: 100%; padding: 15px; font-size: 16px; font-weight: bold; background: var(--success); color: white; border: none; border-radius: 5px; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
+        .btn-pay:hover { background: #218838; transform: translateY(1px); }
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
         .modal-content { background: white; padding: 30px; border-radius: 10px; text-align: center; width: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); animation: popIn 0.3s ease-out; }
@@ -87,24 +90,22 @@
 
         /* ----- ATURAN LAYAR HP ----- */
         @media screen and (max-width: 1024px) {
-            /* Di HP, kita buat scrolling mandiri agar tata letak tetap utuh di layar */
-            body { height: 100dvh !important; overflow: hidden !important; }
-            .main-app { flex-direction: column !important; height: 100dvh !important; }
-            .left-panel { width: 100% !important; flex: 1; overflow-y: auto !important; padding: 10px !important; }
-            .right-panel { width: 100% !important; flex: 1; display: flex; flex-direction: column; border-top: 4px solid var(--primary) !important; border-left: none !important; }
+            body { height: auto; overflow: auto; display: block; }
+            .main-app { flex-direction: column; height: auto; display: flex; }
+            .left-panel { width: 100%; height: auto; overflow: visible; padding: 10px; flex: none; }
+            .right-panel { width: 100%; height: auto; border-left: none; border-top: 4px solid var(--primary); flex: none; }
             
             .header { flex-direction: column; text-align: center; gap: 10px; }
             .input-group { width: 100%; flex-direction: column; }
             .barcode-input, .btn-scan, .btn-add { width: 100%; }
             .product-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
             
-            /* Membatasi tinggi keranjang di HP agar tombol bayar selalu terlihat tanpa scroll jauh */
-            .cart-items { max-height: 25vh; } 
+            .cart-items { min-height: 200px; max-height: 40vh; } 
             
             .modal-content { width: 90%; padding: 20px; }
         }
 
-        /* ----- ATURAN KHUSUS CETAK STRUK KASIR (PRINT) ----- */
+        /* ----- ATURAN CETAK STRUK ----- */
         @media print {
             @page { margin: 0; size: auto; }
             body { background: white !important; margin: 0 !important; padding: 15px !important; display: block !important; height: auto !important; overflow: visible !important; }
@@ -129,6 +130,7 @@
                 <div class="header-title">
                     <h1>🛒 RHN STORE POS</h1>
                     <div class="clock" id="realtimeClock">00:00:00</div>
+                    <div class="badge-pembeli">👥 Total Pembeli: <span id="counterPembeli">0</span></div>
                 </div>
                 <div class="input-group">
                     <input type="text" id="barcodeInput" class="barcode-input" placeholder="Scan / Ketik Kode..." autofocus autocomplete="off">
@@ -201,6 +203,7 @@
             <input type="text" id="inputKodeBaru" class="payment-input input-kiri" placeholder="Kode Barang / Barcode">
             <input type="text" id="inputNamaBaru" class="payment-input input-kiri" placeholder="Nama Barang / Makanan">
             <input type="number" id="inputHargaBaru" class="payment-input input-kiri" placeholder="Harga Jual (Rp)">
+            <input type="number" id="inputStokBaru" class="payment-input input-kiri" placeholder="Jumlah Stok Awal">
             
             <button class="btn-pay" style="margin-bottom: 10px; margin-top: 10px;" onclick="simpanBarangBaru()">SIMPAN BARANG</button>
             <button class="btn-close-modal" onclick="tutupModalTambah()">Batal</button>
@@ -214,6 +217,7 @@
         let html5QrcodeScanner = null;
         const ppnRate = 0.11;
         let metodeAktif = 'cash'; 
+        let jumlahPembeli = 0; 
 
         function updateClock() {
             const now = new Date();
@@ -221,19 +225,20 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
+        // Database Produk (Dilengkapi Dengan Nominal Jumlah Stok Sesuai Request)
         let databaseProduk = [
-            { kode: "89686010023", nama: "Aqua Botol 600ml", harga: 3500, stok: 999 },
-            { kode: "08968604321", nama: "Indomie Goreng", harga: 3500, stok: 999 },
-            { kode: "003", nama: "Susu Bear Brand", harga: 10500, stok: 999 },
-            { kode: "004", nama: "Roti Aoka Coklat", harga: 3000, stok: 999 },
-            { kode: "005", nama: "Chitato Sapi 68g", harga: 11000, stok: 999 },
-            { kode: "006", nama: "Kopi Kenangan 220ml", harga: 9500, stok: 999 },
-            { kode: "007", nama: "Teh Pucuk Harum 350ml", harga: 4000, stok: 999 },
-            { kode: "008", nama: "Beng-Beng Coklat", harga: 2500, stok: 999 },
-            { kode: "009", nama: "Nasi Bakar Ayam", harga: 15000, stok: 999 },
-            { kode: "010", nama: "Taro Snack Seaweed", harga: 5500, stok: 999 },
-            { kode: "011", nama: "Pocari Sweat 500ml", harga: 7500, stok: 999 },
-            { kode: "012", nama: "Roti O / Roti Boy", harga: 13000, stok: 999 }
+            { kode: "89686010023", nama: "Aqua Botol 600ml", harga: 3500, stok: 50 },
+            { kode: "08968604321", nama: "Indomie Goreng", harga: 3500, stok: 100 },
+            { kode: "003", nama: "Susu Bear Brand", harga: 10500, stok: 30 },
+            { kode: "004", nama: "Roti Aoka Coklat", harga: 3000, stok: 45 },
+            { kode: "005", nama: "Chitato Sapi 68g", harga: 11000, stok: 20 },
+            { kode: "006", nama: "Kopi Kenangan 220ml", harga: 9500, stok: 25 },
+            { kode: "007", nama: "Teh Pucuk Harum 350ml", harga: 4000, stok: 60 },
+            { kode: "008", nama: "Beng-Beng Coklat", harga: 2500, stok: 80 },
+            { kode: "009", nama: "Nasi Bakar Ayam", harga: 15000, stok: 15 },
+            { kode: "010", nama: "Taro Snack Seaweed", harga: 5500, stok: 40 },
+            { kode: "011", nama: "Pocari Sweat 500ml", harga: 7500, stok: 35 },
+            { kode: "012", nama: "Roti O / Roti Boy", harga: 13000, stok: 10 }
         ];
 
         function playBeepSound() {
@@ -245,15 +250,6 @@
             gain.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 0.08); 
             osc.connect(gain); gain.connect(context.destination);
             osc.start(); osc.stop(context.currentTime + 0.08);
-        }
-
-        function bicarakanTerimaKasih() {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const ucapan = new SpeechSynthesisUtterance("Terima kasih telah berbelanja di r h n store");
-                ucapan.lang = 'id-ID'; ucapan.pitch = 1.1; ucapan.rate = 1.0;     
-                window.speechSynthesis.speak(ucapan);
-            }
         }
 
         function formatRupiah(angka) {
@@ -270,6 +266,7 @@
             document.getElementById('inputKodeBaru').value = '';
             document.getElementById('inputNamaBaru').value = '';
             document.getElementById('inputHargaBaru').value = '';
+            document.getElementById('inputStokBaru').value = '';
             document.getElementById('barcodeInput').focus();
         }
 
@@ -277,9 +274,10 @@
             const kode = document.getElementById('inputKodeBaru').value.trim();
             const nama = document.getElementById('inputNamaBaru').value.trim();
             const harga = parseFloat(document.getElementById('inputHargaBaru').value);
+            const stok = parseInt(document.getElementById('inputStokBaru').value);
 
-            if (kode === "" || nama === "" || isNaN(harga) || harga <= 0) {
-                alert("Harap isi Kode, Nama, dan Harga dengan benar!");
+            if (kode === "" || nama === "" || isNaN(harga) || harga <= 0 || isNaN(stok) || stok < 0) {
+                alert("Harap isi Kode, Nama, Harga, dan Stok dengan angka yang benar!");
                 return;
             }
 
@@ -289,7 +287,7 @@
                 return;
             }
 
-            databaseProduk.push({ kode: kode, nama: nama, harga: harga, stok: 999 });
+            databaseProduk.push({ kode: kode, nama: nama, harga: harga, stok: stok });
             renderProduk();
             tutupModalTambah();
             alert("✅ Barang Baru Berhasil Ditambahkan!");
@@ -297,7 +295,7 @@
 
         function hapusBarangDariSistem(event, kode) {
             event.stopPropagation(); 
-            if (confirm("Yakin ingin menghapus barang ini secara permanen dari layar?")) {
+            if (confirm("Yakin ingin menghapus barang ini secara permanen dari sistem?")) {
                 databaseProduk = databaseProduk.filter(p => p.kode !== kode);
                 keranjang = keranjang.filter(item => item.kode !== kode);
                 updateUIKeranjang();
@@ -320,27 +318,48 @@
             }
         }
 
+        // MENAMPILKAN INDIKATOR JUMLAH STOK DI KARTU BARANG
         function renderProduk() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
             databaseProduk.forEach(produk => {
+                let infoStok = produk.stok > 0 
+                    ? `<span class="stok-badge">Stok: ${produk.stok}</span>` 
+                    : `<span class="stok-habis">HABIS</span>`;
+
                 grid.innerHTML += `
                     <div class="product-card" onclick="tambahKeKeranjang('${produk.kode}')">
                         <button class="btn-delete-product" onclick="hapusBarangDariSistem(event, '${produk.kode}')" title="Hapus Barang">✖</button>
                         <h3>${produk.nama}</h3>
                         <p>${formatRupiah(produk.harga)}</p>
                         <small>Kode: ${produk.kode}</small>
+                        <small style="margin-top:5px;">${infoStok}</small>
                     </div>`;
             });
         }
 
+        // FITUR PROTEKSI AGAR TIDAK BISA TRANSAKSI KALAU STOK KOSONG
         function tambahKeKeranjang(kode) {
             const produk = databaseProduk.find(p => p.kode === kode);
             if (!produk) { alert("Produk tidak ditemukan!"); return; }
-            const item = keranjang.find(i => i.kode === kode);
-            if (item) item.qty += 1, item.subtotal = item.qty * item.harga;
-            else keranjang.push({ ...produk, qty: 1, subtotal: produk.harga });
-            playBeepSound(); updateUIKeranjang();
+            
+            const itemDiKeranjang = keranjang.find(i => i.kode === kode);
+            const qtySekarang = itemDiKeranjang ? itemDiKeranjang.qty : 0;
+
+            if (qtySekarang >= produk.stok) {
+                alert(`⚠️ Maaf, Stok ${produk.nama} tidak mencukupi/habis!`);
+                return;
+            }
+
+            if (itemDiKeranjang) {
+                itemDiKeranjang.qty += 1;
+                itemDiKeranjang.subtotal = itemDiKeranjang.qty * itemDiKeranjang.harga;
+            } else {
+                keranjang.push({ ...produk, qty: 1, subtotal: produk.harga });
+            }
+            
+            playBeepSound(); 
+            updateUIKeranjang();
         }
 
         function hapusDariKeranjang(kode) {
@@ -426,10 +445,20 @@
                 document.getElementById('changeAmountText').innerText = "LUNAS";
             }
 
-            document.getElementById('successModal').style.display = 'flex';
-            bicarakanTerimaKasih();
-            siapkanStrukPrint(totalTagihan, uangBayar, kembalian, teksMetodeStruk);
+            // OTOMATIS MEMOTONG JUMLAH STOK DI DATABASE KETIKA BAYAR SUKSES
+            keranjang.forEach(item => {
+                const p = databaseProduk.find(x => x.kode === item.kode);
+                if (p) p.stok -= item.qty; 
+            });
+            
+            jumlahPembeli += 1;
+            document.getElementById('counterPembeli').innerText = jumlahPembeli;
+            
+            renderProduk(); // Update tampilan stok baru di layar utama
 
+            document.getElementById('successModal').style.display = 'flex';
+            siapkanStrukPrint(totalTagihan, uangBayar, kembalian, teksMetodeStruk);
+            
             setTimeout(() => { window.print(); }, 800);
         }
 
