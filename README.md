@@ -1,4 +1,3 @@
-
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -8,14 +7,16 @@
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
-        body { margin: 0; padding: 0; background-color: #eef2f5; display: flex; height: 100vh; overflow: hidden; }
+        /* DIBUAT LOSS: Tidak ada lagi overflow: hidden yang menahan scroll */
+        body { margin: 0; padding: 0; background-color: #eef2f5; min-height: 100vh; overflow-y: auto; overflow-x: hidden; }
         
         :root { --primary: #005bb5; --secondary: #ffde00; --danger: #dc3545; --success: #28a745; --dark: #343a40; --light: #f8f9fa; }
 
-        .main-app { display: flex; width: 100%; height: 100vh; overflow: hidden; }
+        /* Biarkan fleksibel mengikuti isi konten */
+        .main-app { display: flex; width: 100%; min-height: 100vh; align-items: stretch; }
 
-        .left-panel { flex: 6.5; padding: 20px; overflow-y: auto; background: var(--light); height: 100%; }
-        .right-panel { flex: 3.5; background: white; border-left: 2px solid #ddd; display: flex; flex-direction: column; height: 100%; box-shadow: -2px 0 5px rgba(0,0,0,0.1); }
+        .left-panel { flex: 6.5; padding: 20px; background: var(--light); }
+        .right-panel { flex: 3.5; background: white; border-left: 2px solid #ddd; display: flex; flex-direction: column; box-shadow: -2px 0 5px rgba(0,0,0,0.1); }
 
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--primary); color: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .header-title h1 { margin: 0; font-size: 24px; color: var(--secondary); text-transform: uppercase; }
@@ -43,19 +44,18 @@
         .product-card h3 { font-size: 14px; margin: 5px 0; color: var(--dark); }
         .product-card p { color: var(--primary); font-weight: bold; margin: 0; font-size: 16px; }
         .product-card small { color: #888; font-size: 11px; display: block; margin-top: 3px; }
-        
-        /* Gaya Tampilan Informasi Stok */
         .stok-badge { font-weight: bold; color: var(--success); }
         .stok-habis { color: var(--danger); font-weight: bold; background: #fce8e6; padding: 2px 6px; border-radius: 4px; }
 
         .btn-delete-product { position: absolute; top: 5px; right: 5px; background: var(--danger); color: white; border: none; border-radius: 4px; width: 22px; height: 22px; font-size: 12px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
         .btn-delete-product:hover { background: #b02a37; transform: scale(1.1); }
 
-        .cart-header { background: var(--dark); color: white; padding: 15px; text-align: center; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .cart-header { background: var(--dark); color: white; padding: 15px; text-align: center; display: flex; justify-content: space-between; align-items: center; }
         .cart-header h2 { margin: 0; font-size: 18px; }
         .btn-clear { background: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; }
 
-        .cart-items { flex-grow: 1; overflow-y: auto; padding: 10px; }
+        /* Keranjang dibiarkan memanjang ke bawah kalau barang banyak */
+        .cart-items { flex-grow: 1; padding: 10px; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
         .cart-item-info { width: 60%; }
         .cart-item-name { font-weight: bold; font-size: 14px; margin-bottom: 5px; }
@@ -63,7 +63,7 @@
         .cart-item-total { font-weight: bold; color: var(--primary); }
         .btn-del { background: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
 
-        .cart-summary { padding: 15px; background: #fdfdfd; border-top: 2px solid #ddd; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .cart-summary { padding: 15px; background: #fdfdfd; border-top: 2px solid #ddd; }
         .summary-line { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 14px; }
         .summary-total { font-size: 18px; font-weight: bold; color: var(--danger); border-top: 2px dashed #ccc; padding-top: 10px; margin-top: 5px; }
         
@@ -90,25 +90,20 @@
 
         /* ----- ATURAN LAYAR HP ----- */
         @media screen and (max-width: 1024px) {
-            body { height: auto; overflow: auto; display: block; }
-            .main-app { flex-direction: column; height: auto; display: flex; }
-            .left-panel { width: 100%; height: auto; overflow: visible; padding: 10px; flex: none; }
-            .right-panel { width: 100%; height: auto; border-left: none; border-top: 4px solid var(--primary); flex: none; }
-            
+            .main-app { flex-direction: column; }
+            .left-panel { width: 100%; padding: 10px; flex: none; }
+            .right-panel { width: 100%; border-left: none; border-top: 4px solid var(--primary); flex: none; }
             .header { flex-direction: column; text-align: center; gap: 10px; }
             .input-group { width: 100%; flex-direction: column; }
             .barcode-input, .btn-scan, .btn-add { width: 100%; }
             .product-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-            
-            .cart-items { min-height: 200px; max-height: 40vh; } 
-            
             .modal-content { width: 90%; padding: 20px; }
         }
 
         /* ----- ATURAN CETAK STRUK ----- */
         @media print {
             @page { margin: 0; size: auto; }
-            body { background: white !important; margin: 0 !important; padding: 15px !important; display: block !important; height: auto !important; overflow: visible !important; }
+            body { background: white !important; margin: 0 !important; padding: 15px !important; }
             .main-app, .modal-overlay { display: none !important; }
             #printArea { display: block !important; position: relative; width: 100%; max-width: 300px; margin: 0 auto; font-size: 12px; }
             .print-header { text-align: center; margin-bottom: 10px; }
@@ -225,7 +220,6 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // Database Produk (Dilengkapi Dengan Nominal Jumlah Stok Sesuai Request)
         let databaseProduk = [
             { kode: "89686010023", nama: "Aqua Botol 600ml", harga: 3500, stok: 50 },
             { kode: "08968604321", nama: "Indomie Goreng", harga: 3500, stok: 100 },
@@ -318,7 +312,6 @@
             }
         }
 
-        // MENAMPILKAN INDIKATOR JUMLAH STOK DI KARTU BARANG
         function renderProduk() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
@@ -338,7 +331,6 @@
             });
         }
 
-        // FITUR PROTEKSI AGAR TIDAK BISA TRANSAKSI KALAU STOK KOSONG
         function tambahKeKeranjang(kode) {
             const produk = databaseProduk.find(p => p.kode === kode);
             if (!produk) { alert("Produk tidak ditemukan!"); return; }
@@ -445,7 +437,6 @@
                 document.getElementById('changeAmountText').innerText = "LUNAS";
             }
 
-            // OTOMATIS MEMOTONG JUMLAH STOK DI DATABASE KETIKA BAYAR SUKSES
             keranjang.forEach(item => {
                 const p = databaseProduk.find(x => x.kode === item.kode);
                 if (p) p.stok -= item.qty; 
@@ -454,7 +445,7 @@
             jumlahPembeli += 1;
             document.getElementById('counterPembeli').innerText = jumlahPembeli;
             
-            renderProduk(); // Update tampilan stok baru di layar utama
+            renderProduk(); 
 
             document.getElementById('successModal').style.display = 'flex';
             siapkanStrukPrint(totalTagihan, uangBayar, kembalian, teksMetodeStruk);
