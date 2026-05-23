@@ -1,0 +1,437 @@
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Brankas Rahasia — RHN CAPITAL</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   RHN VAULT V.MAX - ULTRA SECURE LOCAL-FRIENDLY EDITION
+   ========================================================================== */
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --bg: #050507; --bg2: #0A0A0E; --bg3: #12121A;
+  --card: rgba(18, 18, 26, 0.7); 
+  --card-solid: #12121A;
+  --border: rgba(255, 255, 255, 0.08); --border-glow: rgba(255, 214, 10, 0.3);
+  --text: #F8FAFC; --text2: #EBEBF5; --text3: #94A3B8;
+  --gold: #D4AF37; --gold2: #FFD60A; 
+  --green: #32D74B; --red: #FF6961; --blue: #0A84FF;
+  --shadow-float: 0 20px 50px rgba(0,0,0,0.9);
+  --radius: 24px; --radius-sm: 16px;
+}
+
+body {
+  font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text);
+  font-size: 15px; line-height: 1.5; min-height: 100vh; overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(255, 214, 10, 0.03), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(255, 214, 10, 0.02), transparent 25%);
+}
+
+/* CUSTOM SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; } 
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold2); }
+
+/* LOADER & AUTH SCREEN */
+#auth-screen {
+  position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999;
+  backdrop-filter: blur(10px);
+}
+.auth-box {
+  background: var(--card-solid); border-radius: 36px; padding: 48px 32px; width: 100%; max-width: 400px;
+  box-shadow: var(--shadow-float); border: 1px solid var(--border); text-align: center; margin: 20px;
+  position: relative; overflow: hidden;
+}
+.auth-box::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+  background: linear-gradient(90deg, transparent, var(--gold2), transparent);
+}
+.auth-logo img { width: 80px; height: 80px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 20px; object-fit: cover; background: var(--card); }
+.auth-title { font-size: 28px; font-weight: 900; color: var(--text); letter-spacing: -1px; margin-bottom: 4px; }
+.auth-sub { font-size: 13px; color: var(--gold2); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 32px; }
+.auth-field { position: relative; margin-bottom: 16px; }
+.auth-field input {
+  width: 100%; padding: 20px; font-size: 16px; font-weight: 600; font-family: 'Outfit', sans-serif;
+  border: 1px solid var(--border); border-radius: 16px; background: rgba(255,255,255,0.02); color: var(--text);
+  transition: 0.3s; outline: none; text-align: center; letter-spacing: 1px;
+}
+.auth-field input:focus { background: rgba(255, 214, 10, 0.05); border-color: var(--gold2); box-shadow: 0 0 20px rgba(255, 214, 10, 0.1); }
+.auth-btn {
+  width: 100%; padding: 20px; background: var(--gold2); color: #000; border: none; border-radius: 16px;
+  font-size: 16px; font-weight: 900; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px;
+}
+.auth-btn:active { transform: scale(0.96); }
+.auth-err { background: rgba(255, 69, 58, 0.1); color: var(--red); border-radius: 12px; padding: 14px; font-size: 14px; font-weight: 700; margin-bottom: 20px; display: none; }
+
+/* APP LAYOUT */
+#app-screen { display: none; }
+
+.topbar {
+  background: rgba(5, 5, 7, 0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  padding: 16px 40px; display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border);
+}
+.logo-area { display: flex; align-items: center; gap: 16px; }
+.logo-area img { width: 44px; height: 44px; border-radius: 12px; border: 1.5px solid rgba(201,168,76,0.5); object-fit: cover; }
+.logo-text { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; line-height: 1.2; }
+.logo-tag { font-size: 11px; font-weight: 800; color: var(--gold2); text-transform: uppercase; letter-spacing: 2px; }
+.top-right { display: flex; align-items: center; gap: 24px; }
+.status-badge { display: flex; align-items: center; gap: 8px; background: rgba(50, 215, 75, 0.1); padding: 8px 16px; border-radius: 100px; border: 1px solid rgba(50, 215, 75, 0.2); }
+.status-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; box-shadow: 0 0 10px var(--green); }
+.status-txt { font-size: 11px; font-weight: 800; color: var(--green); text-transform: uppercase; letter-spacing: 1px; }
+.btn-logout { background: transparent; border: 1px solid var(--border); color: var(--red); font-weight: 800; padding: 8px 16px; border-radius: 10px; cursor: pointer; transition: 0.2s; text-transform: uppercase; font-size: 12px; }
+.btn-logout:hover { background: rgba(255, 69, 58, 0.1); border-color: var(--red); }
+
+/* MAIN CONTAINER */
+.main-wrap { padding: 40px; max-width: 1400px; margin: 0 auto; animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+/* FORM INPUT SECURE */
+.vault-form {
+  background: var(--card-solid); border-radius: var(--radius); border: 1px solid var(--border);
+  padding: 40px; margin-bottom: 40px; position: relative; overflow: hidden;
+}
+.f-title { font-size: 24px; font-weight: 900; margin-bottom: 32px; display: flex; align-items: center; gap: 12px; letter-spacing: -0.5px; }
+.f-title span { color: var(--gold2); }
+.f-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 24px; }
+.f-group label { display: block; font-size: 12px; font-weight: 800; color: var(--text3); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; }
+.f-group input, .f-group select, .f-group textarea {
+  width: 100%; padding: 20px; font-size: 16px; font-weight: 600; font-family: 'Outfit', sans-serif;
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  color: var(--text); outline: none; transition: 0.3s;
+}
+.f-group input:focus, .f-group select:focus, .f-group textarea:focus { border-color: var(--gold2); background: rgba(255,214,10,0.02); }
+.f-group textarea { height: 160px; resize: none; font-family: 'JetBrains Mono', monospace; font-size: 15px; }
+.btn-save {
+  background: var(--text); color: var(--bg); padding: 20px 40px; border: none; border-radius: var(--radius-sm);
+  font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.2s;
+  width: 100%;
+}
+.btn-save:active { transform: scale(0.98); }
+
+/* GRID DATA PRIBADI MASONRY */
+.vault-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.vh-title { font-size: 24px; font-weight: 900; letter-spacing: -0.5px; }
+.search-box {
+  padding: 16px 24px; border-radius: 100px; border: 1px solid var(--border); background: var(--card-solid);
+  color: var(--text); font-family: 'Outfit', sans-serif; font-size: 15px; width: 350px; outline: none; font-weight: 600; transition: 0.3s;
+}
+.search-box:focus { border-color: var(--gold2); width: 400px; }
+
+.data-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 24px; }
+.d-card {
+  background: var(--card-solid); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 32px; transition: 0.3s; position: relative; display: flex; flex-direction: column;
+}
+.d-card:hover { border-color: rgba(255, 214, 10, 0.4); transform: translateY(-4px); box-shadow: var(--shadow-float); }
+.d-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+.d-cat {
+  font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px;
+  padding: 6px 12px; border-radius: 8px; background: rgba(255, 214, 10, 0.1); color: var(--gold2); border: 1px solid rgba(255,214,10,0.2);
+}
+.d-date { font-size: 12px; font-weight: 600; color: var(--text3); }
+.d-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 16px; line-height: 1.3; word-wrap: break-word; }
+
+/* EFEK SENSOR RAHASIA (BLUR) */
+.d-content-wrap { position: relative; margin-bottom: 24px; flex-grow: 1; }
+.d-content {
+  font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; color: var(--gold2);
+  background: #000; padding: 20px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+  white-space: pre-wrap; word-wrap: break-word; max-height: 250px; overflow-y: auto; scrollbar-width: none;
+  filter: blur(8px); transition: 0.3s; opacity: 0.6; cursor: pointer; user-select: none;
+}
+.d-content.revealed { filter: blur(0); opacity: 1; user-select: text; border-color: rgba(255,214,10,0.3); }
+.d-hint {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  font-size: 12px; font-weight: 800; color: var(--text); background: rgba(0,0,0,0.8);
+  padding: 8px 16px; border-radius: 100px; pointer-events: none; transition: 0.3s; border: 1px solid var(--border);
+}
+.d-content.revealed + .d-hint { opacity: 0; }
+
+.d-foot { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; }
+.d-btn {
+  background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 12px 20px;
+  border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; transition: 0.2s; text-transform: uppercase;
+}
+.d-btn:hover { background: var(--text); color: var(--bg); }
+.d-btn.del { background: transparent; border: none; color: var(--red); padding: 12px; }
+.d-btn.del:hover { background: rgba(255, 69, 58, 0.1); }
+.empty-state { grid-column: 1 / -1; text-align: center; padding: 100px 20px; color: var(--text3); font-weight: 600; background: var(--card-solid); border-radius: var(--radius); border: 1px dashed var(--border); font-size: 16px; }
+
+/* MOBILE RESPONSIVE MENTOK */
+@media (max-width: 768px) {
+  body { padding: 0; }
+  .topbar { padding: 16px 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
+  .top-right { width: 100%; justify-content: space-between; gap: 8px; }
+  .main-wrap { padding: 16px; }
+  .vault-form { padding: 24px; border-radius: 24px; }
+  .f-grid { grid-template-columns: 1fr; gap: 16px; }
+  .f-title { font-size: 20px; }
+  .vault-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .search-box, .search-box:focus { width: 100%; padding: 16px; }
+  
+  /* GRID HP 1 KOLOM PAS */
+  .data-grid { grid-template-columns: 1fr; gap: 16px; }
+  .d-card { padding: 24px; border-radius: 24px; }
+}
+
+/* NOTIF TOAST */
+#toast {
+  position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(100px);
+  background: var(--green); color: #000; padding: 14px 28px; border-radius: 100px;
+  font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;
+  box-shadow: 0 10px 40px rgba(50, 215, 75, 0.4); opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 9999;
+}
+#toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-logo"><img src="RHN LOGO.jpg" alt="RHN Logo" onerror="this.style.display='none'"></div>
+    <div class="auth-title">BRANKAS UTAMA</div>
+    <div class="auth-sub">RHN CAPITAL FINANCE</div>
+    <div id="auth-err" class="auth-err"></div>
+    <div class="auth-field"><input type="email" id="auth-email" placeholder="Email Terdaftar" autocomplete="email"></div>
+    <div class="auth-field"><input type="password" id="auth-pass" placeholder="Kata Sandi Keamanan" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="auth-btn" id="btn-login" onclick="doLogin()">Buka Brankas 🔓</button>
+  </div>
+</div>
+
+<div id="app-screen">
+  <div class="topbar">
+    <div class="logo-area">
+      <img src="RHN LOGO.jpg" alt="RHN Logo" onerror="this.style.display='none'">
+      <div>
+        <div class="logo-text">RHN BRANKAS</div>
+        <div class="logo-tag">Terenkripsi E2E</div>
+      </div>
+    </div>
+    <div class="top-right">
+      <div class="status-badge">
+        <div class="status-dot" id="sync-dot"></div>
+        <div class="status-txt" id="sync-txt">SINKRON</div>
+      </div>
+      <button class="btn-logout" onclick="doLogout()">Tutup ✕</button>
+    </div>
+  </div>
+
+  <div class="main-wrap">
+    
+    <div class="vault-form">
+      <div class="f-title"><span>✦</span> Tambah Data Rahasia</div>
+      <div class="f-grid">
+        <div class="f-group">
+          <label>Judul / Nama Akun</label>
+          <input type="text" id="v-title" placeholder="Cth: Password MT5 Cent, M-Banking BCA...">
+        </div>
+        <div class="f-group">
+          <label>Kategori</label>
+          <select id="v-cat">
+            <option value="Akun & Sandi">Akun & Sandi</option>
+            <option value="Data Finansial">Data Finansial</option>
+            <option value="Wallet Crypto">Wallet Crypto</option>
+            <option value="Catatan Penting">Catatan Penting</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-group">
+        <label>Isi Data Terselubung</label>
+        <textarea id="v-content" placeholder="Masukkan password, seed phrase, atau catatan rahasia di sini..."></textarea>
+      </div>
+      <button class="btn-save" id="btn-save" onclick="saveData()">Simpan & Kunci Data</button>
+    </div>
+
+    <div class="vault-header">
+      <div class="vh-title">Isi Brankas Pribadi</div>
+      <input type="text" class="search-box" id="v-search" placeholder="Cari judul, kategori, atau isi..." oninput="renderVault()">
+    </div>
+
+    <div class="data-grid" id="vault-grid">
+      </div>
+
+  </div>
+</div>
+
+<div id="toast">Data disalin!</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script>
+// Konfigurasi Database Firebase RHN Capital
+const firebaseConfig = {
+  apiKey: "AIzaSyCx04v3ppq3DxbXDg0PrWBeJYIZjmJF9cg",
+  authDomain: "rhn-capital.firebaseapp.com",
+  projectId: "rhn-capital",
+  storageBucket: "rhn-capital.firebasestorage.app",
+  messagingSenderId: "74905216682",
+  appId: "1:74905216682:web:4687a5b0bd7bcac09292d3"
+};
+
+// Inisialisasi Firebase Klasik
+if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+let vaultData = [];
+let currentUser = null;
+let unsubListener = null;
+
+// Fungsi Toast Notifikasi
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Fungsi Indikator Koneksi
+function setSync(ok) {
+  document.getElementById('sync-dot').style.background = ok ? 'var(--green)' : 'var(--red)';
+  document.getElementById('sync-dot').style.boxShadow = ok ? '0 0 10px var(--green)' : '0 0 10px var(--red)';
+  document.getElementById('sync-txt').textContent = ok ? 'SINKRON' : 'OFFLINE';
+  document.getElementById('sync-txt').style.color = ok ? 'var(--green)' : 'var(--red)';
+}
+
+// Fungsi Buka Sensor Blur (Klik untuk lihat password)
+window.toggleReveal = function(el) {
+  el.classList.toggle('revealed');
+}
+
+// Sistem Login Aman
+window.doLogin = async function() {
+  const e = document.getElementById('auth-email').value.trim();
+  const p = document.getElementById('auth-pass').value;
+  const err = document.getElementById('auth-err');
+  if(!e || !p) { err.textContent='Isi email dan sandi!'; err.style.display='block'; return; }
+  document.getElementById('btn-login').textContent = 'Membuka...';
+  try {
+    await auth.signInWithEmailAndPassword(e, p);
+    err.style.display='none';
+  } catch(ex) {
+    err.textContent = 'Gagal: Akses Ditolak!'; err.style.display='block';
+    document.getElementById('btn-login').textContent = 'Buka Brankas 🔓';
+  }
+}
+
+// Sistem Keluar Aman
+window.doLogout = async function() {
+  if(confirm('Kunci kembali brankas ini?')) {
+    if(unsubListener) unsubListener();
+    vaultData = [];
+    await auth.signOut();
+  }
+}
+
+// Pemantau Sesi Login
+auth.onAuthStateChanged(user => {
+  if(user) {
+    currentUser = user;
+    document.getElementById('auth-screen').style.display='none';
+    document.getElementById('app-screen').style.display='block';
+    listenData(user.uid);
+  } else {
+    currentUser = null;
+    document.getElementById('auth-screen').style.display='flex';
+    document.getElementById('app-screen').style.display='none';
+    document.getElementById('btn-login').textContent = 'Buka Brankas 🔓';
+    document.getElementById('auth-pass').value = '';
+  }
+});
+
+// Ambil Data Real-time dari Firebase
+function listenData(uid) {
+  unsubListener = db.collection('users').doc(uid).collection('personal_data')
+    .orderBy('createdAt', 'desc')
+    .onSnapshot(snap => {
+      vaultData = snap.docs.map(d => ({id: d.id, ...d.data()}));
+      setSync(true); renderVault();
+    }, err => { console.error(err); setSync(false); });
+}
+
+// Simpan Data Baru
+window.saveData = async function() {
+  if(!currentUser) return;
+  const title = document.getElementById('v-title').value.trim();
+  const cat = document.getElementById('v-cat').value;
+  const content = document.getElementById('v-content').value.trim();
+  
+  if(!title || !content) { alert('Judul dan Isi data wajib diisi!'); return; }
+  
+  const btn = document.getElementById('btn-save');
+  btn.textContent = 'Menyimpan...'; btn.disabled = true;
+  
+  try {
+    await db.collection('users').doc(currentUser.uid).collection('personal_data').add({
+      title: title, category: cat, content: content,
+      date: new Date().toISOString(),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('v-title').value = '';
+    document.getElementById('v-content').value = '';
+    showToast('Data Diamankan!');
+  } catch(e) { alert('Gagal menyimpan: '+e.message); }
+  
+  btn.textContent = 'Simpan & Kunci Data'; btn.disabled = false;
+}
+
+// Hapus Data
+window.delData = async function(id) {
+  if(!currentUser || !confirm('Hapus data ini secara permanen?')) return;
+  try { await db.collection('users').doc(currentUser.uid).collection('personal_data').doc(id).delete(); showToast('Data Dihapus'); }
+  catch(e) { alert('Gagal menghapus'); }
+}
+
+// Salin Data (Password)
+window.copyData = function(id) {
+  const d = vaultData.find(x => x.id === id);
+  if(d) {
+    navigator.clipboard.writeText(d.content).then(() => showToast('Disalin ke Clipboard!'));
+  }
+}
+
+// Render Kotak Data ke Layar
+window.renderVault = function() {
+  const grid = document.getElementById('vault-grid');
+  const term = document.getElementById('v-search').value.toLowerCase();
+  
+  let arr = vaultData;
+  if(term) {
+    arr = arr.filter(d => d.title.toLowerCase().includes(term) || d.category.toLowerCase().includes(term) || d.content.toLowerCase().includes(term));
+  }
+  
+  if(arr.length === 0) {
+    grid.innerHTML = `<div class="empty-state">Brankas kosong atau data tidak ditemukan.</div>`;
+    return;
+  }
+  
+  grid.innerHTML = arr.map(d => {
+    const dt = new Date(d.date).toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
+    return `
+    <div class="d-card">
+      <div class="d-head">
+        <span class="d-cat">${d.category}</span>
+        <span class="d-date">${dt}</span>
+      </div>
+      <div class="d-title">${d.title}</div>
+      <div class="d-content-wrap">
+        <div class="d-content" onclick="toggleReveal(this)">${d.content}</div>
+        <div class="d-hint">Klik Untuk Melihat</div>
+      </div>
+      <div class="d-foot">
+        <button class="d-btn" onclick="copyData('${d.id}')">📋 Salin</button>
+        <button class="d-btn del" onclick="delData('${d.id}')">Hapus</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>
