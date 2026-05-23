@@ -1,0 +1,545 @@
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RHN CAPITAL - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #f4f7f6;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --profit: #10b981; 
+            --profit-bg: #d1fae5;
+            --loss: #ef4444;   
+            --loss-bg: #fee2e2;
+            --primary: #059669; 
+            --primary-hover: #047857;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.04);
+            --shadow-hover: 0 15px 35px rgba(5, 150, 105, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg-base); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+        /* Background Elegan */
+        .elegant-bg { position: fixed; inset: 0; z-index: -2; background: var(--bg-base); overflow: hidden; }
+        .bg-shape { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: float 20s infinite alternate ease-in-out; }
+        .shape-1 { width: 50vw; height: 50vw; top: -10%; left: -10%; background: radial-gradient(circle, #d1fae5, transparent 60%); }
+        .shape-2 { width: 60vw; height: 60vw; bottom: -20%; right: -10%; background: radial-gradient(circle, #ccfbf1, transparent 60%); animation-delay: -10s; }
+        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(5%, 5%); } }
+
+        /* Komponen */
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow-md); }
+
+        /* Auth & Splash */
+        #splash { position: fixed; inset: 0; background: var(--surface); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.8s ease-out; }
+        #splash.hide { opacity: 0; pointer-events: none; transform: translateY(-20px); }
+        .logo-elegant { font-size: 56px; color: var(--primary); margin-bottom: 24px; animation: pulseLogo 2s ease-in-out infinite; }
+        @keyframes pulseLogo { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.95); opacity: 0.8; } }
+        .splash-text { font-weight: 600; letter-spacing: 2px; color: var(--text-muted); font-size: 14px; }
+
+        #auth-screen { position: fixed; inset: 0; z-index: 9000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .auth-card { padding: 48px 40px; width: 100%; max-width: 420px; text-align: center; }
+        .auth-card h2 { font-size: 26px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
+        .auth-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
+        
+        .hyper-input { width: 100%; padding: 14px 18px; background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); font-family: 'Inter', sans-serif; font-size: 14px; margin-bottom: 16px; outline: none; transition: all 0.3s ease; }
+        .hyper-input:focus { background: var(--surface); border-color: var(--primary); box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1); }
+        
+        .btn-hyper { padding: 16px; background: var(--primary); border: none; border-radius: 12px; color: #fff; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.3s ease; width: 100%; }
+        .btn-hyper:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        
+        .btn-toggle { background: transparent; border: 1px solid var(--border); color: var(--text-main); margin-top: 12px; }
+        .btn-toggle:hover { background: #f8fafc; color: var(--primary); transform: none; box-shadow: none; }
+
+        /* Dashboard Utama */
+        #main-app { display: none; padding: 40px 24px; position: relative; z-index: 10; }
+        .container { max-width: 1280px; margin: 0 auto; width: 100%; }
+
+        .header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+        .brand-sub { font-size: 12px; color: var(--primary); font-weight: 700; letter-spacing: 2px; margin-bottom: 8px; display: block; text-transform: uppercase; }
+        .header h1 { font-size: 32px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; }
+        .live-status { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); padding: 8px 16px; border-radius: 30px; font-weight: 600; font-size: 12px; color: var(--text-muted); box-shadow: var(--shadow-sm); }
+        .live-dot { width: 8px; height: 8px; background: var(--profit); border-radius: 50%; transition: all 0.2s ease; }
+        .live-dot.active { transform: scale(1.5); opacity: 0.5; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
+        .stat-card { padding: 32px; transition: all 0.3s ease; }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: rgba(5, 150, 105, 0.2); }
+        .stat-title { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+        .stat-val { font-size: 36px; font-weight: 700; letter-spacing: -1px; color: var(--text-main); }
+        .stat-sub { font-size: 14px; color: var(--text-muted); margin-top: 8px; font-weight: 500; }
+        
+        .text-profit { color: var(--profit) !important; }
+        .text-loss { color: var(--loss) !important; }
+
+        /* Form Beli */
+        .command-center { padding: 32px; margin-bottom: 40px; background: var(--surface); }
+        .form-grid { display: grid; grid-template-columns: 2fr 1.2fr 1.5fr 1.5fr auto; gap: 20px; align-items: end; }
+        .form-grid label { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; display: block; }
+        .btn-deploy { height: 48px; margin-bottom: 0; font-size: 14px; padding: 0 32px; border-radius: 10px; width: auto; }
+
+        /* Tabel Data */
+        .table-wrapper { overflow-x: auto; padding-bottom: 20px; background: var(--surface); border-radius: 20px; border: 1px solid var(--border); box-shadow: var(--shadow-md); }
+        table { width: 100%; border-collapse: collapse; min-width: 1050px; text-align: right; }
+        th { color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; padding: 24px; border-bottom: 1px solid var(--border); background: #f8fafc; }
+        th:first-child { text-align: left; border-top-left-radius: 20px; }
+        th:last-child { border-top-right-radius: 20px; text-align: center; }
+        td { padding: 20px 24px; font-size: 15px; font-weight: 500; border-bottom: 1px solid var(--border); color: var(--text-main); transition: background 0.2s; }
+        td:first-child { text-align: left; font-weight: 700; color: var(--primary); }
+        tr:hover td { background: #f8fafc; }
+        tr:last-child td { border-bottom: none; }
+
+        .price-tag { padding: 6px 12px; border-radius: 8px; background: #f1f5f9; font-weight: 600; transition: all 0.3s ease; display: inline-block; border: 1px solid transparent; }
+        .flash-up { background: var(--profit-bg); color: var(--profit); border-color: rgba(16, 185, 129, 0.3); transform: translateY(-2px); }
+        .flash-down { background: var(--loss-bg); color: var(--loss); border-color: rgba(239, 68, 68, 0.3); transform: translateY(-2px); }
+
+        /* Tombol Aksi */
+        .action-flex { display: flex; gap: 8px; justify-content: flex-end; }
+        .btn-sell { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; transition: all 0.2s ease; }
+        .btn-sell:hover { background: var(--primary); color: #fff; box-shadow: var(--shadow-hover); }
+        .btn-kill { background: transparent; border: 1px solid #e2e8f0; color: var(--text-muted); padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; transition: all 0.2s ease; }
+        .btn-kill:hover { background: var(--loss-bg); color: var(--loss); border-color: var(--loss); }
+
+        /* Modal Jual */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(30, 41, 59, 0.6); z-index: 10000; display: flex; align-items: center; justify-content: center; opacity: 1; transition: 0.3s; backdrop-filter: blur(4px); }
+        .modal-overlay.hide { opacity: 0; pointer-events: none; }
+        .modal-card { width: 100%; max-width: 400px; padding: 32px; transform: scale(1); transition: 0.3s; }
+        .modal-overlay.hide .modal-card { transform: scale(0.95); }
+        .modal-card h3 { margin-bottom: 20px; color: var(--text-main); font-weight: 700; }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+
+        .footer { margin-top: 20px; display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); font-weight: 500; padding: 24px 10px; border-top: 1px solid var(--border); }
+        .logout-btn { color: var(--text-muted); cursor: pointer; transition: 0.2s; text-decoration: underline; text-underline-offset: 4px; }
+        .logout-btn:hover { color: var(--loss); }
+
+        @media (max-width: 900px) {
+            #main-app { padding: 20px 16px; }
+            .header { flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+            .stats-grid, .form-grid { grid-template-columns: 1fr; gap: 16px; }
+            .stat-card { padding: 24px; }
+            .stat-val { font-size: 28px; }
+            .btn-deploy { width: 100%; height: 50px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="elegant-bg">
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+</div>
+
+<div id="splash">
+    <div class="logo-elegant">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+    </div>
+    <div class="splash-text">MEMUAT DASHBOARD...</div>
+</div>
+
+<div id="sell-modal" class="modal-overlay hide">
+    <div class="card modal-card">
+        <h3>Jual Aset <span id="sellTicker" style="color:var(--primary);"></span></h3>
+        <form id="sellForm">
+            <label style="font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; display: block;">Nominal Jual (Rp)</label>
+            <input type="number" id="sellNominal" class="hyper-input" placeholder="Contoh: 50000" step="any" required>
+            
+            <label style="font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; display: block;">Harga Saat Jual (Rp)</label>
+            <input type="number" id="sellPrice" class="hyper-input" placeholder="Harga market" step="any" required>
+            
+            <div class="modal-actions">
+                <button type="button" class="btn-kill" onclick="closeSellModal()">Batal</button>
+                <button type="submit" class="btn-hyper" style="margin:0; width:auto; padding: 12px 24px;">Proses Jual</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="auth-screen">
+    <div class="auth-card card">
+        <h2 id="authModeText">Masuk Portal</h2>
+        <p>RHN Capital Secure Login</p>
+        <input type="email" id="authEmail" class="hyper-input" placeholder="Alamat Email">
+        <input type="password" id="authPass" class="hyper-input" placeholder="Kata Sandi">
+        <button id="btnAction" class="btn-hyper" onclick="handleAuth()">MASUK SEKARANG</button>
+        <button id="btnToggle" class="btn-hyper btn-toggle" onclick="toggleAuthMode()">BUAT AKUN BARU</button>
+    </div>
+</div>
+
+<div id="main-app">
+    <div class="container">
+        <div class="header">
+            <div>
+                <span class="brand-sub">RHN Capital Finance</span>
+                <h1>Portfolio Dashboard</h1>
+            </div>
+            <div class="live-status">
+                <div class="live-dot" id="tickDot"></div> <span id="wsStatus">Menyinkronkan Data...</span>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card card">
+                <div class="stat-title">Total Portfolio (IDR)</div>
+                <div class="stat-val" id="totIDR">Rp 0</div>
+                <div class="stat-sub" id="totUSD">$ 0.00</div>
+            </div>
+            <div class="stat-card card">
+                <div class="stat-title">Unrealized PNL (IDR)</div>
+                <div class="stat-val" id="pnlIDR">Rp 0</div>
+                <div class="stat-sub" id="pnlUSD">$ 0.00</div>
+            </div>
+            <div class="stat-card card">
+                <div class="stat-title">Return of Equity</div>
+                <div class="stat-val" id="roePct">0.00%</div>
+                <div class="stat-sub" id="kursIDR">Global Rate: Rp 0</div>
+            </div>
+        </div>
+
+        <div class="command-center card">
+            <form class="form-grid" id="assetForm">
+                <div><label>Ticker (Contoh: SHIB, BTC)</label><input type="text" id="iName" class="hyper-input" style="margin:0;" required autocomplete="off"></div>
+                <div><label>Kelas Aset</label><select id="iCat" class="hyper-input" style="margin:0;"><option value="Crypto">Crypto</option><option value="Emas">Emas</option></select></div>
+                <div><label>Total Modal Beli (Rp)</label><input type="number" id="iInvest" class="hyper-input" style="margin:0;" step="any" placeholder="Modal IDR" required></div>
+                <div><label>Harga Saat Beli (Rp)</label><input type="number" id="iPrice" class="hyper-input" style="margin:0;" step="any" placeholder="Avg. Entry" required></div>
+                <button type="submit" id="btnDeployMain" class="btn-hyper btn-deploy">Tambahkan</button>
+            </form>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Aset</th><th>Modal Aktif (Rp)</th><th>Avg. Entry (Rp)</th><th>Harga Live (Rp)</th><th>Ekuitas (Rp)</th><th>Net PnL</th><th>RoE</th><th style="text-align:right;">Aksi</th></tr></thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <span>Sesi ID: <span id="userDisp" style="color:var(--primary); font-weight:700;">...</span></span>
+            <span class="logout-btn" onclick="logout()">Keluar Akun</span>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, onSnapshot, addDoc, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCx04v3ppq3DxbXDg0PrWBeJYIZjmJF9cg",
+        authDomain: "rhn-capital.firebaseapp.com",
+        projectId: "rhn-capital",
+        storageBucket: "rhn-capital.firebasestorage.app",
+        messagingSenderId: "74905216682",
+        appId: "1:74905216682:web:4687a5b0bd7bcac09292d3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let portfolio = [];
+    let aggregatedData = {}; 
+    let usdtToIdrRate = 16000;
+    let userUid = null;
+    let livePrices = {}; 
+    let isLoginMode = true;
+
+    // --- SMART OMNI-TICKER ---
+    function getBinanceSymbol(name) {
+        let t = name.toUpperCase().trim().replace(/\s+/g, '');
+        const aliases = { 'SHIBA': 'SHIB', 'BITCOIN': 'BTC', 'GOLD': 'PAXG', 'XAU': 'PAXG', 'ETHEREUM': 'ETH' };
+        if(aliases[t]) t = aliases[t];
+        if(t.endsWith('USDT')) return t;
+        if(t.endsWith('USD')) return t.replace('USD', 'USDT');
+        return t + 'USDT';
+    }
+
+    /* --- AUTH & REGISTER LOGIC --- */
+    window.toggleAuthMode = () => {
+        isLoginMode = !isLoginMode;
+        document.getElementById('authModeText').innerText = isLoginMode ? "Masuk Portal" : "Buat Akun Baru";
+        document.getElementById('btnAction').innerText = isLoginMode ? "MASUK SEKARANG" : "DAFTAR SEKARANG";
+        document.getElementById('btnToggle').innerText = isLoginMode ? "BUAT AKUN BARU" : "KEMBALI KE LOGIN";
+    };
+
+    window.handleAuth = async () => {
+        const e = document.getElementById('authEmail').value;
+        const p = document.getElementById('authPass').value;
+        const btn = document.getElementById('btnAction');
+        const origText = btn.innerText;
+        btn.innerText = "MEMPROSES...";
+
+        try {
+            if(isLoginMode) await signInWithEmailAndPassword(auth, e, p);
+            else { await createUserWithEmailAndPassword(auth, e, p); alert("Akun berhasil dibuat!"); }
+        } catch (error) {
+            alert("Error: " + error.message);
+            btn.innerText = origText;
+        }
+    };
+
+    window.logout = () => { if(confirm("Keluar dari Dashboard?")) signOut(auth); };
+
+    onAuthStateChanged(auth, user => {
+        if(user) {
+            userUid = user.uid;
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            document.getElementById('userDisp').innerText = user.email.split('@')[0].toUpperCase();
+            startEngine(user.uid);
+            setTimeout(() => document.getElementById('splash').classList.add('hide'), 800);
+        } else {
+            document.getElementById('auth-screen').style.display = 'flex';
+            document.getElementById('main-app').style.display = 'none';
+            document.getElementById('splash').classList.remove('hide');
+            setTimeout(() => document.getElementById('splash').classList.add('hide'), 1200);
+        }
+    });
+
+    /* --- CORE ENGINE --- */
+    function startEngine(uid) {
+        const q = query(collection(db, "users", uid, "assets"), orderBy("createdAt", "asc"));
+        onSnapshot(q, snap => {
+            portfolio = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            aggregatePortfolio(); 
+            renderTable(); 
+            updateUI(); 
+        });
+        initWS();
+    }
+
+    // --- AGGREGATION ---
+    function aggregatePortfolio() {
+        aggregatedData = {};
+        
+        portfolio.forEach(item => {
+            let t = item.name.toUpperCase().trim();
+            if(!aggregatedData[t]) {
+                aggregatedData[t] = { 
+                    name: t, 
+                    totalBuyInvest: 0, 
+                    totalBuyVolume: 0, 
+                    currentVolume: 0, 
+                    docs: [], 
+                    lastPrice: 0 
+                };
+            }
+            
+            let vol = item.investIdr / item.buyPrice;
+            
+            if (item.investIdr > 0) {
+                aggregatedData[t].totalBuyInvest += item.investIdr;
+                aggregatedData[t].totalBuyVolume += vol;
+            }
+            
+            aggregatedData[t].currentVolume += vol;
+            aggregatedData[t].docs.push(item.id);
+        });
+
+        for(let key in aggregatedData) {
+            if(aggregatedData[key].currentVolume <= 0.000001) {
+                delete aggregatedData[key];
+            }
+        }
+    }
+
+    // --- FORMAT RUPIAH DINAMIS ---
+    // Di sinilah letak perbaikannya Bro!
+    const fmtIDR = (v) => {
+        if (!v || v === 0) return 'Rp 0';
+        
+        // Cek kalau nilainya di bawah Rp 100 (Koin Micin)
+        if (Math.abs(v) < 100) {
+            return 'Rp ' + v.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 8 });
+        }
+        
+        // Kalau nilainya normal (seperti BTC), bulatkan aja supaya rapi
+        return 'Rp ' + v.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    };
+
+    const fmtUSD = (v) => '$ ' + v.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+    function renderTable() {
+        const tbody = document.getElementById('tableBody');
+        const assets = Object.values(aggregatedData);
+        
+        tbody.innerHTML = assets.length === 0 ? '<tr><td colspan="8" style="text-align:center; padding:60px; color:var(--text-muted);">BELUM ADA ASET TERDAFTAR</td></tr>' : 
+        assets.map(item => {
+            const avgEntry = item.totalBuyInvest / item.totalBuyVolume;
+            const modalSisa = item.currentVolume * avgEntry;
+            
+            return `
+            <tr>
+                <td>${item.name}</td>
+                <td style="color:var(--text-muted)">${fmtIDR(modalSisa)}</td>
+                <td>${fmtIDR(avgEntry)}</td>
+                <td><span class="price-tag" id="price-${item.name}">Memuat...</span></td>
+                <td id="val-${item.name}">Rp 0</td>
+                <td id="pnl-${item.name}">Rp 0</td>
+                <td id="roe-${item.name}">0%</td>
+                <td>
+                    <div class="action-flex">
+                        <button class="btn-sell" onclick="openSellModal('${item.name}')">Jual</button>
+                        <button class="btn-kill" onclick="window.delAsset('${item.name}')">Tutup</button>
+                    </div>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    function updateUI() {
+        let tBuy = 0, tNow = 0;
+        
+        Object.values(aggregatedData).forEach(item => {
+            const sym = getBinanceSymbol(item.name);
+            let pUsd = livePrices[sym];
+            
+            if(pUsd && (item.name === 'GOLD' || item.name === 'XAU')) pUsd = pUsd / 31.1034768; 
+            let currentPrice = pUsd ? pUsd * usdtToIdrRate : 0;
+
+            if(currentPrice > 0) {
+                const avgEntry = item.totalBuyInvest / item.totalBuyVolume;
+                const modalSisa = item.currentVolume * avgEntry; 
+                const ekuitasSekarang = item.currentVolume * currentPrice; 
+                
+                tBuy += modalSisa; 
+                tNow += ekuitasSekarang;
+                
+                const pnl = ekuitasSekarang - modalSisa;
+                const roe = modalSisa > 0 ? (pnl / modalSisa) * 100 : 0;
+                const cls = pnl >= 0 ? 'text-profit' : 'text-loss';
+                
+                const elP = document.getElementById(`price-${item.name}`);
+                if(elP) {
+                    elP.innerText = fmtIDR(currentPrice);
+                    document.getElementById(`val-${item.name}`).innerText = fmtIDR(ekuitasSekarang);
+                    
+                    const pnlEl = document.getElementById(`pnl-${item.name}`);
+                    pnlEl.innerText = (pnl > 0 ? '+' : '') + fmtIDR(pnl);
+                    pnlEl.className = cls;
+                    
+                    const roeEl = document.getElementById(`roe-${item.name}`);
+                    roeEl.innerText = (pnl > 0 ? '+' : '') + roe.toFixed(2) + '%';
+                    roeEl.className = cls;
+                    
+                    if(currentPrice > item.lastPrice && item.lastPrice !== 0) {
+                        elP.classList.add('flash-up'); setTimeout(() => elP.classList.remove('flash-up'), 400);
+                    } else if(currentPrice < item.lastPrice && item.lastPrice !== 0) {
+                        elP.classList.add('flash-down'); setTimeout(() => elP.classList.remove('flash-down'), 400);
+                    }
+                    item.lastPrice = currentPrice;
+                }
+            }
+        });
+        
+        const netPnl = tNow - tBuy;
+        document.getElementById('totIDR').innerText = fmtIDR(tNow);
+        document.getElementById('totUSD').innerText = fmtUSD(tNow / usdtToIdrRate);
+        
+        const pnlIDREl = document.getElementById('pnlIDR');
+        pnlIDREl.innerText = (netPnl > 0 ? '+' : '') + fmtIDR(netPnl);
+        pnlIDREl.className = 'stat-val ' + (netPnl > 0 ? 'text-profit' : netPnl < 0 ? 'text-loss' : '');
+        document.getElementById('pnlUSD').innerText = (netPnl > 0 ? '+' : '') + fmtUSD(netPnl / usdtToIdrRate);
+        
+        const roePctEl = document.getElementById('roePct');
+        roePctEl.innerText = tBuy > 0 ? ((netPnl/tBuy)*100).toFixed(2) + '%' : '0.00%';
+        roePctEl.className = 'stat-val ' + (netPnl > 0 ? 'text-profit' : netPnl < 0 ? 'text-loss' : '');
+
+        document.getElementById('kursIDR').innerText = "Global Rate: " + fmtIDR(usdtToIdrRate);
+    }
+
+    function initWS() {
+        const ws = new WebSocket('wss://stream.binance.com:9443/ws/!miniTicker@arr');
+        ws.onmessage = e => {
+            const data = JSON.parse(e.data);
+            const dot = document.getElementById('tickDot');
+            dot.classList.add('active'); setTimeout(() => dot.classList.remove('active'), 50);
+            document.getElementById('wsStatus').innerText = "Live Terhubung";
+
+            data.forEach(ticker => {
+                if (ticker.s === 'USDTIDR' || ticker.s === 'USDTBIDR') usdtToIdrRate = parseFloat(ticker.c);
+                livePrices[ticker.s] = parseFloat(ticker.c);
+            });
+            updateUI();
+        };
+        ws.onclose = () => { document.getElementById('wsStatus').innerText = "Menghubungkan ulang..."; setTimeout(initWS, 2000); };
+    }
+
+    // --- FORM DEPLOY (BELI ASET) ---
+    document.getElementById('assetForm').onsubmit = async e => {
+        e.preventDefault();
+        const btn = document.getElementById('btnDeployMain');
+        const origText = btn.innerText;
+        btn.innerText = "MEMPROSES...";
+        
+        try {
+            await addDoc(collection(db, "users", userUid, "assets"), {
+                name: document.getElementById('iName').value.toUpperCase().trim(),
+                category: document.getElementById('iCat').value,
+                investIdr: Math.abs(parseFloat(document.getElementById('iInvest').value)),
+                buyPrice: parseFloat(document.getElementById('iPrice').value),
+                createdAt: serverTimestamp()
+            });
+            e.target.reset();
+        } catch (error) {
+            alert("Gagal menambahkan aset: " + error.message);
+        } finally {
+            btn.innerText = origText;
+        }
+    };
+
+    // --- LOGIKA JUAL ASET ---
+    window.openSellModal = (ticker) => {
+        document.getElementById('sellTicker').innerText = ticker;
+        const sym = getBinanceSymbol(ticker);
+        let pUsd = livePrices[sym];
+        let currentPrice = pUsd ? (pUsd * usdtToIdrRate) : 0;
+        
+        // Buat nampilin harga jual supaya otomatis keisi harga sekarang
+        document.getElementById('sellPrice').value = currentPrice ? (currentPrice < 100 ? currentPrice.toFixed(6) : currentPrice.toFixed(0)) : '';
+        document.getElementById('sellNominal').value = ''; 
+        
+        document.getElementById('sell-modal').classList.remove('hide');
+    };
+
+    window.closeSellModal = () => document.getElementById('sell-modal').classList.add('hide');
+
+    document.getElementById('sellForm').onsubmit = async e => {
+        e.preventDefault();
+        const ticker = document.getElementById('sellTicker').innerText;
+        const nominalJual = parseFloat(document.getElementById('sellNominal').value);
+        const hargaJual = parseFloat(document.getElementById('sellPrice').value);
+        
+        if(nominalJual <= 0 || hargaJual <= 0) { alert("Nominal dan Harga harus lebih dari 0!"); return; }
+
+        try {
+            await addDoc(collection(db, "users", userUid, "assets"), {
+                name: ticker,
+                category: 'Crypto', 
+                investIdr: -Math.abs(nominalJual), 
+                buyPrice: hargaJual,
+                createdAt: serverTimestamp()
+            });
+            closeSellModal();
+        } catch(err) {
+            alert("Gagal memproses penjualan: " + err.message);
+        }
+    };
+
+    // --- LOGIKA TUTUP SELURUH POSISI ---
+    window.delAsset = async ticker => { 
+        if(confirm(`Yakin ingin menutup dan menghapus seluruh riwayat posisi ${ticker}?`)) {
+            const docsToDelete = aggregatedData[ticker].docs;
+            docsToDelete.forEach(async id => {
+                await deleteDoc(doc(db, "users", userUid, "assets", id));
+            });
+        } 
+    };
+</script>
+</body>
+</html>
