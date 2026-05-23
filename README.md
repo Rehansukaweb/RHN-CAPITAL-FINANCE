@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="dark light">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Arus Keuangan — RHN CAPITAL</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -15,62 +16,68 @@
     }
 
     :root {
-      /* === LUXURY GREEN & WHITE PALETTE === */
+      /* === LUXURY GREEN DARK PALETTE (RHN DEFAULT) === */
       --emerald:        #1A5C3A;
-      --emerald-deep:   #0F3D26;
+      --emerald-deep:   #091A10; /* Deeper for sidebar */
       --emerald-mid:    #2E7D52;
       --emerald-light:  #3DAA70;
-      --emerald-pale:   #E8F5EE;
-      --emerald-mist:   #F2FAF6;
+      --emerald-pale:   #11291D;
+      --emerald-mist:   #0A1A12;
 
       --gold:           #C9A84C;
       --gold-light:     #E8C97A;
-      --gold-pale:      #FDF6E7;
+      --gold-pale:      #262112;
 
-      --white:          #FFFFFF;
-      --off-white:      #FAFCFB;
-      --cream:          #F5F7F5;
-      --border-light:   #D6E8DC;
-      --border-mid:     #A8CCBA;
+      --white:          #0F261B; /* Cards */
+      --off-white:      #0A1A12; /* Main Background */
+      --cream:          #153324; /* Inputs */
+      --border-light:   #1C422F;
+      --border-mid:     #295C42;
 
-      --text-primary:   #0A2416;
-      --text-secondary: #2E5540;
-      --text-muted:     #6B9480;
-      --text-faint:     #9DBDAD;
+      --text-primary:   #F0F7F4;
+      --text-secondary: #B8D6C7;
+      --text-muted:     #84AB96;
+      --text-faint:     #4F7561;
 
-      --danger:         #C0392B;
-      --danger-pale:    #FDF0EE;
-      --success:        #1A7A4A;
-      --success-pale:   #E6F4EC;
+      --danger:         #E74C3C;
+      --danger-pale:    #2E1515;
+      --success:        #27AE60;
+      --success-pale:   #122E1F;
 
       --radius-sm:  8px;
       --radius-md:  14px;
       --radius-lg:  20px;
       --radius-xl:  28px;
 
+      --shadow-xs:  0 1px 4px rgba(0,0,0,0.2);
+      --shadow-sm:  0 2px 12px rgba(0,0,0,0.25);
+      --shadow-md:  0 8px 32px rgba(0,0,0,0.3);
+      --shadow-lg:  0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    /* LIGHT MODE (Jika tombol switch ditekan) */
+    body.light {
+      --white:          #FFFFFF;
+      --off-white:      #FAFCFB;
+      --cream:          #F5F7F5;
+      --border-light:   #D6E8DC;
+      --border-mid:     #A8CCBA;
+      --emerald-pale:   #E8F5EE;
+      --emerald-mist:   #F2FAF6;
+
+      --text-primary:   #0A2416;
+      --text-secondary: #2E5540;
+      --text-muted:     #6B9480;
+      --text-faint:     #9DBDAD;
+
+      --danger-pale:    #FDF0EE;
+      --success-pale:   #E6F4EC;
+      --gold-pale:      #FDF6E7;
+
       --shadow-xs:  0 1px 4px rgba(15,61,38,0.06);
       --shadow-sm:  0 2px 12px rgba(15,61,38,0.08);
       --shadow-md:  0 8px 32px rgba(15,61,38,0.12);
       --shadow-lg:  0 20px 60px rgba(15,61,38,0.16);
-    }
-
-    /* DARK MODE */
-    body.dark {
-      --white:          #0C1F16;
-      --off-white:      #0F2519;
-      --cream:          #132A1E;
-      --border-light:   #1E4030;
-      --border-mid:     #2A5A40;
-      --emerald-pale:   #132A1E;
-      --emerald-mist:   #0F2519;
-
-      --text-primary:   #E8F5EE;
-      --text-secondary: #A8CCBA;
-      --text-muted:     #6B9480;
-      --text-faint:     #3A6050;
-
-      --danger-pale:    #2A1010;
-      --success-pale:   #0F2519;
     }
 
     html, body {
@@ -126,7 +133,7 @@
 
     .auth-box {
       position: relative;
-      background: rgba(255,255,255,0.97);
+      background: var(--white);
       backdrop-filter: blur(20px);
       border-radius: var(--radius-xl);
       padding: 48px 40px;
@@ -167,7 +174,7 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 26px;
       font-weight: 700;
-      color: var(--emerald-deep);
+      color: var(--text-primary);
       letter-spacing: 2px;
     }
 
@@ -205,14 +212,14 @@
     }
 
     .auth-tab.active {
-      background: var(--white);
-      color: var(--emerald-deep);
+      background: var(--emerald-light);
+      color: #fff;
       box-shadow: var(--shadow-xs);
     }
 
     .auth-err {
       background: var(--danger-pale);
-      border: 1px solid rgba(192,57,43,0.2);
+      border: 1px solid rgba(231, 76, 60, 0.2);
       color: var(--danger);
       font-size: 12px;
       padding: 10px 14px;
@@ -230,7 +237,7 @@
       border: 1.5px solid var(--border-light);
       border-radius: var(--radius-md);
       background: var(--off-white);
-      color: #0A2416;
+      color: var(--text-primary);
       margin-bottom: 12px;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
@@ -241,7 +248,7 @@
       box-shadow: 0 0 0 3px rgba(61,170,112,0.12);
     }
 
-    .auth-input::placeholder { color: #9DBDAD; }
+    .auth-input::placeholder { color: var(--text-faint); }
 
     .auth-btn {
       width: 100%;
@@ -489,8 +496,8 @@
     }
 
     .logout-btn-sidebar:hover {
-      border-color: rgba(192,57,43,0.5);
-      color: #E07070;
+      border-color: rgba(231,76,60,0.5);
+      color: #E74C3C;
     }
 
     /* ===================== MAIN CONTENT ===================== */
@@ -504,7 +511,7 @@
     /* Top Bar */
     .topbar {
       position: sticky; top: 0; z-index: 50;
-      background: rgba(250,252,251,0.92);
+      background: rgba(10, 26, 18, 0.92); /* Mengikuti warna off-white */
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border-light);
       padding: 14px 32px;
@@ -515,8 +522,8 @@
       transition: background 0.4s;
     }
 
-    body.dark .topbar {
-      background: rgba(12,31,22,0.92);
+    body.light .topbar {
+      background: rgba(250,252,251,0.92);
     }
 
     .topbar-left {
@@ -529,11 +536,9 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 22px;
       font-weight: 700;
-      color: var(--emerald-deep);
+      color: var(--text-primary);
       letter-spacing: 0.5px;
     }
-
-    body.dark .topbar-page-title { color: var(--emerald-light); }
 
     .topbar-right {
       display: flex;
@@ -563,7 +568,7 @@
       font-family: 'DM Mono', monospace;
       font-size: 13px;
       font-weight: 500;
-      color: var(--emerald);
+      color: var(--emerald-light);
     }
 
     .sync-badge {
@@ -585,13 +590,13 @@
 
     .sync-dot.live {
       background: var(--success);
-      box-shadow: 0 0 0 3px rgba(26,122,74,0.15);
+      box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.15);
       animation: pulse 2s infinite;
     }
 
     @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 3px rgba(26,122,74,0.15); }
-      50%       { box-shadow: 0 0 0 6px rgba(26,122,74,0.05); }
+      0%, 100% { box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.15); }
+      50%        { box-shadow: 0 0 0 6px rgba(39, 174, 96, 0.05); }
     }
 
     .sync-text {
@@ -634,7 +639,7 @@
     .hamburger span {
       display: block;
       width: 16px; height: 1.5px;
-      background: var(--emerald);
+      background: var(--emerald-light);
       border-radius: 2px;
       transition: all 0.3s;
     }
@@ -686,7 +691,7 @@
     }
 
     .metric-card.inc::before  { background: linear-gradient(90deg, var(--emerald), var(--emerald-light)); }
-    .metric-card.exp::before  { background: linear-gradient(90deg, var(--danger), #E85D52); }
+    .metric-card.exp::before  { background: linear-gradient(90deg, var(--danger), #ff6b6b); }
     .metric-card.bal::before  { background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
     .metric-card.cnt::before  { background: linear-gradient(90deg, var(--emerald-mid), var(--emerald-light)); }
 
@@ -714,13 +719,12 @@
 
     .metric-value {
       font-family: 'DM Mono', monospace;
-      font-size: 20px;
+      font-size: clamp(16px, 2vw, 20px); /* Responsif biar ngga kegencet */
       font-weight: 500;
       color: var(--text-primary);
       margin-bottom: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: normal; /* Biar angka besar turun, ngga kepotong */
+      word-wrap: break-word;
     }
 
     .metric-usd {
@@ -749,7 +753,7 @@
       transition: width 0.8s cubic-bezier(0.16,1,0.3,1);
     }
 
-    .metric-card.inc .metric-bar-fill { background: var(--emerald); }
+    .metric-card.inc .metric-bar-fill { background: var(--emerald-light); }
     .metric-card.exp .metric-bar-fill { background: var(--danger); }
     .metric-card.bal .metric-bar-fill { background: var(--gold); }
     .metric-card.cnt .metric-bar-fill { background: var(--emerald-mid); }
@@ -824,14 +828,14 @@
     }
 
     .t-btn.income.active {
-      background: var(--white);
-      color: var(--success);
+      background: var(--emerald-light);
+      color: #fff;
       box-shadow: var(--shadow-xs);
     }
 
     .t-btn.expense.active {
-      background: var(--white);
-      color: var(--danger);
+      background: var(--danger);
+      color: #fff;
       box-shadow: var(--shadow-xs);
     }
 
@@ -874,7 +878,7 @@
     textarea.f-input { height: 96px; resize: none; }
 
     select.f-input {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B9480' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2384AB96' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 14px center;
       padding-right: 38px;
@@ -942,14 +946,15 @@
 
     .tx-body { flex: 1; min-width: 0; }
 
+    /* Perbaikan: Biar Teks Gak Menyempit / Kepotong */
     .tx-note {
       font-size: 13px;
       font-weight: 600;
       color: var(--text-primary);
       margin-bottom: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: normal; 
+      word-wrap: break-word; /* Teks otomatis turun ke bawah */
+      line-height: 1.4;
     }
 
     .tx-meta {
@@ -958,6 +963,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap; /* Biar kategori dan tanggal bisa nyesuain ruang */
     }
 
     .cat-pill {
@@ -967,7 +973,7 @@
       padding: 2px 7px;
       border-radius: 100px;
       background: var(--emerald-pale);
-      color: var(--emerald-mid);
+      color: var(--emerald-light);
       border: 1px solid var(--border-light);
       text-transform: uppercase;
     }
@@ -1050,13 +1056,13 @@
       transition: all 0.2s;
     }
 
-    .period-btn:hover { border-color: var(--emerald-light); color: var(--emerald); }
+    .period-btn:hover { border-color: var(--emerald-light); color: var(--emerald-light); }
 
     .period-btn.active {
-      background: var(--emerald);
+      background: var(--emerald-light);
       color: #fff;
-      border-color: var(--emerald);
-      box-shadow: 0 2px 10px rgba(26,92,58,0.25);
+      border-color: var(--emerald-light);
+      box-shadow: 0 2px 10px rgba(61,170,112,0.25);
     }
 
     /* ===================== CHART ===================== */
@@ -1111,7 +1117,7 @@
       backdrop-filter: blur(4px);
     }
 
-    /* ===================== RESPONSIVE ===================== */
+    /* ===================== RESPONSIVE (LAPTOP TO TABLET) ===================== */
     @media (max-width: 900px) {
       .sidebar {
         transform: translateX(-100%);
@@ -1157,19 +1163,54 @@
       .usd-badge { display: none; }
     }
 
+    /* ===================== RESPONSIVE KHUSUS HP (MEPET LAYAR) ===================== */
     @media (max-width: 480px) {
-      .metrics-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .metric-value { font-size: 16px; }
-      .card-body { padding: 16px; }
-      .card-header { padding: 16px 16px 0; }
+      .pages-wrap { 
+        padding: 10px 4px !important; /* Mepetin ke ujung kiri kanan layar HP */
+      }
+      .card { 
+        border-radius: 12px; 
+        margin-bottom: 12px; 
+      }
+      .card-header { 
+        padding: 14px 12px 0; 
+      }
+      .card-body { 
+        padding: 14px 10px; 
+      }
+      .metrics-grid { 
+        grid-template-columns: 1fr 1fr; 
+        gap: 8px; 
+        margin-bottom: 16px; 
+      }
+      .metric-card {
+        padding: 14px 10px;
+      }
+      .metric-value { 
+        font-size: clamp(14px, 4vw, 16px); 
+      }
+      .tx-item {
+        padding: 12px 8px;
+        gap: 8px;
+      }
+      .tx-icon {
+        width: 34px; height: 34px;
+        font-size: 14px;
+      }
+      .tx-amount {
+        font-size: 13px;
+      }
+      .topbar {
+        padding: 10px 12px;
+      }
+      .sum-grid {
+        gap: 8px;
+      }
     }
   </style>
 </head>
 <body>
 
-<!-- ============================================================
-     AUTH SCREEN
-     ============================================================ -->
 <div id="auth-screen">
   <div class="auth-box">
     <div class="auth-brand">
@@ -1202,15 +1243,10 @@
 </div>
 
 
-<!-- ============================================================
-     APP SCREEN
-     ============================================================ -->
 <div id="app-screen">
 
-  <!-- SIDEBAR OVERLAY (mobile) -->
   <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
-  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
 
     <div class="sidebar-brand">
@@ -1302,10 +1338,8 @@
     </div>
   </aside>
 
-  <!-- MAIN CONTENT -->
   <div class="main-content">
 
-    <!-- TOP BAR -->
     <header class="topbar">
       <div class="topbar-left">
         <button class="hamburger" id="hamburger-btn" onclick="toggleSidebar()">
@@ -1322,19 +1356,16 @@
           <span class="sync-dot" id="sync-dot"></span>
           <span class="sync-text" id="sync-label">MENGHUBUNGKAN</span>
         </div>
-        <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙</button>
+        <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">☀️</button>
       </div>
     </header>
 
-    <!-- PAGES -->
     <div class="pages-wrap">
 
-      <!-- PAGE: DASHBOARD -->
       <div id="page-dashboard" class="page active">
         <div class="metrics-grid" id="metric-cards"></div>
         <div class="panel-grid">
 
-          <!-- Form -->
           <div class="card">
             <div class="card-header">
               <div class="card-title">Tambah Transaksi</div>
@@ -1366,7 +1397,6 @@
             </div>
           </div>
 
-          <!-- Recent -->
           <div class="card">
             <div class="card-header">
               <div class="card-title">Aktivitas Terakhir</div>
@@ -1379,10 +1409,7 @@
           </div>
 
         </div>
-      </div><!-- /dashboard -->
-
-      <!-- PAGE: HARIAN -->
-      <div id="page-harian" class="page">
+      </div><div id="page-harian" class="page">
         <div class="card" style="margin-bottom:20px;">
           <div class="card-body" style="display:flex;align-items:center;gap:14px;">
             <label class="form-label" style="margin:0;white-space:nowrap;">Pilih Tanggal</label>
@@ -1401,7 +1428,6 @@
         </div>
       </div>
 
-      <!-- PAGE: MINGGUAN -->
       <div id="page-mingguan" class="page">
         <div class="period-bar" id="week-sel"></div>
         <div class="sum-grid" id="week-sum"></div>
@@ -1412,7 +1438,7 @@
           </div>
           <div class="card-body">
             <div class="chart-legend">
-              <div class="legend-item"><div class="legend-dot" style="background:var(--emerald)"></div>Pemasukan</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--emerald-light)"></div>Pemasukan</div>
               <div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>Pengeluaran</div>
             </div>
             <div class="chart-container"><canvas id="chartWeek"></canvas></div>
@@ -1423,7 +1449,6 @@
         </div>
       </div>
 
-      <!-- PAGE: BULANAN -->
       <div id="page-bulanan" class="page">
         <div class="period-bar" id="month-sel"></div>
         <div class="sum-grid" id="month-sum"></div>
@@ -1434,7 +1459,7 @@
           </div>
           <div class="card-body">
             <div class="chart-legend">
-              <div class="legend-item"><div class="legend-dot" style="background:var(--emerald)"></div>Pemasukan</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--emerald-light)"></div>Pemasukan</div>
               <div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>Pengeluaran</div>
             </div>
             <div class="chart-container"><canvas id="chartMonth"></canvas></div>
@@ -1445,7 +1470,6 @@
         </div>
       </div>
 
-      <!-- PAGE: TAHUNAN -->
       <div id="page-tahunan" class="page">
         <div class="period-bar" id="year-sel"></div>
         <div class="sum-grid" id="year-sum"></div>
@@ -1456,7 +1480,7 @@
           </div>
           <div class="card-body">
             <div class="chart-legend">
-              <div class="legend-item"><div class="legend-dot" style="background:var(--emerald)"></div>Pemasukan</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--emerald-light)"></div>Pemasukan</div>
               <div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>Pengeluaran</div>
             </div>
             <div class="chart-container"><canvas id="chartYear"></canvas></div>
@@ -1467,7 +1491,6 @@
         </div>
       </div>
 
-      <!-- PAGE: RIWAYAT -->
       <div id="page-riwayat" class="page">
         <div class="sum-grid" id="all-sum"></div>
         <div class="card">
@@ -1490,26 +1513,24 @@
         </div>
       </div>
 
-    </div><!-- /pages-wrap -->
-  </div><!-- /main-content -->
-</div><!-- /app-screen -->
-
-
-<script type="module">
+    </div></div></div><script type="module">
 
   /* ============================================================
-     THEME
+     THEME (Sekarang Default Dark, bisa switch ke Light)
      ============================================================ */
   window.toggleTheme = function() {
-    document.body.classList.toggle('dark');
-    const isDark = document.body.classList.contains('dark');
-    document.getElementById('theme-toggle').textContent = isDark ? '☀️' : '🌙';
-    localStorage.setItem('rhn-theme', isDark ? 'dark' : 'light');
+    document.body.classList.toggle('light');
+    const isLight = document.body.classList.contains('light');
+    document.getElementById('theme-toggle').textContent = isLight ? '🌙' : '☀️';
+    localStorage.setItem('rhn-theme', isLight ? 'light' : 'dark');
     refreshAll();
   };
 
-  if (localStorage.getItem('rhn-theme') === 'dark') {
-    document.body.classList.add('dark');
+  // Muat preferensi, kalau sebelumnya 'light' ubah ke light. Kalau tidak ada, default dark.
+  if (localStorage.getItem('rhn-theme') === 'light') {
+    document.body.classList.add('light');
+    document.getElementById('theme-toggle').textContent = '🌙';
+  } else {
     document.getElementById('theme-toggle').textContent = '☀️';
   }
 
@@ -1868,16 +1889,16 @@
     if (charts[id]) charts[id].destroy();
     const c = document.getElementById(id);
     if (!c) return;
-    const isDark = document.body.classList.contains('dark');
-    const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
-    const tickColor = isDark ? '#6B9480' : '#9DBDAD';
+    const isLight = document.body.classList.contains('light');
+    const gridColor = isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)';
+    const tickColor = isLight ? '#9DBDAD' : '#6B9480';
     charts[id] = new Chart(c, {
       type: 'bar',
       data: {
         labels,
         datasets: [
-          { label: 'Pemasukan',   data: incData, backgroundColor: 'rgba(26,92,58,0.8)',  borderRadius: 6, borderSkipped: false },
-          { label: 'Pengeluaran', data: expData, backgroundColor: 'rgba(192,57,43,0.75)', borderRadius: 6, borderSkipped: false }
+          { label: 'Pemasukan',   data: incData, backgroundColor: 'rgba(61,170,112,0.8)',  borderRadius: 6, borderSkipped: false },
+          { label: 'Pengeluaran', data: expData, backgroundColor: 'rgba(231,76,60,0.75)', borderRadius: 6, borderSkipped: false }
         ]
       },
       options: {
