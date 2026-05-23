@@ -1,0 +1,677 @@
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>RHN CAPITAL</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   RHN CAPITAL - ELITE CORPORATE UI V2.0
+   Design: Light Premium Theme (Hijau & Putih)
+   ========================================================= */
+
+:root {
+    --bg-main: #f5fff7; /* Putih kehijauan sangat muda */
+    --bg-sec: #ffffff;
+    --primary: #00b140; /* Hijau Utama */
+    --primary-light: #00ff88;
+    --primary-glow: rgba(0, 177, 64, 0.15);
+    --surface: rgba(255, 255, 255, 0.85);
+    --border: rgba(0, 177, 64, 0.15);
+    --text-main: #0a1128; /* Biru sangat gelap / Hitam */
+    --text-muted: #4b5563; /* Abu-abu gelap */
+    --text-hint: #6b7280;
+    --shadow-soft: 0 15px 40px rgba(0, 177, 64, 0.06);
+    --shadow-hover: 0 20px 50px rgba(0, 177, 64, 0.15);
+}
+
+/* ===== GLOBAL ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    background-image: 
+        radial-gradient(circle at 15% 50%, rgba(0, 177, 64, 0.05), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(0, 255, 136, 0.05), transparent 25%);
+    background-attachment: fixed;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-main); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; opacity: 0.8; }
+::-webkit-scrollbar-thumb:hover { background: #008731; }
+
+/* ===== ANIMASI SCROLL REVEAL ===== */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== NAVBAR ===== */
+header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+    z-index: 999;
+    transition: all 0.4s ease;
+}
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--text-main);
+}
+.logo img {
+    width: 40px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px var(--primary-glow);
+}
+
+/* HAMBURGER MENU */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 1001;
+}
+.menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background: var(--text-main);
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.menu button {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-left: 24px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+}
+.menu button::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background: var(--primary);
+    transition: 0.3s ease;
+}
+.menu button:hover { color: var(--primary); }
+.menu button:hover::after { width: 100%; }
+
+/* ===== HERO ===== */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 140px 20px 60px;
+    position: relative;
+}
+.hero::before {
+    content: ''; position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%);
+    width: 600px; height: 600px; background: var(--primary-light); filter: blur(200px); opacity: 0.3; z-index: -1;
+}
+.hero img {
+    width: 140px;
+    border-radius: 24px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow-hover);
+    border: 1px solid rgba(255,255,255,0.8);
+    animation: float 6s infinite ease-in-out;
+}
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+.hero h1 {
+    font-size: 56px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    color: var(--text-main);
+    letter-spacing: -1px;
+}
+.hero p {
+    max-width: 750px;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 40px;
+}
+
+.btn {
+    padding: 16px 36px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 20px var(--primary-glow);
+}
+.btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 177, 64, 0.35);
+}
+
+/* ===== SECTION ===== */
+.section {
+    padding: 100px 24px;
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+}
+.section h2 {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 24px;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+}
+.section p {
+    color: var(--text-muted);
+    line-height: 1.8;
+    font-size: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* ===== GRID CARDS ===== */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+.card {
+    background: var(--surface);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.8);
+    border-radius: 24px;
+    padding: 40px 30px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+}
+.card::before {
+    content: ''; position: absolute; width: 120px; height: 120px;
+    background: var(--primary); opacity: 0.05;
+    top: -30px; right: -30px; border-radius: 50%; transition: 0.4s;
+}
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-hover);
+}
+.card:hover::before { transform: scale(2); opacity: 0.08; }
+
+.card h3 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    color: var(--text-main);
+    z-index: 1;
+}
+.card p {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    margin-left: 0;
+    z-index: 1;
+}
+.action {
+    margin-top: auto;
+    padding: 14px;
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--primary);
+    font-weight: 700;
+    text-align: center;
+    transition: 0.3s;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+    z-index: 1;
+}
+.card:hover .action {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    border-color: transparent;
+}
+
+/* ===== TAMBAHAN: FOUNDER SPOTLIGHT ===== */
+.founder-box {
+    background: linear-gradient(145deg, #ffffff, #f0fff4);
+    border: 1px solid rgba(0, 177, 64, 0.1);
+    border-radius: 30px;
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 50px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-hover);
+}
+.founder-box::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+}
+.f-avatar {
+    width: 110px; height: 110px;
+    background: white;
+    border: 3px solid var(--primary);
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 45px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 25px var(--primary-glow);
+}
+.f-name { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; color: var(--text-main); }
+.f-title { font-size: 14px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; }
+.f-meta { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px; }
+.f-meta span { 
+    background: rgba(0, 177, 64, 0.05); 
+    padding: 8px 18px; 
+    border-radius: 99px; 
+    font-family: 'JetBrains Mono', monospace; 
+    font-size: 13px; 
+    color: var(--primary); 
+    font-weight: 600;
+    border: 1px solid rgba(0, 177, 64, 0.15); 
+}
+.f-desc { font-size: 16px; color: var(--text-muted); line-height: 1.8; max-width: 800px; }
+
+/* ===== TAMBAHAN: MEGA MODUL ===== */
+.mod-grid { display: flex; flex-direction: column; gap: 30px; margin-top: 50px; text-align: left; }
+.mod-item { 
+    background: var(--surface); 
+    border: 1px solid rgba(255,255,255,0.8); 
+    border-radius: 24px; 
+    padding: 40px 45px; 
+    position: relative; 
+    transition: 0.3s;
+    box-shadow: var(--shadow-soft);
+}
+.mod-item:hover {
+    transform: translateX(10px);
+    box-shadow: var(--shadow-hover);
+}
+.mod-item::before { 
+    content: ''; position: absolute; left: 0; top: 30px; bottom: 30px; 
+    width: 6px; background: var(--primary); border-radius: 0 5px 5px 0; 
+}
+.mod-hdr { font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+.mod-body { color: var(--text-muted); font-size: 15.5px; line-height: 1.8; }
+.mod-body h4 { color: var(--text-main); margin: 25px 0 10px; font-size: 17px; font-weight: 700; }
+.mod-body ul { margin-left: 20px; margin-bottom: 20px; }
+.mod-body li { margin-bottom: 10px; }
+
+/* ===== QRIS POPUP ===== */
+.popup {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+    display: none; justify-content: center; align-items: center; z-index: 1000;
+}
+.popup img { width: 90%; max-width: 400px; border-radius: 24px; border: 3px solid white; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+.close { position: absolute; top: 30px; right: 40px; font-size: 32px; font-weight: 300; cursor: pointer; color: white; transition: 0.3s; }
+.close:hover { transform: rotate(90deg); color: var(--primary-light); }
+
+/* ===== FOOTER ===== */
+footer {
+    text-align: center; padding: 40px 20px; color: white;
+    font-size: 13px; font-family: 'JetBrains Mono', monospace;
+    background: #008731;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .nav { padding: 16px 24px; }
+    
+    /* Logic untuk Hamburger Menu */
+    .menu-toggle { display: flex; }
+    .menu {
+        position: fixed;
+        top: 73px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 73px);
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(15px);
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 40px;
+        transition: 0.4s ease-in-out;
+        gap: 25px;
+        box-shadow: inset 0 10px 10px rgba(0,0,0,0.02);
+    }
+    .menu.active { left: 0; }
+    .menu button { margin: 0; font-size: 16px; padding: 10px; }
+
+    .hero { padding: 140px 20px 60px; }
+    .hero h1 { font-size: 42px; }
+    .hero img { width: 120px; }
+    
+    .section { padding: 80px 20px; }
+    .section h2 { font-size: 30px; }
+    
+    .grid { grid-template-columns: 1fr; gap: 20px; }
+    .btn { width: 100%; }
+    
+    .founder-box { padding: 40px 25px; }
+    .f-name { font-size: 26px; }
+    .f-meta { flex-direction: column; gap: 10px; }
+    .f-meta span { width: 100%; }
+    
+    .mod-item { padding: 30px 25px 30px 35px; }
+    .mod-hdr { font-size: 19px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="nav">
+<div class="logo">
+<img src="RHN LOGO.jpg">
+<b>RHN CAPITAL</b>
+</div>
+
+<div class="menu-toggle" id="mobile-menu">
+    <span></span><span></span><span></span>
+</div>
+
+<div class="menu" id="nav-menu">
+<button onclick="scrollToId('about')">About</button>
+<button onclick="scrollToId('services')">Services</button>
+<button onclick="scrollToId('premium')">Premium</button>
+<button onclick="scrollToId('contact')">Contact</button>
+</div>
+</div>
+</header>
+
+<section class="hero reveal">
+
+<img src="RHN LOGO.jpg">
+
+<h1>RHN CAPITAL</h1>
+
+<p>
+RHN Capital adalah platform investasi modern yang berfokus pada
+analisa pasar saham, cryptocurrency, dan trading forex berbasis
+strategi makro ekonomi global serta manajemen risiko profesional.
+Kami membantu investor memahami market cycle,
+mengembangkan capital growth, dan membangun sistem trading disiplin.
+</p>
+
+<button class="btn"
+onclick="window.open('https://wa.me/6285717426626','_blank')">
+Konsultasi Sekarang
+</button>
+
+</section>
+
+<section id="about" class="section reveal">
+
+<h2>Tentang RHN Capital</h2>
+
+<br>
+
+<p>
+RHN Capital menggabungkan pendekatan investasi modern dengan analisa
+teknikal, fundamental, dan makro ekonomi global. Fokus utama kami
+adalah pertumbuhan aset jangka panjang melalui strategi probabilitas,
+risk management ketat, dan pemahaman siklus finansial dunia.
+</p>
+
+<br>
+
+<p>
+Fokus investasi meliputi:
+Crypto Asset • Saham Global & Indonesia • Trading Forex • Market Psychology • Portfolio Strategy.
+</p>
+
+</section>
+
+<section id="services" class="section reveal">
+
+<h2>Layanan Platform</h2>
+
+<br>
+
+<div class="grid">
+
+<div class="card" onclick="window.location.href='ANALISACRYPTO.html'">
+<h3>₿ Tentang Crypto</h3>
+<p>Market cycle & Bitcoin strategy.</p>
+<div class="action">Buka</div>
+</div>
+
+<div class="card" onclick="window.location.href='ANALISASAHAM.html'">
+<h3>📈 Tentang Saham</h3>
+<p>Valuasi & momentum market.</p>
+<div class="action">Buka</div>
+</div>
+
+<div class="card" onclick="window.location.href='ANALISAFOREX.html'">
+<h3>💱 Trading Forex</h3>
+<p>Risk reward & macro analysis.</p>
+<div class="action">Buka</div>
+</div>
+
+</div>
+
+</section>
+
+<section id="contact" class="section reveal">
+
+<h2>Kontak</h2>
+
+<br>
+
+<div style="display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin: 0 auto;">
+<button class="btn" onclick="window.open('https://wa.me/6285717426626')">
+WhatsApp
+</button>
+
+<button class="btn" onclick="window.open('https://instagram.com/huyrehan')">
+Instagram
+</button>
+
+<button class="btn" onclick="window.open('https://tiktok.com/@rehanhuy')">
+TikTok
+</button>
+</div>
+
+</section>
+
+<div class="popup" id="qrisPopup">
+<div class="close" onclick="closeQRIS()">✕</div>
+<img src="QRIS.jpg.jpeg">
+</div>
+
+
+<section id="founder" class="section reveal">
+    <h2>Meet The Founder</h2>
+    <div class="founder-box">
+        <div class="f-avatar">👨‍💻</div>
+        <div class="f-name">MUHAMAD REHAN</div>
+        <div class="f-title">Trader Muda | Founder RHN Capital</div>
+        
+        <div class="f-meta">
+            <span>📍 Depok, Indonesia</span>
+            <span>📅 24 Mei 2009</span>
+            <span>🔥 Umur 17 Tahun</span>
+        </div>
+        
+        <p class="f-desc">
+            Di usia yang sangat muda, Muhamad Rehan memelopori berdirinya RHN Capital dengan visi besar: mengedukasi generasi milenial dan Gen-Z tentang pentingnya literasi finansial yang riil. Sebagai seorang Trader Muda, Rehan mendedikasikan waktunya untuk membedah chart, memahami Smart Money Concepts (SMC), menganalisis fundamental saham, dan memantau siklus kripto, demi membuktikan bahwa kedisiplinan dan manajemen risiko jauh lebih penting daripada sekadar tebak-tebakan pasar.
+        </p>
+    </div>
+</section>
+
+<section id="premium" class="section reveal">
+    <h2>RHN Knowledge Base & Modules</h2>
+    <p>Eksplorasi mendalam tentang fondasi finansial dunia. Modul eksklusif ini dirancang untuk membentuk mindset institusional.</p>
+    
+    <div class="mod-grid">
+        
+        <div class="mod-item reveal">
+            <div class="mod-hdr">🏛️ Modul 1: Core Finance & Manajemen Kapital</div>
+            <div class="mod-body">
+                <p>Keuangan bukan sekadar tentang mencari keuntungan, melainkan tentang bagaimana kita mempertahankan dan melipatgandakan aset secara terukur.</p>
+                <h4>Pilar Utama:</h4>
+                <ul>
+                    <li><b>Risk Management:</b> Konsep 1% Risk per Trade. Jangan pernah merisikokan lebih dari yang bisa Anda tanggung.</li>
+                    <li><b>Psychology of Trading:</b> Mengendalikan emosi FOMO (Fear of Missing Out) dan serakah (Greed). Market dikendalikan oleh ketakutan dan keserakahan manusia.</li>
+                    <li><b>Portfolio Allocation:</b> Diversifikasi instrumen (Low risk, Medium risk, High risk) untuk menjaga kestabilan *drawdown*.</li>
+                </ul>
+                <p><i>Mindset: Trading adalah bisnis probabilitas. Tugas kita adalah meminimalkan kerugian saat salah, dan memaksimalkan profit saat benar.</i></p>
+            </div>
+        </div>
+
+        <div class="mod-item reveal">
+            <div class="mod-hdr">🪙 Modul 2: Cryptocurrency & Ekosistem Digital</div>
+            <div class="mod-body">
+                <p>Cryptocurrency adalah evolusi uang dan kontrak finansial. Volatilitas tinggi di pasar kripto menawarkan peluang besar jika dipadukan dengan pemahaman siklus makro.</p>
+                <h4>Fokus Pembahasan:</h4>
+                <ul>
+                    <li><b>Bitcoin Halving & Market Cycle:</b> Memahami siklus 4 tahunan Bitcoin dan bagaimana ia memengaruhi *bull market* dan *bear market*.</li>
+                    <li><b>Altcoin Fundamental:</b> Cara meriset *whitepaper*, *tokenomics* (supply & demand), dan kegunaan (utility) sebuah koin sebelum berinvestasi.</li>
+                    <li><b>DeFi & Web3:</b> Desentralisasi finansial, staking, farming, dan bagaimana *smart contract* bekerja tanpa pihak ketiga.</li>
+                </ul>
+                <p><i>Rule of Thumb: Not your keys, not your coins. Selalu amankan aset digital Anda di Cold Wallet untuk investasi jangka panjang.</i></p>
+            </div>
+        </div>
+
+        <div class="mod-item reveal">
+            <div class="mod-hdr">📈 Modul 3: Ekuitas & Pasar Saham</div>
+            <div class="mod-body">
+                <p>Pasar saham adalah tempat kita membeli kepemilikan bisnis sungguhan. Di sini, kesabaran adalah kunci utama.</p>
+                <h4>Pendekatan RHN Capital:</h4>
+                <ul>
+                    <li><b>Analisa Fundamental:</b> Membaca laporan keuangan, mengukur valuasi (PER, PBV), dan menilai *Gudang* uang (Cash Flow) sebuah perusahaan.</li>
+                    <li><b>Dividen Investing:</b> Mengincar *passive income* dari perusahaan Bluechip yang rutin membagikan keuntungan kepada pemegang sahamnya.</li>
+                    <li><b>Momentum Trading:</b> Memanfaatkan rotasi sektor dan laporan kuartalan untuk mengambil profit dari pergerakan harga jangka pendek-menengah.</li>
+                </ul>
+                <p><i>Prinsip: Di pasar saham, uang mengalir dari orang yang tidak sabaran kepada orang yang sabar.</i></p>
+            </div>
+        </div>
+
+        <div class="mod-item reveal">
+            <div class="mod-hdr">💱 Modul 4: Valas (Forex) & Smart Money Concepts</div>
+            <div class="mod-body">
+                <p>Forex adalah pasar paling likuid di dunia. Harga digerakkan oleh institusi besar (Bank Sentral). Untuk bertahan, kita harus trading searah dengan mereka.</p>
+                <h4>Teknik & Strategi:</h4>
+                <ul>
+                    <li><b>Smart Money Concepts (SMC):</b> Mencari jejak institusi melalui Order Block, Fair Value Gap (FVG), dan Liquidity Sweep.</li>
+                    <li><b>Market Structure:</b> Identifikasi tren sejati (Higher High, Higher Low) dan perpindahan tren (Change of Character / ChoCh).</li>
+                    <li><b>Makroekonomi:</b> Pengaruh rilis data ekonomi krusial seperti NFP (Non-Farm Payroll), CPI (Inflasi), dan keputusan Suku Bunga (Interest Rates) terhadap pair seperti XAUUSD dan EURUSD.</li>
+                </ul>
+                <p><i>Catatan: Forex bukan skema cepat kaya. Ini adalah seni membaca probabilitas arah uang dunia.</i></p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer>
+© 2026 RHN CAPITAL — Investment Platform
+</footer>
+
+<script>
+
+// Mencegah error fungsi scroll bawaan JS yang bentrok dengan kata kunci 'scrollTo'
+function scrollToId(id){
+    document.getElementById(id).scrollIntoView({behavior:'smooth'});
+    // Tutup menu mobile jika link di klik
+    document.getElementById('nav-menu').classList.remove('active');
+}
+
+// Fitur asli QRIS
+function openQRIS(){
+    document.getElementById("qrisPopup").style.display="flex";
+}
+
+function closeQRIS(){
+    document.getElementById("qrisPopup").style.display="none";
+}
+
+// LOGIKA HAMBURGER MENU MOBILE (BARU)
+const menuToggle = document.getElementById('mobile-menu');
+const navMenu = document.getElementById('nav-menu');
+
+menuToggle.addEventListener('click', () => {
+  navMenu.classList.toggle('active');
+});
+
+// LOGIKA SCROLL REVEAL ANIMATION (BARU)
+function reveal() {
+  var reveals = document.querySelectorAll(".reveal");
+  for (var i = 0; i < reveals.length; i++) {
+    var windowHeight = window.innerHeight;
+    var elementTop = reveals[i].getBoundingClientRect().top;
+    var elementVisible = 100;
+
+    if (elementTop < windowHeight - elementVisible) {
+      reveals[i].classList.add("active");
+    }
+  }
+}
+window.addEventListener("scroll", reveal);
+reveal(); // Triger awal saat web pertama kali di-load
+
+</script>
+
+</body>
+</html>
