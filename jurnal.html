@@ -1,0 +1,895 @@
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Jurnal Forex Pro · RHN</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<!-- FIREBASE SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+
+<style>
+/* =========================================================
+   ULTIMATE ELITE TERMINAL V10.0 (GLASSMORPHISM & COMPACT)
+   ZERO HTML MODIFICATION - PURE CSS MAGIC
+   ========================================================= */
+
+:root {
+  /* --- LIGHT THEME: Pearl Glass --- */
+  --bg: #F0F2F5;
+  --surface: rgba(255, 255, 255, 0.7);
+  --surface-solid: #FFFFFF;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-focus: rgba(16, 185, 129, 0.4);
+  
+  --text: #0F172A;
+  --muted: #475569;
+  --hint: #94A3B8;
+
+  --teal-50: #ECFDF5; --teal-100: #D1FAE5; --teal-400: #10B981; --teal-600: #059669; --teal-800: #064E3B;
+  --red-50: #FEF2F2; --red-400: #F43F5E; --red-600: #E11D48;
+  --amber-50: #FFFBEB; --amber-400: #F59E0B; --amber-600: #D97706;
+  --blue-50: #EFF6FF; --blue-400: #3B82F6; --blue-600: #2563EB;
+  --purple-50: #FAF5FF; --purple-400: #A855F7; --purple-600: #9333EA;
+  --gray-50: rgba(241, 245, 249, 0.5); 
+
+  --font: 'Space Grotesk', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  
+  --radius: 16px;
+  --radius-sm: 8px;
+  --shadow-glow: 0 4px 20px rgba(0,0,0,0.03);
+  --glass-blur: blur(16px);
+}
+
+/* --- DARK THEME: SMC Elite Obsidian Glass --- */
+[data-theme="dark"] {
+  --bg: #0B0E14; /* Deep pitch black/blue */
+  --surface: rgba(20, 24, 34, 0.6); /* Translucent obsidian */
+  --surface-solid: #141822;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-focus: rgba(16, 185, 129, 0.5);
+  
+  --text: #F8FAFC;
+  --muted: #94A3B8;
+  --hint: #475569;
+  
+  /* Neon Finansial */
+  --teal-50: rgba(16, 185, 129, 0.1); --teal-100: rgba(16, 185, 129, 0.15); 
+  --teal-400: #00E676; /* TradingView Neon Green */
+  --teal-600: #00C853; 
+  --teal-800: #00897B;
+  
+  --red-50: rgba(244, 63, 94, 0.1); 
+  --red-400: #FF3D00; /* TradingView Neon Red */
+  --red-600: #D50000;
+  
+  --amber-50: rgba(245, 158, 11, 0.1); --amber-400: #FFD600; --amber-600: #FFAB00;
+  --blue-50: rgba(59, 130, 246, 0.1); --blue-400: #29B6F6; --blue-600: #039BE5;
+  --purple-50: rgba(168, 85, 247, 0.1); --purple-400: #D500F9; --purple-600: #AA00FF;
+  
+  --gray-50: rgba(255, 255, 255, 0.02);
+  --shadow-glow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+/* --- GLOBAL SETTINGS --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  font-family: var(--font); background: var(--bg); color: var(--text); 
+  min-height: 100vh; overflow-x: hidden; 
+  -webkit-font-smoothing: antialiased; transition: background 0.5s ease;
+  background-image: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.03) 0%, transparent 50%), 
+                    radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--teal-400); }
+
+/* --- SPLASH SCREEN --- */
+#splash { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; transition: 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+#splash .logo { font-size: 56px; filter: drop-shadow(0 0 20px rgba(16,185,129,0.4)); animation: pulse 2s infinite alternate; }
+#splash .title { font-size: 28px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; opacity: 0; animation: fadeUp 0.6s 0.2s forwards; }
+#splash .sub { font-size: 14px; color: var(--teal-400); font-family: var(--mono); text-transform: uppercase; letter-spacing: 2px; opacity: 0; animation: fadeUp 0.6s 0.3s forwards; }
+#splash .bar-wrap { width: 200px; height: 2px; background: var(--border); margin-top: 10px; overflow: hidden; opacity: 0; animation: fadeUp 0.6s 0.4s forwards; }
+#splash .bar-fill { height: 100%; background: var(--teal-400); width: 0; box-shadow: 0 0 10px var(--teal-400); animation: loadBar 1.5s 0.5s cubic-bezier(0.4,0,0.2,1) forwards; }
+.splash-kurs { font-size: 11px; font-family: var(--mono); color: var(--hint); margin-top: 10px; opacity: 0; animation: fadeUp 0.6s 0.6s forwards; }
+#splash.hide { opacity: 0; pointer-events: none; transform: scale(1.05); }
+
+@keyframes pulse { from { transform: scale(0.95); } to { transform: scale(1.05); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+@keyframes loadBar { to { width: 100%; } }
+
+/* --- HEADER FLOATING ISLAND --- */
+header { 
+  margin: 16px auto; width: calc(100% - 32px); max-width: 1360px;
+  background: var(--surface); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border); border-radius: 20px; padding: 12px 24px; 
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; 
+  position: sticky; top: 16px; z-index: 100; box-shadow: var(--shadow-glow);
+}
+.h-left { display: flex; align-items: center; gap: 12px; }
+.h-icon { font-size: 22px; filter: drop-shadow(0 0 10px rgba(16,185,129,0.3)); }
+.h-title { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+.h-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.h-date { font-size: 12px; font-weight: 600; color: var(--hint); }
+
+/* --- KURS WIDGET --- */
+.kurs-pill { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 6px 14px; }
+.kurs-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal-400); box-shadow: 0 0 8px var(--teal-400); animation: blink 2s infinite; }
+.kurs-dot.loading { background: var(--amber-400); box-shadow: 0 0 8px var(--amber-400); animation: blink 0.5s infinite; }
+.kurs-dot.error { background: var(--red-400); box-shadow: 0 0 8px var(--red-400); animation: none; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.kurs-info { display: flex; flex-direction: column; gap: 0; }
+.kurs-val { font-size: 13px; font-weight: 700; font-family: var(--mono); color: var(--text); }
+.kurs-meta { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.kurs-countdown { font-size: 8px; font-family: var(--mono); color: var(--hint); }
+
+.kurs-manual-wrap { display: flex; align-items: center; gap: 6px; background: var(--bg); border: 1px solid var(--border); padding: 4px 8px; border-radius: 10px; }
+.kurs-lbl-h { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; }
+.kurs-input-h { width: 70px; background: transparent; border: none; font-size: 12px; font-family: var(--mono); color: var(--text); text-align: center; outline: none; }
+.kurs-input-h:focus { color: var(--teal-400); }
+
+/* --- HEADER BUTTONS --- */
+.btn-refresh, .btn-modal { 
+  background: var(--surface-solid); border: 1px solid var(--border); color: var(--text); font-size: 12px; font-weight: 600; 
+  padding: 8px 14px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-refresh:hover, .btn-modal:hover { background: var(--bg); border-color: var(--teal-400); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(16,185,129,0.1); }
+.btn-refresh:active, .btn-modal:active { transform: scale(0.95); }
+#modalBadge { font-size: 9px; background: var(--teal-50); color: var(--teal-600); padding: 2px 6px; border-radius: 4px; font-family: var(--mono); font-weight: 700; }
+[data-theme="dark"] #modalBadge { background: rgba(16,185,129,0.15); color: var(--teal-400); }
+
+/* --- OVERLAY MODAL --- */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 500; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
+.overlay.show { display: flex; opacity: 1; }
+.modal { background: var(--surface-solid); border: 1px solid var(--border); border-radius: 24px; padding: 32px; width: 360px; max-width: 90vw; box-shadow: 0 20px 40px rgba(0,0,0,0.5); transform: scale(0.9) translateY(20px); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.overlay.show .modal { transform: scale(1) translateY(0); }
+.modal h2 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.modal p { font-size: 12px; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
+.modal label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; display: block; margin-bottom: 8px; }
+.modal input { width: 100%; border: 1px solid var(--border); background: var(--bg); border-radius: 12px; padding: 12px; font-size: 20px; font-family: var(--mono); font-weight: 700; color: var(--text); outline: none; transition: 0.2s; }
+.modal input:focus { border-color: var(--teal-400); box-shadow: 0 0 0 3px rgba(16,185,129,0.1); }
+.modal-actions { display: flex; gap: 10px; margin-top: 24px; }
+.btn-save { flex: 2; background: var(--teal-400); color: #000; border: none; border-radius: 12px; padding: 12px; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+.btn-save:hover { background: var(--teal-600); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(16,185,129,0.4); }
+.btn-cancel { flex: 1; background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 12px; padding: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.btn-cancel:hover { background: var(--gray-50); }
+
+/* --- MAIN CONTAINER --- */
+.container { max-width: 1400px; margin: 0 auto; padding: 16px 24px 40px; display: flex; flex-direction: column; gap: 20px; animation: fadeIn 0.5s ease forwards; }
+
+/* INFO STRIP (Grid Cards) */
+.info-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; background: transparent; border: none; padding: 0; }
+.info-divider { display: none; } /* Divider dihapus untuk layout card base */
+.info-item { background: var(--surface); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: 1px solid var(--border); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 4px; transition: 0.3s; box-shadow: var(--shadow-glow); }
+.info-item:hover { border-color: var(--teal-400); transform: translateY(-2px); }
+.info-lbl { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.info-val { font-size: 18px; font-weight: 700; font-family: var(--mono); color: var(--text); }
+.info-idr { font-size: 11px; font-weight: 600; font-family: var(--mono); color: var(--blue-400); margin-top: 2px; }
+
+/* --- TABS --- */
+.tab-nav { display: inline-flex; gap: 4px; background: var(--surface); backdrop-filter: var(--glass-blur); border: 1px solid var(--border); padding: 4px; border-radius: 12px; margin-bottom: 8px; width: fit-content; }
+.tab-btn { font-size: 13px; font-weight: 600; padding: 8px 20px; border-radius: 8px; border: none; background: transparent; color: var(--muted); cursor: pointer; transition: 0.2s; }
+.tab-btn.active { background: var(--surface-solid); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid var(--border); }
+[data-theme="dark"] .tab-btn.active { background: var(--bg); border-color: var(--border-focus); }
+.tab-content { display: none; animation: fadeTab 0.3s cubic-bezier(0.4,0,0.2,1); }
+.tab-content.show { display: block; }
+@keyframes fadeTab { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* --- MONTH BAR --- */
+.month-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+.month-btn { font-size: 11px; font-weight: 600; text-transform: uppercase; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; transition: 0.2s; backdrop-filter: var(--glass-blur); }
+.month-btn.active { background: var(--teal-400); color: #000; border-color: var(--teal-400); box-shadow: 0 0 12px rgba(16,185,129,0.3); }
+.month-btn:hover:not(.active) { border-color: var(--text); color: var(--text); }
+
+/* --- STATS GRID --- */
+.stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; }
+.stat { background: var(--surface); backdrop-filter: var(--glass-blur); border: 1px solid var(--border); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; justify-content: center; transition: 0.3s; position: relative; overflow: hidden; }
+.stat:hover { border-color: var(--teal-400); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+.stat::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 3px; background: var(--border); transition: 0.3s; }
+.stat:hover::before { background: var(--teal-400); }
+.stat-lbl { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.stat-val { font-size: 22px; font-weight: 700; font-family: var(--mono); }
+.stat-idr { font-size: 11px; font-weight: 600; font-family: var(--mono); color: var(--blue-400); margin-top: 4px; }
+
+.c-green { color: var(--teal-400); text-shadow: 0 0 10px rgba(16,185,129,0.2); } 
+.c-red { color: var(--red-400); text-shadow: 0 0 10px rgba(244,63,94,0.2); } 
+.c-blue { color: var(--blue-400); } 
+.c-purple { color: var(--purple-400); } 
+.c-gray { color: var(--text); }
+
+.wr-bar { height: 4px; background: var(--bg); border-radius: 99px; margin-top: 10px; overflow: hidden; }
+.wr-fill { background: var(--teal-400); height: 100%; box-shadow: 0 0 8px var(--teal-400); transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+
+/* --- CARD & COMPACT TABLE (MENTOK LAYAR READY) --- */
+.card { background: var(--surface); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; margin-bottom: 24px; box-shadow: var(--shadow-glow); }
+.card-hdr { background: rgba(0,0,0,0.02); border-bottom: 1px solid var(--border); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+[data-theme="dark"] .card-hdr { background: rgba(255,255,255,0.01); }
+.card-title { font-size: 15px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; }
+.card-title::before { content: ''; width: 8px; height: 8px; background: var(--teal-400); border-radius: 50%; box-shadow: 0 0 8px var(--teal-400); }
+.card-hint { font-size: 10px; font-family: var(--mono); font-weight: 600; color: var(--hint); text-transform: uppercase; }
+
+/* COMPACT DATA TABLE */
+table { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed; }
+thead th { background: transparent; color: var(--muted); font-weight: 600; padding: 10px 4px; text-align: center; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+thead th.th-idr { color: var(--blue-400); }
+tbody tr { transition: background 0.2s; border-bottom: 1px solid var(--border); }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--gray-50); }
+tbody td { padding: 4px; text-align: center; vertical-align: middle; }
+td.day-lbl { color: var(--hint); font-size: 10px; text-transform: uppercase; }
+
+/* SEAMLESS INPUTS */
+td input[type="text"], td input[type="number"] { width: 100%; border: 1px solid transparent; background: transparent; text-align: center; font-size: 12px; font-weight: 600; color: var(--text); font-family: var(--mono); padding: 4px; border-radius: 6px; outline: none; transition: 0.2s; }
+td input:focus { background: var(--bg); border-color: var(--teal-400); box-shadow: 0 0 0 2px rgba(16,185,129,0.1); }
+td input::placeholder { color: var(--border); font-weight: 400; }
+
+td.pl-cell { font-family: var(--mono); font-weight: 700; font-size: 13px; }
+td.idr-cell { font-family: var(--mono); font-size: 11px; font-weight: 600; opacity: 0.9; }
+td.pct-cell { font-family: var(--mono); font-size: 11px; }
+
+/* COMPACT TEXTAREA */
+textarea.note { font-size: 11px; color: var(--text); font-family: var(--font); font-weight: 500; width: 100%; border: 1px solid transparent; background: transparent; resize: none; outline: none; padding: 4px; border-radius: 6px; height: 26px; line-height: 1.4; transition: 0.2s; overflow: hidden; }
+textarea.note:focus { background: var(--bg); border-color: var(--border-focus); height: auto; min-height: 50px; position: relative; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+tr.weekend td { background: rgba(0,0,0,0.01); color: var(--hint); }
+[data-theme="dark"] tr.weekend td { background: rgba(255,255,255,0.01); }
+
+/* CRISP BADGES */
+.badge { display: inline-flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; padding: 4px 0; width: 100%; max-width: 50px; border-radius: 6px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s; border: 1px solid transparent; }
+.badge:active { transform: scale(0.9); }
+.b-win { background: var(--teal-50); color: var(--teal-600); border-color: rgba(16,185,129,0.2); }
+.b-loss { background: var(--red-50); color: var(--red-600); border-color: rgba(244,63,94,0.2); }
+.b-be { background: var(--amber-50); color: var(--amber-600); border-color: rgba(245,158,11,0.2); }
+.b-none { background: var(--bg); color: var(--hint); border: 1px dashed var(--border); }
+[data-theme="dark"] .b-win { color: var(--teal-400); box-shadow: inset 0 0 10px rgba(16,185,129,0.1); }
+[data-theme="dark"] .b-loss { color: var(--red-400); box-shadow: inset 0 0 10px rgba(244,63,94,0.1); }
+
+/* --- RECAP GRID --- */
+.recap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.rc { background: var(--surface); backdrop-filter: var(--glass-blur); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-glow); transition: 0.3s; }
+.rc:hover { border-color: var(--teal-400); }
+.rc-hdr { padding: 14px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.02); }
+[data-theme="dark"] .rc-hdr { background: rgba(255,255,255,0.01); }
+.rc-icon { font-size: 16px; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--bg); border: 1px solid var(--border); }
+.rc-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.rc-sub { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; margin-top: 2px; }
+
+.rtable { width: 100%; border-collapse: collapse; font-size: 11px; }
+.rtable th { padding: 10px 12px; text-align: left; font-size: 9px; font-weight: 600; color: var(--hint); text-transform: uppercase; background: transparent; border-bottom: 1px solid var(--border); }
+.rtable th:not(:first-child) { text-align: right; }
+.rtable th.th-idr { color: var(--blue-400); }
+.rtable td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; font-family: var(--mono); }
+.rtable td:first-child { font-family: var(--font); }
+.rtable td:not(:first-child) { text-align: right; }
+.rtable td.td-idr { color: var(--blue-400); font-weight: 600; font-size: 10px; }
+.rtable tr:last-child td { border-bottom: none; }
+.rtable tr:hover td { background: var(--gray-50); }
+.rtable tfoot td { font-weight: 700; background: var(--bg); border-top: 1px solid var(--border); font-size: 12px; }
+
+.pl-pos { color: var(--teal-400); font-weight: 700; }
+.pl-neg { color: var(--red-400); font-weight: 700; }
+.pl-zero { color: var(--hint); }
+
+.mini-badge { display: inline-block; font-size: 8px; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+.mb-win { background: var(--teal-50); color: var(--teal-600); }
+.mb-loss { background: var(--red-50); color: var(--red-600); }
+.mb-be { background: var(--amber-50); color: var(--amber-600); }
+.mb-none { background: var(--bg); color: var(--hint); border: 1px solid var(--border); }
+
+.empty { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 12px; font-weight: 500; }
+
+/* YEARLY VISUALIZER */
+.yr-wrap { padding: 20px; }
+.yr-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.yr-lbl { width: 40px; font-size: 10px; font-weight: 700; color: var(--muted); flex-shrink: 0; text-transform: uppercase; }
+.yr-bg { flex: 1; background: var(--bg); border-radius: 99px; height: 6px; overflow: hidden; }
+.yr-fill { height: 100%; border-radius: 99px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+.yr-pos { background: var(--teal-400); box-shadow: 0 0 8px rgba(16,185,129,0.5); }
+.yr-neg { background: var(--red-400); box-shadow: 0 0 8px rgba(244,63,94,0.5); }
+.yr-val { width: 110px; text-align: right; font-size: 11px; font-weight: 700; flex-shrink: 0; font-family: var(--mono); }
+.yr-idr { font-size: 9px; color: var(--hint); font-weight: 500; }
+
+.yr-total { border-top: 1px solid var(--border); margin-top: 20px; padding-top: 16px; display: flex; justify-content: space-between; align-items: flex-end; }
+.footer { text-align: center; margin-top: 20px; font-size: 10px; font-weight: 500; color: var(--hint); padding-bottom: 20px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.5px; }
+
+
+/* =========================================================
+   EXTREME MOBILE OPTIMIZATION (100% MENTOK LAYAR, ZERO PADDING)
+   ========================================================= */
+@media (max-width: 1024px) {
+  .stats-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .recap-grid { grid-template-columns: 1fr; }
+  header { border-radius: 0; width: 100%; top: 0; margin: 0; padding: 12px 16px; border-left: none; border-right: none; border-top: none; }
+}
+
+@media (max-width: 480px) {
+  /* Hilangkan padding container biar FULL mentok HP */
+  .container { padding: 0; gap: 16px; }
+  
+  /* Header Mentok atas */
+  header { margin: 0; width: 100%; border-radius: 0; padding: 10px 12px; gap: 8px; flex-direction: column; align-items: flex-start; }
+  .h-right { width: 100%; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 8px; }
+  .kurs-pill { border: none; padding: 0; background: transparent; }
+  .btn-refresh, .btn-modal { padding: 6px 10px; font-size: 11px; border-radius: 8px; }
+  
+  /* Info Strip Scroll Samping, Mentok Kiri Kanan */
+  .info-strip { display: flex; overflow-x: auto; padding: 0 12px 4px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .info-strip::-webkit-scrollbar { display: none; }
+  .info-item { min-width: 130px; flex-shrink: 0; scroll-snap-align: start; padding: 12px; border-radius: 12px; }
+  .info-val { font-size: 16px; }
+  
+  /* Tab Nav Scroll */
+  .tab-nav { margin: 0 12px; max-width: calc(100% - 24px); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn { padding: 8px 16px; flex-shrink: 0; }
+  
+  /* Month Bar Scroll */
+  .month-bar { flex-wrap: nowrap; overflow-x: auto; padding: 0 12px; -webkit-overflow-scrolling: touch; }
+  .month-bar::-webkit-scrollbar { display: none; }
+  .month-btn { flex-shrink: 0; }
+  
+  /* Stats Grid 2 Kolom Mentok */
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 0 12px; }
+  .stat { padding: 12px; border-radius: 12px; }
+  .stat-val { font-size: 18px; }
+  
+  /* TABEL SUPER COMPACT & MENTOK LAYAR */
+  .card { border-radius: 0; border-left: none; border-right: none; margin-bottom: 16px; }
+  .card-hdr { padding: 12px; flex-direction: column; align-items: flex-start; gap: 4px; }
+  
+  table { font-size: 11px; }
+  thead th { padding: 8px 2px; font-size: 8px; letter-spacing: 0; }
+  tbody td { padding: 3px 1px; }
+  td input[type="text"], td input[type="number"] { font-size: 11px; padding: 2px; border-radius: 4px; }
+  textarea.note { font-size: 10px; height: 22px; padding: 2px; border-radius: 4px; }
+  .badge { max-width: 40px; font-size: 7.5px; padding: 2px; border-radius: 4px; }
+  td.pl-cell { font-size: 11px; }
+  td.idr-cell { font-size: 9px; }
+  
+  /* Recap Mentok Layar */
+  .recap-grid { gap: 12px; }
+  .rc { border-radius: 0; border-left: none; border-right: none; }
+  .rc-hdr { padding: 10px 12px; }
+  .rtable th, .rtable td { padding: 8px 12px; }
+  
+  .yr-wrap { padding: 12px; }
+  .footer { padding-bottom: 24px; font-size: 9px; margin-top: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="logo">📈</div>
+  <div class="title">Jurnal Forex Pro</div>
+  <div class="sub">RHN · Trading Journal 2026</div>
+  <div class="bar-wrap"><div class="bar-fill"></div></div>
+  <div class="splash-kurs" id="splashKurs">🔄 Mengambil kurs USD/IDR dari Binance...</div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeOnBg(event)">
+  <div class="modal">
+    <h2>💰 Set Modal Awal</h2>
+    <p>Modal awal digunakan sebagai acuan perhitungan % profit/loss dan saldo akhir.</p>
+    <label for="modalInput">Jumlah Modal (USC)</label>
+    <input type="number" id="modalInput" placeholder="Contoh: 1000" min="0" step="any"/>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Batal</button>
+      <button class="btn-save" onclick="saveModal()">✅ Simpan Modal</button>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="h-left">
+    <span class="h-icon">📈</span>
+    <span class="h-title">Jurnal Forex Pro · RHN</span>
+  </div>
+  <div class="h-right">
+    <div class="kurs-pill">
+      <div class="kurs-dot loading" id="kursDot"></div>
+      <div class="kurs-info">
+        <div class="kurs-val" id="kursValEl">USD/IDR —</div>
+        <div class="kurs-meta" id="kursMetaEl">Memuat dari Binance...</div>
+        <div class="kurs-countdown" id="kursCountdown"></div>
+      </div>
+    </div>
+    <div class="kurs-manual-wrap">
+      <span class="kurs-lbl-h">Override kurs:</span>
+      <input class="kurs-input-h" type="number" id="kursOverride" placeholder="cth: 16200" min="1000" step="50" oninput="onManualKurs()"/>
+    </div>
+    <button class="btn-refresh" id="btnRefresh" onclick="fetchKursLive()">🔄 Refresh</button>
+    
+    <!-- TOMBOL THEME TOGGLE -->
+    <button class="btn-modal" id="btnTheme" onclick="toggleTheme()">🌙 Gelap</button>
+    
+    <button class="btn-modal" onclick="openModal()">💰 Modal Awal <span id="modalBadge">Belum diset</span></button>
+    <span class="h-date" id="hDate"></span>
+  </div>
+</header>
+
+<div class="container">
+  <div class="info-strip">
+    <div class="info-item">
+      <span class="info-lbl">🔴 Kurs Live USD/IDR</span>
+      <span class="info-val" id="iKurs">—</span>
+      <span class="info-idr" id="iKursSub">1 USC = —</span>
+    </div>
+    <div class="info-divider"></div>
+    <div class="info-item"><span class="info-lbl">Modal Awal</span><span class="info-val" id="iModal">—</span><span class="info-idr" id="iModalIDR"></span></div>
+    <div class="info-divider"></div>
+    <div class="info-item"><span class="info-lbl">Saldo Sekarang</span><span class="info-val" id="iSaldo">—</span><span class="info-idr" id="iSaldoIDR"></span></div>
+    <div class="info-divider"></div>
+    <div class="info-item"><span class="info-lbl">P/L Bulan Ini</span><span class="info-val" id="iPL">0.00</span><span class="info-idr" id="iPLIDR"></span></div>
+    <div class="info-divider"></div>
+    <div class="info-item"><span class="info-lbl">P/L Tahun Ini</span><span class="info-val" id="iPLYear">0.00</span><span class="info-idr" id="iPLYearIDR"></span></div>
+    <div class="info-divider"></div>
+    <div class="info-item"><span class="info-lbl">Win Rate Bulan</span><span class="info-val" id="iWR">—</span></div>
+    <div class="info-divider"></div>
+    <div class="info-item"><span class="info-lbl">Total Trade Tahun</span><span class="info-val" id="iTotalYear">0</span></div>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('jurnal',this)">📋 Jurnal</button>
+    <button class="tab-btn" onclick="switchTab('recap',this)">📊 Rekap</button>
+  </div>
+
+  <div class="tab-content show" id="tab-jurnal">
+    <div class="month-bar" id="monthBar1"></div>
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-lbl">Modal Awal</div><div class="stat-val c-purple" id="sModal" style="font-size:17px">—</div><div class="stat-idr" id="sModalIDR"></div></div>
+      <div class="stat"><div class="stat-lbl">Total Trade</div><div class="stat-val c-blue" id="sTotal">0</div></div>
+      <div class="stat"><div class="stat-lbl">Win Rate</div><div class="stat-val c-green" id="sWR">0%</div><div class="wr-bar"><div class="wr-fill" id="wrBar" style="width:0%"></div></div></div>
+      <div class="stat"><div class="stat-lbl">Win / Loss / BE</div><div class="stat-val c-gray" id="sWLB" style="font-size:17px">0/0/0</div></div>
+      <div class="stat"><div class="stat-lbl">P/L Bulan</div><div class="stat-val" id="sPL">+0.00</div><div class="stat-idr" id="sPLIDR"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr">
+        <span class="card-title" id="tblTitle">— 2026</span>
+        <span class="card-hint">Klik badge WIN/LOSS/BE · Kolom biru = Rupiah LIVE otomatis</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr>
+            <th style="width:8%">Hari</th><th style="width:4%">Tgl</th>
+            <th style="width:9%">Pair</th><th style="width:6%">Lot</th>
+            <th style="width:9%">Keluar (USC)</th><th style="width:9%">Masuk (USC)</th>
+            <th style="width:8%">P/L USC</th>
+            <th style="width:11%" class="th-idr">🔴 P/L Rupiah LIVE</th>
+            <th style="width:7%">% Modal</th><th style="width:7%">Hasil</th>
+            <th style="width:14%">Catatan</th>
+          </tr></thead>
+          <tbody id="tBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-recap">
+    <div class="month-bar" id="monthBar2"></div>
+    <div class="recap-grid">
+      <div class="rc rc-daily"><div class="rc-hdr"><div class="rc-icon">📅</div><div><div class="rc-title">Rekap Harian</div><div class="rc-sub" id="rcDailySub"></div></div></div><div id="rcDaily"></div></div>
+      <div class="rc rc-weekly"><div class="rc-hdr"><div class="rc-icon">📆</div><div><div class="rc-title">Rekap Mingguan</div><div class="rc-sub" id="rcWeeklySub"></div></div></div><div id="rcWeekly"></div></div>
+      <div class="rc rc-monthly"><div class="rc-hdr"><div class="rc-icon">🗓️</div><div><div class="rc-title">Rekap Bulanan</div><div class="rc-sub" id="rcMonthlySub"></div></div></div><div id="rcMonthly"></div></div>
+      <div class="rc rc-yearly"><div class="rc-hdr"><div class="rc-icon">📈</div><div><div class="rc-title">Rekap Tahunan</div><div class="rc-sub" id="rcYearlySub"></div></div></div><div id="rcYearly"></div></div>
+    </div>
+  </div>
+
+  <div class="footer">Data tersimpan otomatis di browser · Kurs via Binance Live (USDT/BIDR) · Real-time Update · Jurnal Forex Pro RHN © 2026</div>
+</div>
+
+<script>
+// ==========================================
+// 1. FIREBASE CONFIGURATION (RHN CAPITAL)
+// ==========================================
+const firebaseConfig = {
+    apiKey: "AIzaSy...", // GANTI DENGAN API KEY ASLI KAMU
+    authDomain: "rhn-capital.firebaseapp.com",
+    projectId: "rhn-capital",
+    storageBucket: "rhn-capital.appspot.com",
+    messagingSenderId: "...",
+    appId: "..."
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ==========================================
+// 2. LOGIKA UTAMA APLIKASI
+// ==========================================
+const MONTHS=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const DAYS=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+const YEAR=2026;
+const MODAL_KEY='forex_rhn_v3_modal';
+const KURS_KEY='forex_rhn_v3_kurs';
+const KURS_TS_KEY='forex_rhn_v3_kurs_ts';
+const THEME_KEY='forex_rhn_v3_theme'; // Key untuk Dark Mode
+const SK=m=>`forex_rhn_v2_${YEAR}_${m}`;
+
+let activeMonth=new Date().getMonth();
+let modalAwal=0;
+let kursUSDIDR=16200;
+let monthData={};
+let activeTab='jurnal';
+let countdownInterval=null;
+
+/* ─── THEME TOGGLE LOGIC ─── */
+function initTheme() {
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  if (savedTheme === 'dark') {
+    document.body.setAttribute('data-theme', 'dark');
+    document.getElementById('btnTheme').textContent = '☀️ Terang';
+  }
+}
+
+function toggleTheme() {
+  const isDark = document.body.getAttribute('data-theme') === 'dark';
+  if (isDark) {
+    document.body.removeAttribute('data-theme');
+    localStorage.setItem(THEME_KEY, 'light');
+    document.getElementById('btnTheme').textContent = '🌙 Gelap';
+  } else {
+    document.body.setAttribute('data-theme', 'dark');
+    localStorage.setItem(THEME_KEY, 'dark');
+    document.getElementById('btnTheme').textContent = '☀️ Terang';
+  }
+}
+
+const daysIn=(m)=>new Date(YEAR,m+1,0).getDate();
+const dayName=(m,d)=>DAYS[new Date(YEAR,m,d).getDay()];
+const isWknd=(m,d)=>{const w=new Date(YEAR,m,d).getDay();return w===0||w===6;};
+const weekNum=d=>Math.ceil(d/7);
+function uscToIDR(usc){return usc*kursUSDIDR/100;}
+function fmtIDR(val){const s=val<0?'-':'';const a=Math.abs(val);if(a>=1000000000)return s+'Rp '+(a/1000000000).toFixed(2)+' M';if(a>=1000000)return s+'Rp '+(a/1000000).toFixed(2)+' jt';return s+'Rp '+Math.round(a).toLocaleString('id-ID');}
+function fmtIDRFull(val){const s=val<0?'-':'';const a=Math.abs(val);return s+'Rp '+Math.round(a).toLocaleString('id-ID');}
+const fmt=v=>{const s=v<0?'-':'';const a=Math.abs(v);return s+'USC '+(a>=1000?a.toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2}):a.toFixed(2));};
+const plStr=v=>(v>0?'+':'')+v.toFixed(2);
+const pctStr=v=>modalAwal?((v/modalAwal)*100).toFixed(2)+'%':'—';
+const plCls=v=>v>0?'pl-pos':v<0?'pl-neg':'pl-zero';
+const mbCls=r=>r==='WIN'?'mb-win':r==='LOSS'?'mb-loss':r==='BE'?'mb-be':'mb-none';
+
+function loadMonth(m){try{return JSON.parse(localStorage.getItem(SK(m))||'{}');}catch{return{};}}
+
+// MODIFIED: Save to LocalStorage AND Firebase
+function saveMonth(m,d){
+  try{localStorage.setItem(SK(m),JSON.stringify(d));}catch{}
+  if(typeof db !== 'undefined') db.collection("forex_journal_v3").doc(SK(m)).set(d).catch(e=>console.error(e));
+}
+
+function setKursDot(state){
+  const d=document.getElementById('kursDot');
+  d.className='kurs-dot'+(state==='loading'?' loading':state==='error'?' error':'');
+}
+
+function applyKurs(rate,source,ts){
+  kursUSDIDR=rate;
+  const perUsc=Math.round(rate/100);
+  const timeStr=new Date(ts).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const sourceLabel={
+    'binance-ws':'🟢 Binance Live',
+    'binance-api':'🟡 Binance API',
+    'cache':'📦 Cache',
+    'manual':'✏️ Override manual',
+    'error':'⚠️ Fallback default'
+  }[source]||'🔄';
+
+  const rateEl = document.getElementById('kursValEl');
+  rateEl.textContent='Rp '+Math.round(rate).toLocaleString('id-ID')+' / USD';
+  if (source === 'binance-ws') {
+     rateEl.style.color = 'var(--teal-400)';
+     setTimeout(() => { rateEl.style.color = 'var(--text)'; }, 200);
+  }
+
+  const iKursEl = document.getElementById('iKurs');
+  iKursEl.textContent='Rp '+Math.round(rate).toLocaleString('id-ID');
+  if (source === 'binance-ws') {
+     iKursEl.style.color = 'var(--teal-400)';
+     setTimeout(() => { iKursEl.style.color = 'var(--text)'; }, 200);
+  }
+
+  const isLive=['binance-ws','binance-api'].includes(source);
+  document.getElementById('kursMetaEl').textContent=
+    source==='manual'?`✏️ Override manual · 1¢=Rp${perUsc.toLocaleString('id-ID')}`:
+    `${sourceLabel} · ${timeStr} · 1¢=Rp${perUsc.toLocaleString('id-ID')}`;
+  setKursDot(source==='error'?'error':'');
+
+  document.getElementById('splashKurs').textContent=
+    `${sourceLabel}: 1 USD = Rp ${Math.round(rate).toLocaleString('id-ID')}`;
+  document.getElementById('iKursSub').textContent='1 USC = Rp '+perUsc.toLocaleString('id-ID');
+
+  if(isLive){
+    try{localStorage.setItem(KURS_KEY,rate.toString());localStorage.setItem(KURS_TS_KEY,ts.toString());}catch{}
+    startCountdown(ts, source === 'binance-ws');
+  }else if(source==='cache'){
+    startCountdown(ts, false);
+  }else if(source==='manual'){
+    if(countdownInterval)clearInterval(countdownInterval);
+    document.getElementById('kursCountdown').textContent='✏️ Mode override manual aktif';
+  }
+  
+  refreshIDR();
+}
+
+function refreshIDR() {
+  renderStats(calcStats(activeMonth,monthData));
+  for(let d=1; d<=daysIn(activeMonth); d++){
+     const r = monthData[d] || {};
+     const pl = (parseFloat(r.income)||0) - (parseFloat(r.outcome)||0);
+     const idrCell = document.querySelector(`td[data-idr="${d}"]`);
+     if(idrCell) {
+         idrCell.textContent = pl !== 0 ? fmtIDR(uscToIDR(pl)) : '—';
+     }
+  }
+  if(activeTab === 'recap') renderRecap();
+}
+
+function startCountdown(fetchedAt, isWs = false){
+  if(countdownInterval)clearInterval(countdownInterval);
+  const el=document.getElementById('kursCountdown');
+  if(isWs) {
+     el.textContent = '⚡ Real-time aktif (WebSocket)';
+  } else {
+     el.textContent = '⚠️ Real-time terputus (Klik Refresh)';
+  }
+}
+
+async function fetchKursLive(){
+  const ov=parseFloat(document.getElementById('kursOverride').value);
+  if(!isNaN(ov)&&ov>=1000){applyKurs(ov,'manual',Date.now());return;}
+
+  setKursDot('loading');
+  document.getElementById('kursMetaEl').textContent='🔄 Mengambil dari Binance API...';
+  document.getElementById('kursCountdown').textContent='';
+  document.getElementById('btnRefresh').disabled=true;
+
+  try{
+    const r=await fetch('https://api.binance.com/api/v3/ticker/price?symbol=USDTBIDR',{signal:AbortSignal.timeout(8000)});
+    const j=await r.json();
+    if(j&&j.price){
+      applyKurs(parseFloat(j.price),'binance-api',Date.now());
+      document.getElementById('btnRefresh').disabled=false;
+      return;
+    }
+  }catch(e){console.error("Gagal Binance API:", e);}
+
+  const cached=localStorage.getItem(KURS_KEY);
+  if(cached){
+    applyKurs(parseFloat(cached),'cache',parseInt(localStorage.getItem(KURS_TS_KEY)||'0'));
+    document.getElementById('kursMetaEl').textContent='⚠️ Binance gagal · pakai cache terakhir';
+  }else{
+    applyKurs(16200,'error',Date.now());
+    setKursDot('error');
+  }
+  document.getElementById('btnRefresh').disabled=false;
+}
+
+async function fetchKurs(forceRefresh=false){
+  const ov=parseFloat(document.getElementById('kursOverride').value);
+  if(!forceRefresh&&!isNaN(ov)&&ov>=1000){applyKurs(ov,'manual',Date.now());return;}
+  await fetchKursLive();
+}
+
+function onManualKurs(){
+  const val=parseFloat(document.getElementById('kursOverride').value);
+  if(!isNaN(val)&&val>=1000)applyKurs(val,'manual',Date.now());
+  else if(document.getElementById('kursOverride').value==='')fetchKursLive();
+}
+
+function initLiveUSD() {
+  const socket = new WebSocket('wss://stream.binance.com:9443/ws/usdtidr@ticker');
+  socket.addEventListener('message', function (event) {
+      const ov=parseFloat(document.getElementById('kursOverride').value);
+      if(!isNaN(ov)&&ov>=1000) return; 
+
+      const data = JSON.parse(event.data);
+      const newPrice = parseFloat(data.c); 
+      if (newPrice && newPrice !== kursUSDIDR) {
+          applyKurs(newPrice, 'binance-ws', Date.now());
+      }
+  });
+  socket.addEventListener('close', () => setTimeout(initLiveUSD, 3000));
+  socket.addEventListener('error', () => {});
+}
+
+/* ─── MODAL ─── */
+function loadModal(){const s=localStorage.getItem(MODAL_KEY);modalAwal=s?parseFloat(s):0;}
+function openModal(){document.getElementById('modalInput').value=modalAwal||'';document.getElementById('overlay').classList.add('show');setTimeout(()=>document.getElementById('modalInput').focus(),80);}
+function closeModal(){document.getElementById('overlay').classList.remove('show');}
+function closeOnBg(e){if(e.target===document.getElementById('overlay'))closeModal();}
+function saveModal(){modalAwal=parseFloat(document.getElementById('modalInput').value)||0;localStorage.setItem(MODAL_KEY,modalAwal.toString());
+  if(typeof db !== 'undefined') db.collection("forex_journal_v3").doc("modal_awal").set({val: modalAwal}).catch(e=>console.error(e));
+  closeModal();render();if(activeTab==='recap')renderRecap();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();if(e.key==='Enter'&&document.getElementById('overlay').classList.contains('show'))saveModal();});
+
+/* ─── CALC ─── */
+function calcStats(m,d){let wins=0,losses=0,be=0,total=0,pl=0;for(let i=1;i<=daysIn(m);i++){const r=d[i]||{};pl+=(parseFloat(r.income)||0)-(parseFloat(r.outcome)||0);const res=r.result||'NONE';if(res==='WIN'){wins++;total++;}else if(res==='LOSS'){losses++;total++;}else if(res==='BE'){be++;total++;}}return{wins,losses,be,total,wr:total>0?Math.round((wins/total)*100):0,pl};}
+function calcYearStats(){let totalTrade=0,totalPL=0;for(let m=0;m<12;m++){const d=m===activeMonth?monthData:loadMonth(m);const st=calcStats(m,d);totalTrade+=st.total;totalPL+=st.pl;}return{totalTrade,totalPL};}
+
+/* ─── RENDER STATS ─── */
+function renderStats(st){
+  document.getElementById('sModal').textContent=modalAwal>0?fmt(modalAwal):'—';
+  document.getElementById('sModalIDR').textContent=modalAwal>0?fmtIDR(uscToIDR(modalAwal)):'';
+  document.getElementById('sTotal').textContent=st.total;
+  const wrEl=document.getElementById('sWR');wrEl.textContent=st.wr+'%';wrEl.className='stat-val '+(st.wr>=50?'c-green':st.wr>0?'c-red':'c-gray');
+  document.getElementById('wrBar').style.width=st.wr+'%';
+  document.getElementById('sWLB').textContent=st.wins+'/'+st.losses+'/'+st.be;
+  const plEl=document.getElementById('sPL');plEl.textContent=plStr(st.pl);plEl.className='stat-val '+(st.pl>0?'c-green':st.pl<0?'c-red':'c-gray');
+  const sPLIDR=document.getElementById('sPLIDR');sPLIDR.textContent=fmtIDR(uscToIDR(st.pl));sPLIDR.style.color=st.pl>0?'var(--teal-400)':st.pl<0?'var(--red-400)':'var(--hint)';
+  const saldo=modalAwal+st.pl;
+  document.getElementById('iModal').textContent=modalAwal>0?fmt(modalAwal):'—';
+  document.getElementById('iModalIDR').textContent=modalAwal>0?fmtIDRFull(uscToIDR(modalAwal)):'';
+  document.getElementById('iSaldo').textContent=modalAwal>0?fmt(saldo):'—';
+  document.getElementById('iSaldoIDR').textContent=modalAwal>0?fmtIDRFull(uscToIDR(saldo)):'';
+  const piEl=document.getElementById('iPL');piEl.textContent=plStr(st.pl);piEl.style.color=st.pl>0?'var(--teal-400)':st.pl<0?'var(--red-400)':'var(--hint)';
+  const piIDR=document.getElementById('iPLIDR');piIDR.textContent=fmtIDRFull(uscToIDR(st.pl));piIDR.style.color=st.pl>0?'var(--teal-400)':st.pl<0?'var(--red-400)':'var(--hint)';
+  document.getElementById('iWR').textContent=st.total>0?st.wr+'%':'—';
+  document.getElementById('modalBadge').textContent=modalAwal>0?fmt(modalAwal):'Belum diset';
+  const yst=calcYearStats();
+  const pyEl=document.getElementById('iPLYear');pyEl.textContent=plStr(yst.totalPL)+' USC';pyEl.style.color=yst.totalPL>0?'var(--teal-400)':yst.totalPL<0?'var(--red-400)':'var(--hint)';
+  const pyIDR=document.getElementById('iPLYearIDR');pyIDR.textContent=fmtIDRFull(uscToIDR(yst.totalPL));pyIDR.style.color=yst.totalPL>0?'var(--teal-400)':yst.totalPL<0?'var(--red-400)':'var(--hint)';
+  document.getElementById('iTotalYear').textContent=yst.totalTrade;
+}
+
+/* ─── TABLE ─── */
+function cycleResult(r){if(!r||r==='NONE')return 'WIN';if(r==='WIN')return 'LOSS';if(r==='LOSS')return 'BE';return 'NONE';}
+function badgeCls(r){return 'badge '+(r==='WIN'?'b-win':r==='LOSS'?'b-loss':r==='BE'?'b-be':'b-none');}
+function renderTable(){
+  const tbody=document.getElementById('tBody');
+  document.getElementById('tblTitle').textContent=MONTHS[activeMonth]+' '+YEAR;
+  tbody.innerHTML='';
+  for(let d=1;d<=daysIn(activeMonth);d++){
+    const row=monthData[d]||{};
+    const inc=parseFloat(row.income)||0,out=parseFloat(row.outcome)||0,pl=inc-out;
+    const result=row.result||'NONE';
+    const plColor=pl>0?'var(--teal-400)':pl<0?'var(--red-400)':'var(--hint)';
+    const idrDisp=pl!==0?fmtIDR(uscToIDR(pl)):'—';
+    const idrColor=pl>0?'var(--teal-400)':pl<0?'var(--red-400)':'var(--hint)';
+    const pct=modalAwal?((pl/modalAwal)*100).toFixed(2)+'%':'—';
+    const tr=document.createElement('tr');
+    if(isWknd(activeMonth,d))tr.className='weekend';
+    tr.innerHTML=`<td class="day-lbl">${dayName(activeMonth,d)}</td><td><b>${d}</b></td>
+      <td><input type="text" placeholder="XAUUSD" value="${row.pair||''}" data-day="${d}" data-field="pair"/></td>
+      <td><input type="number" placeholder="0.01" value="${row.lot||''}" data-day="${d}" data-field="lot" step="0.01" min="0"/></td>
+      <td><input type="number" placeholder="0" value="${row.outcome||''}" data-day="${d}" data-field="outcome" step="any" min="0"/></td>
+      <td><input type="number" placeholder="0" value="${row.income||''}" data-day="${d}" data-field="income" step="any" min="0"/></td>
+      <td class="pl-cell" style="color:${plColor}" data-pl="${d}">${pl!==0?plStr(pl):'0'}</td>
+      <td class="idr-cell" style="color:${idrColor}" data-idr="${d}">${idrDisp}</td>
+      <td class="pct-cell" style="color:${plColor}" data-pct="${d}">${pct}</td>
+      <td><span class="${badgeCls(result)}" data-day="${d}">${result==='NONE'?'—':result}</span></td>
+      <td><textarea class="note" rows="1" placeholder="catatan…" data-day="${d}" data-field="note">${row.note||''}</textarea></td>`;
+    tbody.appendChild(tr);
+  }
+  tbody.querySelectorAll('input,textarea').forEach(el=>el.addEventListener('input',()=>updateRow(el)));
+  tbody.querySelectorAll('span[data-day]').forEach(badge=>{
+    badge.addEventListener('click',()=>{
+      const day=badge.dataset.day;
+      if(!monthData[day])monthData[day]={};
+      monthData[day].result=cycleResult(monthData[day].result);
+      saveMonth(activeMonth,monthData);
+      badge.className=badgeCls(monthData[day].result);
+      badge.textContent=monthData[day].result==='NONE'?'—':monthData[day].result;
+      refreshIDR();
+    });
+  });
+}
+function updateRow(el){
+  const day=el.dataset.day,field=el.dataset.field;
+  if(!monthData[day])monthData[day]={};
+  monthData[day][field]=el.value;
+  saveMonth(activeMonth,monthData);
+  const r=monthData[day];
+  const inc=parseFloat(r.income)||0,out=parseFloat(r.outcome)||0,pl=inc-out;
+  const plColor=pl>0?'var(--teal-400)':pl<0?'var(--red-400)':'var(--hint)';
+  const idrColor=pl>0?'var(--teal-400)':pl<0?'var(--red-400)':'var(--hint)';
+  const plCell=document.querySelector(`td[data-pl="${day}"]`);
+  const idrCell=document.querySelector(`td[data-idr="${day}"]`);
+  const pctCell=document.querySelector(`td[data-pct="${day}"]`);
+  if(plCell){plCell.textContent=pl!==0?plStr(pl):'0';plCell.style.color=plColor;}
+  if(idrCell){idrCell.textContent=pl!==0?fmtIDR(uscToIDR(pl)):'—';idrCell.style.color=idrColor;}
+  if(pctCell){pctCell.textContent=modalAwal?((pl/modalAwal)*100).toFixed(2)+'%':'—';pctCell.style.color=plColor;}
+  refreshIDR();
+}
+
+/* ─── MONTH BAR ─── */
+function renderMonthBar(id){
+  const el=document.getElementById(id);el.innerHTML='';
+  MONTHS.forEach((name,i)=>{
+    const btn=document.createElement('button');
+    btn.className='month-btn'+(i===activeMonth?' active':'');
+    btn.textContent=name;
+    btn.onclick=()=>{
+      activeMonth=i;monthData=loadMonth(i);render();if(activeTab==='recap')renderRecap();
+      if(typeof db !== 'undefined'){
+        db.collection("forex_journal_v3").doc(SK(i)).get().then(doc=>{
+          if(doc.exists){monthData=doc.data();localStorage.setItem(SK(i),JSON.stringify(monthData));render();if(activeTab==='recap')renderRecap();}
+        });
+      }
+    };
+    el.appendChild(btn);
+  });
+}
+
+/* ─── RECAP ─── */
+function renderRecap(){
+  renderMonthBar('monthBar2');
+  const m=activeMonth,d=monthData,days=daysIn(m);
+  document.getElementById('rcDailySub').textContent=MONTHS[m]+' '+YEAR;
+  const dailyRows=[];
+  for(let i=1;i<=days;i++){const row=d[i]||{};const inc=parseFloat(row.income)||0,out=parseFloat(row.outcome)||0,pl=inc-out;const result=row.result||'NONE';if(inc===0&&out===0&&result==='NONE')continue;dailyRows.push({day:i,pl,result,pair:row.pair||'—'});}
+  if(!dailyRows.length){document.getElementById('rcDaily').innerHTML='<div class="empty">Belum ada data trading bulan ini.</div>';}
+  else{
+    let totPL=0,totW=0,totL=0,totB=0;
+    let h=`<table class="rtable"><thead><tr><th>Tgl</th><th>Pair</th><th>P/L USC</th><th class="th-idr">Rupiah LIVE</th><th>% Modal</th><th>Hasil</th></tr></thead><tbody>`;
+    dailyRows.forEach(r=>{totPL+=r.pl;if(r.result==='WIN')totW++;else if(r.result==='LOSS')totL++;else if(r.result==='BE')totB++;
+      h+=`<tr><td><b>${r.day}</b> <span style="color:var(--hint);font-size:10px">${dayName(m,r.day).substring(0,3)}</span></td><td style="font-family:var(--font);font-weight:600">${r.pair}</td><td class="${plCls(r.pl)}">${plStr(r.pl)}</td><td class="td-idr ${plCls(r.pl)}">${fmtIDR(uscToIDR(r.pl))}</td><td class="${plCls(r.pl)}">${pctStr(r.pl)}</td><td><span class="mini-badge ${mbCls(r.result)}">${r.result==='NONE'?'—':r.result}</span></td></tr>`;});
+    h+=`</tbody><tfoot><tr><td colspan="2" style="font-family:var(--font)">Total <span style="font-weight:400;color:var(--hint);font-size:10px">${totW}W/${totL}L/${totB}BE</span></td><td class="${plCls(totPL)}">${plStr(totPL)}</td><td class="td-idr ${plCls(totPL)}">${fmtIDRFull(uscToIDR(totPL))}</td><td class="${plCls(totPL)}">${pctStr(totPL)}</td><td></td></tr></tfoot></table>`;
+    document.getElementById('rcDaily').innerHTML=h;
+  }
+  document.getElementById('rcWeeklySub').textContent=MONTHS[m]+' '+YEAR;
+  const weeks={};
+  for(let i=1;i<=days;i++){const wn=weekNum(i);if(!weeks[wn])weeks[wn]={pl:0,wins:0,losses:0,be:0,trades:0,start:i,end:i};const row=d[i]||{};weeks[wn].pl+=(parseFloat(row.income)||0)-(parseFloat(row.outcome)||0);weeks[wn].end=i;const res=row.result||'NONE';if(res==='WIN'){weeks[wn].wins++;weeks[wn].trades++;}else if(res==='LOSS'){weeks[wn].losses++;weeks[wn].trades++;}else if(res==='BE'){weeks[wn].be++;weeks[wn].trades++;}}
+  let weekTotPL=0;
+  let wh=`<table class="rtable"><thead><tr><th>Minggu</th><th>Periode</th><th>W/L/BE</th><th>P/L USC</th><th class="th-idr">Rupiah LIVE</th><th>% Modal</th></tr></thead><tbody>`;
+  Object.keys(weeks).map(Number).sort((a,b)=>a-b).forEach(wn=>{const w=weeks[wn];weekTotPL+=w.pl;const h=w.trades>0;wh+=`<tr><td style="font-family:var(--font)"><b>Ke-${wn}</b></td><td style="font-family:var(--font);color:var(--hint);font-size:11px">${w.start}–${w.end} ${MONTHS[m].substring(0,3)}</td><td style="font-family:var(--font)">${h?`<span style="color:var(--teal-400);font-weight:700">${w.wins}</span>/<span style="color:var(--red-400);font-weight:700">${w.losses}</span>/<span style="color:var(--amber-400);font-weight:700">${w.be}</span>`:'<span style="color:var(--hint)">—</span>'}</td><td class="${h?plCls(w.pl):'pl-zero'}">${h?plStr(w.pl):'—'}</td><td class="td-idr ${h?plCls(w.pl):'pl-zero'}">${h?fmtIDR(uscToIDR(w.pl)):'—'}</td><td class="${h?plCls(w.pl):'pl-zero'}">${h?pctStr(w.pl):'—'}</td></tr>`;});
+  wh+=`</tbody><tfoot><tr><td colspan="3" style="font-family:var(--font)">Total Bulan</td><td class="${plCls(weekTotPL)}">${plStr(weekTotPL)}</td><td class="td-idr ${plCls(weekTotPL)}">${fmtIDRFull(uscToIDR(weekTotPL))}</td><td class="${plCls(weekTotPL)}">${pctStr(weekTotPL)}</td></tr></tfoot></table>`;
+  document.getElementById('rcWeekly').innerHTML=wh;
+  document.getElementById('rcMonthlySub').textContent='Semua bulan '+YEAR;
+  let monthRows=[],grandPL=0,grandW=0,grandL=0,grandB=0,grandT=0;
+  for(let mi=0;mi<12;mi++){const md=mi===activeMonth?monthData:loadMonth(mi);let mpl=0,mw=0,ml=0,mb=0,mt=0;for(let i=1;i<=daysIn(mi);i++){const row=md[i]||{};mpl+=(parseFloat(row.income)||0)-(parseFloat(row.outcome)||0);const res=row.result||'NONE';if(res==='WIN'){mw++;mt++;}else if(res==='LOSS'){ml++;mt++;}else if(res==='BE'){mb++;mt++;}}grandPL+=mpl;grandW+=mw;grandL+=ml;grandB+=mb;grandT+=mt;monthRows.push({mi,pl:mpl,wins:mw,losses:ml,be:mb,trades:mt});}
+  let mh=`<table class="rtable"><thead><tr><th>Bulan</th><th>W/L/BE</th><th>P/L USC</th><th class="th-idr">Rupiah LIVE</th><th>% Modal</th></tr></thead><tbody>`;
+  monthRows.forEach(r=>{const isAct=r.mi===activeMonth,h=r.trades>0;mh+=`<tr style="${isAct?'background:var(--teal-50);':''}"><td style="font-family:var(--font)"><b style="${isAct?'color:var(--teal-600)':''}">${MONTHS[r.mi]}</b></td><td style="font-family:var(--font)">${h?`<span style="color:var(--teal-400);font-weight:700">${r.wins}</span>/<span style="color:var(--red-400);font-weight:700">${r.losses}</span>/<span style="color:var(--amber-400);font-weight:700">${r.be}</span>`:'<span style="color:var(--border)">—</span>'}</td><td class="${h?plCls(r.pl):'pl-zero'}">${h?plStr(r.pl):'—'}</td><td class="td-idr ${h?plCls(r.pl):'pl-zero'}">${h?fmtIDR(uscToIDR(r.pl)):'—'}</td><td class="${h?plCls(r.pl):'pl-zero'}">${h?pctStr(r.pl):'—'}</td></tr>`;});
+  mh+=`</tbody><tfoot><tr><td style="font-family:var(--font)">Total ${YEAR} <span style="font-weight:400;color:var(--hint);font-size:10px">${grandW}W/${grandL}L/${grandB}BE</span></td><td style="font-family:var(--font)"><span style="color:var(--teal-400);font-weight:700">${grandW}</span>/<span style="color:var(--red-400);font-weight:700">${grandL}</span>/<span style="color:var(--amber-400);font-weight:700">${grandB}</span></td><td class="${plCls(grandPL)}">${plStr(grandPL)}</td><td class="td-idr ${plCls(grandPL)}">${fmtIDRFull(uscToIDR(grandPL))}</td><td class="${plCls(grandPL)}">${pctStr(grandPL)}</td></tr></tfoot></table>`;
+  document.getElementById('rcMonthly').innerHTML=mh;
+  document.getElementById('rcYearlySub').textContent='Visualisasi per bulan '+YEAR;
+  const maxAbs=Math.max(...monthRows.map(r=>Math.abs(r.pl)),0.01);
+  let yh='<div class="yr-wrap">';
+  monthRows.forEach(r=>{const isAct=r.mi===activeMonth;const barW=r.trades>0?Math.max((Math.abs(r.pl)/maxAbs)*100,2):0;yh+=`<div class="yr-row"><div class="yr-lbl" style="${isAct?'color:var(--teal-600);font-weight:700':''}">${MONTHS[r.mi].substring(0,3)}</div><div class="yr-bg">${r.trades>0?`<div class="yr-fill ${r.pl>=0?'yr-pos':'yr-neg'}" style="width:${barW}%"></div>`:''}</div><div class="yr-val ${r.trades>0?plCls(r.pl):'pl-zero'}">${r.trades>0?(r.pl>=0?'+':'')+r.pl.toFixed(2):'—'}${r.trades>0?`<br><span class="yr-idr">${fmtIDR(uscToIDR(r.pl))}</span>`:''}</div></div>`;});
+  yh+=`<div class="yr-total"><div><div style="font-size:12px;font-weight:600;color:var(--muted)">Total P/L ${YEAR}</div><div style="font-size:11px;color:var(--hint);margin-top:4px">${grandT} trade · ${grandW}W/${grandL}L/${grandB}BE</div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;font-family:var(--mono)" class="${plCls(grandPL)}">${plStr(grandPL)} USC</div><div style="font-size:14px;font-weight:700;font-family:var(--mono);color:var(--blue-400);margin-top:2px">${fmtIDRFull(uscToIDR(grandPL))}</div></div></div></div>`;
+  document.getElementById('rcYearly').innerHTML=yh;
+}
+
+/* ─── TABS ─── */
+function switchTab(tab,btn){activeTab=tab;document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('tab-jurnal').classList.toggle('show',tab==='jurnal');document.getElementById('tab-recap').classList.toggle('show',tab==='recap');if(tab==='recap')renderRecap();}
+function setHeaderDate(){const now=new Date();document.getElementById('hDate').textContent=DAYS[now.getDay()]+', '+now.getDate()+' '+MONTHS[now.getMonth()]+' '+now.getFullYear();}
+function render(){renderMonthBar('monthBar1');renderStats(calcStats(activeMonth,monthData));renderTable();}
+
+/* ─── INIT ─── */
+initTheme(); // Panggil inisialisasi Dark Mode
+loadModal();
+monthData=loadMonth(activeMonth);
+setHeaderDate();
+render();
+
+if(typeof db !== 'undefined'){
+  db.collection("forex_journal_v3").doc("modal_awal").get().then(doc=>{
+    if(doc.exists){modalAwal=doc.data().val;localStorage.setItem(MODAL_KEY,modalAwal.toString());render();if(activeTab==='recap')renderRecap();}
+  }).catch(e=>console.error("Firebase err:", e));
+  
+  db.collection("forex_journal_v3").doc(SK(activeMonth)).get().then(doc=>{
+    if(doc.exists){monthData=doc.data();localStorage.setItem(SK(activeMonth),JSON.stringify(monthData));render();if(activeTab==='recap')renderRecap();}
+  }).catch(e=>console.error("Firebase err:", e));
+}
+
+let splashClosed=false;
+function closeSplash(){if(splashClosed)return;splashClosed=true;setTimeout(()=>{const s=document.getElementById('splash');s.classList.add('hide');setTimeout(()=>s.style.display='none',600);},500);}
+
+fetchKursLive().then(() => {
+    closeSplash();
+    initLiveUSD();
+}).catch(() => {
+    closeSplash();
+    initLiveUSD();
+});
+setTimeout(closeSplash,2500);
+
+</script>
+</body>
+</html>
