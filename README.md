@@ -7,7 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 /* ==========================================================================
-   TEMA NEO-FINTECH MODERN (ANTI MIRING & USD LENGKAP)
+   TEMA NEO-FINTECH MODERN (SOLUSI MUTLAK ANTI MIRING & USD LENGKAP)
    ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -31,22 +31,22 @@ body.light-mode {
   --text-main: #09090b; --text-muted: #71717a;
 }
 
-/* ANTI MIRING / HORIZONTAL SCROLL FIX KUNCI MATI */
+/* ANTI MIRING KUNCI MATI (Tanpa 100vw yang bikin jebol layar) */
 html, body {
-  width: 100vw;
-  max-width: 100vw;
-  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
 }
 
 body {
   font-family: 'Outfit', sans-serif;
   background-color: var(--bg-app);
   color: var(--text-main);
-  height: 100vh; overflow: hidden; display: flex;
+  height: 100vh; display: flex;
 }
 
 /* SIDEBAR & SCROLLBAR */
-.app-container { display: flex; width: 100%; height: 100vh; overflow-x: hidden; }
+.app-container { display: flex; width: 100%; height: 100vh; overflow-x: hidden !important; }
 .sidebar {
   width: 290px; background: var(--bg-sidebar); border-right: 1px solid var(--border);
   display: flex; flex-direction: column; overflow-y: auto; z-index: 50; flex-shrink: 0;
@@ -61,7 +61,6 @@ body {
 .brand { padding: 24px; font-size: 20px; font-weight: 800; color: var(--accent); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
 .brand img { width: 32px; border-radius: 8px; }
 
-/* USER PROFILE WITH ACTION BUTTONS ALIGNED */
 .user-profile { padding: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
 .u-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
 .u-info { flex: 1; min-width: 0; }
@@ -88,8 +87,8 @@ body {
 .btn-outline:hover { background: var(--bg-hover); }
 
 /* MAIN CONTENT */
-.main-content { flex: 1; height: 100vh; width: 100%; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; position: relative; }
-.top-header { padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: rgba(var(--bg-app), 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 10; border-bottom: 1px solid var(--border); }
+.main-content { flex: 1; height: 100vh; width: 100%; overflow-y: auto; overflow-x: hidden !important; scroll-behavior: smooth; position: relative; }
+.top-header { padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; background: rgba(var(--bg-app), 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 10; border-bottom: 1px solid var(--border); }
 .usd-pill { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 13px; background: var(--bg-input); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); white-space: nowrap; }
 
 .page { display: none; padding: 24px; animation: fadeUp 0.4s ease; max-width: 1300px; margin: 0 auto; width: 100%; }
@@ -97,10 +96,10 @@ body {
 @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* DEFAULT KARTU */
-.card { background: var(--bg-card); border-radius: 24px; padding: 24px; border: 1px solid var(--border); display: flex; flex-direction: column; height: auto; }
+.card { background: var(--bg-card); border-radius: 24px; padding: 24px; border: 1px solid var(--border); display: flex; flex-direction: column; height: auto; width: 100%; box-sizing: border-box; }
 
 /* BENTO GRID (KHUSUS DASHBOARD) */
-.bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; align-items: stretch; }
+.bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; align-items: stretch; width: 100%; }
 .bento-grid .card { height: 100%; } 
 .col-hero { grid-column: span 12; }
 .col-form { grid-column: span 5; }
@@ -112,7 +111,7 @@ body {
 .hb-val { font-family: 'JetBrains Mono', monospace; font-size: 42px; font-weight: 800; line-height: 1.2; margin-bottom: 4px; letter-spacing: -1px; white-space: nowrap; }
 .hb-usd { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--text-muted); font-weight: 600; margin-bottom: 24px; }
 .hero-stats { display: flex; gap: 16px; width: 100%; justify-content: center; flex-wrap: wrap; }
-.hs-box { padding: 12px 20px; border-radius: 16px; flex: 1; max-width: 200px; display: flex; align-items: center; justify-content: flex-start; gap: 12px; background: var(--bg-input); border: 1px solid var(--border); }
+.hs-box { padding: 12px 20px; border-radius: 16px; flex: 1; min-width: 140px; max-width: 200px; display: flex; align-items: center; justify-content: flex-start; gap: 12px; background: var(--bg-input); border: 1px solid var(--border); box-sizing: border-box; }
 .hs-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; background: var(--accent); color: #fff; flex-shrink: 0; }
 .hs-box.inc .hs-icon { background: var(--income); }
 .hs-box.exp .hs-icon { background: var(--expense); }
@@ -121,19 +120,19 @@ body {
 .hs-usd { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-weight: 600; margin-top: 2px; text-align: left; white-space: nowrap; }
 
 /* Modern Form */
-.giant-input-wrap { text-align: center; margin-bottom: 20px; padding: 16px 0; border-bottom: 1px dashed var(--border); }
+.giant-input-wrap { text-align: center; margin-bottom: 20px; padding: 16px 0; border-bottom: 1px dashed var(--border); width: 100%; }
 .giant-input { width: 100%; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 36px; font-weight: 800; color: var(--text-main); background: transparent; border: none; outline: none; }
-.m-input { width: 100%; padding: 14px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 16px; color: var(--text-main); font-size: 14px; outline: none; margin-bottom: 12px; }
+.m-input { width: 100%; padding: 14px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 16px; color: var(--text-main); font-size: 14px; outline: none; margin-bottom: 12px; box-sizing: border-box; }
 .btn-primary { 
   width: 100%; padding: 16px; background: var(--accent); color: #fff; border: none; 
   border-radius: 16px; font-size: 14px; font-weight: 800; cursor: pointer; 
-  text-transform: uppercase; margin-top: auto; transition: 0.2s;
+  text-transform: uppercase; margin-top: auto; transition: 0.2s; box-sizing: border-box;
 }
 .btn-primary:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
 /* History List & Transaksi */
-#recent-list { flex: 1; overflow-y: auto; max-height: 400px; padding-right: 8px; }
-.tx-item { display: flex; align-items: center; padding: 14px; border-bottom: 1px solid var(--border); transition: 0.2s; position: relative; }
+#recent-list { flex: 1; overflow-y: auto; max-height: 400px; padding-right: 8px; width: 100%; }
+.tx-item { display: flex; align-items: center; padding: 14px; border-bottom: 1px solid var(--border); transition: 0.2s; position: relative; width: 100%; }
 .tx-item:hover { background: var(--bg-input); border-radius: 16px; border-bottom-color: transparent; }
 .tx-item:last-child { border-bottom: none; }
 .tx-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; margin-right: 14px; flex-shrink: 0; }
@@ -148,21 +147,22 @@ body {
 .tx-item:hover .tx-del { opacity: 1; }
 
 /* SPASI & ALIGNMENT HALAMAN LAPORAN */
-.filter-container { display: flex; flex-direction: row; gap: 12px; align-items: center; width: 100%; margin-bottom: 20px; }
+.filter-container { display: flex; flex-direction: row; gap: 12px; align-items: center; width: 100%; margin-bottom: 20px; box-sizing: border-box; }
 
-/* Wrapper untuk period-bar agar scroll horizontanya nggak nembus layar */
-.period-bar-wrapper { width: 100%; padding: 16px; overflow: hidden; max-width: 100vw; }
+/* Wrapper scroll tanggal agar lebarnya tidak miring menjebol layar */
+.period-bar-wrapper { width: 100%; padding: 16px; overflow: hidden; box-sizing: border-box; }
 .period-bar { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; width: 100%; padding-bottom: 8px; -webkit-overflow-scrolling: touch; }
 .p-btn { padding: 12px 24px; border: 1px solid var(--border); border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; background: var(--bg-card); color: var(--text-muted); white-space: nowrap; transition: 0.2s; flex-shrink: 0; }
 .p-btn.active { background: var(--text-main); color: var(--bg-app); border-color: var(--text-main); }
 
-.sum-grid-new { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
-.sg-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; text-align: center; height: auto; } 
+.sum-grid-new { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; width: 100%; box-sizing: border-box; }
+.sg-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; text-align: center; height: auto; box-sizing: border-box; } 
 .sg-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
 .sg-val { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 800; color: var(--text-main); white-space: nowrap; }
+.sg-usd { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); font-weight: 600; margin-top: 4px; } /* MUNCULKAN USD DI SEMUA TAB */
 
 /* KARTU GRAFIK DESKTOP */
-.chart-card { margin-bottom: 20px; width: 100%; max-width: 100vw; overflow: hidden; }
+.chart-card { margin-bottom: 20px; width: 100%; overflow: hidden; box-sizing: border-box; }
 .list-card-body { min-height: 200px; }
 
 /* NAVIGASI TAB LAPORAN KHUSUS HP */
@@ -172,12 +172,13 @@ body {
 @media (max-width: 900px) {
   .sidebar { display: none; }
   .top-header { padding: 12px 16px; }
+  .usd-pill { font-size: 11px; padding: 6px 8px; }
   
-  .page { padding: 0 !important; width: 100vw; max-width: 100vw; overflow-x: hidden; } 
-  .main-content { padding-bottom: 85px; width: 100vw; max-width: 100vw; overflow-x: hidden; }
+  .page { padding: 0 !important; width: 100% !important; overflow-x: hidden !important; } 
+  .main-content { padding-bottom: 85px; width: 100% !important; overflow-x: hidden !important; }
   
-  /* Di HP, kartu membaur */
-  .card { border-radius: 0; border-left: none; border-right: none; border-bottom: 1px solid var(--border); padding: 24px 16px; height: auto !important; width: 100%; }
+  /* Di HP, margin kartu dinolkan biar gak miring */
+  .card { border-radius: 0; border-left: none; border-right: none; border-bottom: 1px solid var(--border); padding: 24px 16px; height: auto !important; width: 100% !important; margin: 0 !important; }
   .col-hero, .col-form, .col-history { grid-column: span 12; }
   .bento-grid { gap: 0; width: 100%; }
   
@@ -185,12 +186,12 @@ body {
   .sg-card { border-radius: 0; border: none; border-bottom: 1px solid var(--border); padding: 20px 16px; }
   .sg-card:last-child { border-bottom: none; }
   
-  .chart-card { margin-bottom: 0 !important; border-bottom: 1px solid var(--border); }
+  .chart-card { border-bottom: 1px solid var(--border); }
   .list-card-body { min-height: auto; }
   
-  /* BOX STATS MASUK DAN KELUAR DI HP (SESUAIKAN AGAR USD MUAT) */
-  .hero-stats { flex-direction: row; justify-content: space-between; gap: 8px; flex-wrap: nowrap; width: 100%; }
-  .hs-box { max-width: none; flex: 1; padding: 12px 10px; justify-content: flex-start; gap: 8px; }
+  /* BOX STATS MASUK DAN KELUAR DI HP */
+  .hero-stats { flex-direction: row; justify-content: space-between; gap: 8px; width: 100%; flex-wrap: wrap; }
+  .hs-box { max-width: none; flex: 1; padding: 12px 10px; justify-content: flex-start; gap: 8px; min-width: 45%; }
   .hs-icon { width: 30px; height: 30px; font-size: 14px; }
   .hs-v { font-size: 13px; }
   
@@ -202,23 +203,23 @@ body {
   .filter-container { flex-direction: column; gap: 8px; width: 100%; padding: 20px 16px; margin-bottom: 0; }
   .filter-container .m-input { width: 100%; margin-bottom: 0; flex: none; }
 
-  /* Tab Laporan Pintar di HP - Diperbaiki agar lebarnya tidak nembus layar */
-  .mobile-report-tab-nav { display: flex; background: var(--bg-input); border-radius: 12px; padding: 4px; margin: 16px; gap: 4px; width: calc(100% - 32px); }
+  /* Tab Laporan Pintar di HP */
+  .mobile-report-tab-nav { display: flex; background: var(--bg-input); border-radius: 12px; padding: 4px; margin: 16px; gap: 4px; }
   .mobile-tab-btn { flex: 1; padding: 10px; text-align: center; font-size: 11px; font-weight: 700; color: var(--text-muted); border-radius: 8px; cursor: pointer; transition: 0.2s; white-space: nowrap; }
   .mobile-tab-btn.active { background: var(--accent); color: #fff; }
 
   /* Profil Page Mobile */
   #page-profil .action-buttons-flex { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; margin-bottom: 30px; width: 100%; }
-  #page-profil .profil-page-btn { width: 100% !important; padding: 12px 16px; text-align: left; font-size: 13px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+  #page-profil .profil-page-btn { width: 100% !important; padding: 12px 16px; text-align: left; font-size: 13px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; box-sizing: border-box; }
   #page-profil .btn-tema { background: var(--bg-input); color: var(--text-main); border: 1px solid var(--border); }
   #page-profil .btn-logout { background: var(--bg-hover); color: var(--expense); border: 1px solid rgba(239, 68, 68, 0.3); font-weight: 700; text-transform: uppercase; text-align: center;}
   
-  .mobile-bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(24,24,27,0.98); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; padding: 12px 8px 24px; z-index: 100; justify-content: space-between; width: 100%; max-width: 100vw; }
+  .mobile-bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(24,24,27,0.98); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; padding: 12px 8px 24px; z-index: 100; justify-content: space-between; width: 100%; }
   .mb-nav-item { flex: 1; text-align: center; color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
   .mb-nav-item.active { color: var(--accent); }
   .mb-nav-icon { font-size: 22px; display: block; margin-bottom: 4px; }
   
-  /* Override padding khusus wrapper scroll tanggal agar rapi */
+  /* Override padding tanggal */
   .period-bar-wrapper { padding: 16px 16px 0 16px; }
 }
 @media (min-width: 901px) { .mobile-bottom-nav { display: none; } }
@@ -323,7 +324,7 @@ body {
       </div>
       <div class="period-bar-wrapper"><div class="period-bar" id="week-sel"></div></div>
       <div class="sum-grid-new" id="week-sum"></div>
-      <div class="card chart-card"><div style="position: relative; height:250px; width: 100%;"><canvas id="chartWeek"></canvas></div></div>
+      <div class="card chart-card"><div style="position: relative; height:250px; width: 100%; overflow: hidden;"><canvas id="chartWeek"></canvas></div></div>
       <div class="card"><div id="week-body" class="list-card-body"></div></div>
     </div>
 
@@ -335,7 +336,7 @@ body {
       </div>
       <div class="period-bar-wrapper"><div class="period-bar" id="month-sel"></div></div>
       <div class="sum-grid-new" id="month-sum"></div>
-      <div class="card chart-card"><div style="position: relative; height:250px; width: 100%;"><canvas id="chartMonth"></canvas></div></div>
+      <div class="card chart-card"><div style="position: relative; height:250px; width: 100%; overflow: hidden;"><canvas id="chartMonth"></canvas></div></div>
       <div class="card"><div id="month-body" class="list-card-body"></div></div>
     </div>
 
@@ -347,7 +348,7 @@ body {
       </div>
       <div class="period-bar-wrapper"><div class="period-bar" id="year-sel"></div></div>
       <div class="sum-grid-new" id="year-sum"></div>
-      <div class="card chart-card"><div style="position: relative; height:250px; width: 100%;"><canvas id="chartYear"></canvas></div></div>
+      <div class="card chart-card"><div style="position: relative; height:250px; width: 100%; overflow: hidden;"><canvas id="chartYear"></canvas></div></div>
       <div class="card"><div id="year-body" class="list-card-body"></div></div>
     </div>
 
@@ -411,7 +412,7 @@ const fmtDate = dt => new Date(dt).toLocaleDateString('id-ID',{day:'2-digit',mon
 const fmtTime = dt => new Date(dt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
 const nowISO = () => new Date().toISOString().slice(0,16);
 const kursIndo = new Intl.NumberFormat('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const getUSD = n => (n / currentUSDRate).toFixed(2) + ' USD'; // Format USD yang bersih dan aman
+const getUSD = n => (n / currentUSDRate).toFixed(2) + ' USD'; 
 
 function initLiveUSD() {
   const socket = new WebSocket('wss://stream.binance.com:9443/ws/usdtidr@ticker');
@@ -479,15 +480,30 @@ window.switchPage=function(p){
 
 function calcSum(arr){ const inc=arr.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0), exp=arr.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0); return{inc,exp,bal:inc-exp,count:arr.length}; }
 
+/* PERBAIKAN: MUNCULKAN USD DI TAB LAPORAN (HARI, MINGGU, BULAN, TAHUN, RIWAYAT) */
 function renderSumGrid(el,arr){ 
   const s=calcSum(arr); 
-  el.innerHTML=`<div class="sg-card inc"><div class="sg-label">Pemasukan</div><div class="sg-val">${fmt(s.inc)}</div></div><div class="sg-card"><div class="sg-label">Pengeluaran</div><div class="sg-val" style="color:var(--expense);">${fmt(s.exp)}</div></div><div class="sg-card"><div class="sg-label">Saldo Bersih</div><div class="sg-val" style="color:${s.bal>=0?'var(--text-main)':'var(--expense)'}">${fmt(s.bal)}</div></div>`; 
+  el.innerHTML=`
+    <div class="sg-card inc">
+      <div class="sg-label">Pemasukan</div>
+      <div class="sg-val">${fmt(s.inc)}</div>
+      <div class="sg-usd">${getUSD(s.inc)}</div>
+    </div>
+    <div class="sg-card">
+      <div class="sg-label">Pengeluaran</div>
+      <div class="sg-val" style="color:var(--expense);">${fmt(s.exp)}</div>
+      <div class="sg-usd">${getUSD(s.exp)}</div>
+    </div>
+    <div class="sg-card">
+      <div class="sg-label">Saldo Bersih</div>
+      <div class="sg-val" style="color:${s.bal>=0?'var(--text-main)':'var(--expense)'}">${fmt(s.bal)}</div>
+      <div class="sg-usd">${getUSD(s.bal)}</div>
+    </div>`; 
 }
 
 const createTxCard = (t) => `<div class="tx-item"><div class="tx-icon ${t.type}">${t.type==='income'?'↙':'↗'}</div><div class="tx-info"><div class="tx-title">${t.note} <span class="tx-badge">${t.category}</span></div><div class="tx-date">${fmtDate(t.date)}</div></div><div style="text-align:right;"><div class="tx-amount ${t.type}">${t.type==='income'?'+':'-'}${fmt(t.amount)}</div><button class="tx-del" onclick="delTx('${t.id}')">Hapus</button></div></div>`;
 function renderList(container, arr) { if(container) container.innerHTML = arr.length ? arr.map(t => createTxCard(t)).join('') : '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:12px;">Belum ada data.</div>'; }
 
-/* LOGIKA USD DITAMBAHKAN UNTUK MASUK DAN KELUAR */
 function renderMetrics(){
   const inc=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0), exp=txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0), bal=inc-exp;
   document.getElementById('metric-cards').innerHTML=`
