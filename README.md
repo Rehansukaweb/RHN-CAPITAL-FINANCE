@@ -3,7 +3,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Arus Keuangan — RHN CAPITAL</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 /* ==========================================================================
@@ -162,7 +162,7 @@ body.light-mode .top-header { background: rgba(248, 249, 250, 0.85); }
 }
 
 /* PAGES CONTAINER */
-.page { display: none; padding: 24px; animation: fadeUp 0.4s ease; max-width: 1200px; margin: 0 auto; }
+.page { display: none; animation: fadeUp 0.4s ease; margin: 0 auto; max-width: 1400px; padding: 24px; }
 .page.active { display: block; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -171,8 +171,7 @@ body.light-mode .top-header { background: rgba(248, 249, 250, 0.85); }
    ========================================= */
 .bento-grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 20px;
+  gap: 24px;
 }
 
 .card {
@@ -183,8 +182,9 @@ body.light-mode .top-header { background: rgba(248, 249, 250, 0.85); }
   box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
+.card-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
+
 /* Hero Balance */
-.col-hero { grid-column: span 12; }
 .hero-balance-wrapper { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; }
 .hb-label { font-size: 12px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
 .hb-val { font-family: 'JetBrains Mono', monospace; font-size: 42px; font-weight: 800; line-height: 1; margin-bottom: 8px; letter-spacing: -1px; color: var(--text); }
@@ -198,44 +198,36 @@ body.light-mode .top-header { background: rgba(248, 249, 250, 0.85); }
 .hs-l { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; }
 .hs-v { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: var(--text); margin-top: 2px;}
 
-/* Form Transaksi */
-/* SOLUSI RENGGANG KOSONG: align-self: start; membuat form tidak memanjang ke bawah mengikuti riwayat */
-.col-form { grid-column: span 5; align-self: start; } 
-.col-history { grid-column: span 7; }
+/* Form Transaksi & Inputs (100% PERSIS KODINGAN LAMA) */
+.type-switcher { display: flex; background: var(--bg3); border-radius: 12px; padding: 4px; margin-bottom: 20px; }
+.ts-btn { flex: 1; padding: 12px; font-weight: 700; font-size: 12px; border: none; background: transparent; color: var(--text3); border-radius: 8px; cursor: pointer; transition: 0.2s; }
+.ts-btn.income.active { background: var(--bg2); color: var(--green2); }
+.ts-btn.expense.active { background: var(--bg2); color: var(--text); }
 
-.modern-form .card-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--text); }
-.type-switcher { display: flex; background: var(--bg3); border-radius: 16px; padding: 4px; margin-bottom: 24px; }
-.ts-btn { flex: 1; padding: 12px; font-weight: 700; font-size: 13px; border: none; background: transparent; color: var(--text3); border-radius: 12px; cursor: pointer; transition: 0.3s; }
-.ts-btn.income.active { background: var(--green2); color: #fff; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
-.ts-btn.expense.active { background: var(--red2); color: #fff; box-shadow: 0 4px 12px rgba(239,68,68,0.3); }
+.form-row { margin-bottom: 16px; }
+.form-label { font-size: 10px; font-weight: 800; color: var(--text3); margin-bottom: 8px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
 
-/* Input Uang Raksasa */
-.giant-input-wrap { text-align: center; margin-bottom: 24px; padding: 24px 0; border-bottom: 1px dashed var(--border); }
-.giant-input-wrap label { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 12px; }
-.giant-input { 
-  width: 100%; text-align: center; font-family: 'JetBrains Mono', monospace; 
-  font-size: 40px; font-weight: 800; color: var(--text); 
-  background: transparent; border: none; outline: none;
+.f-input-dark {
+  width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border);
+  background-color: var(--bg2) !important; color: var(--text) !important;
+  outline: none; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500;
+  appearance: none; -webkit-appearance: none; transition: border-color 0.3s;
 }
-.giant-input::placeholder { color: var(--border2); }
-
-/* Input Biasa */
-.m-input {
-  width: 100%; padding: 16px; background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 16px; color: var(--text); font-family: 'Outfit', sans-serif; font-size: 14px;
-  outline: none; transition: 0.2s; margin-bottom: 16px;
+.f-input-dark:focus { border-color: var(--blue); }
+.f-input-dark::placeholder { color: var(--text3); }
+select.f-input-dark {
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23888899" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat; background-position: right 16px center; cursor: pointer;
 }
-.m-input:focus { border-color: var(--blue); }
-select.m-input { appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill="%23888899" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); background-repeat: no-repeat; background-position: right 16px center; cursor: pointer;}
-select.m-input option { background: var(--card); color: var(--text); }
-textarea.m-input { height: 100px; resize: none; }
+select.f-input-dark option { background: var(--card); color: var(--text); }
+textarea.f-input-dark { height: 100px; resize: none; }
 
 .btn-primary {
-  width: 100%; padding: 18px; background: var(--blue); color: #fff;
-  border: none; border-radius: 16px; font-size: 14px; font-weight: 800;
-  cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px;
+  width: 100%; padding: 16px; background: var(--blue); color: #fff;
+  border: none; border-radius: 12px; font-size: 13px; font-weight: 800;
+  cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px;
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px var(--accent-glow); }
+.btn-primary:hover { opacity: 0.9; }
 
 /* LIST TRANSAKSI (STYLE LAMA KOTAK PANJANG & TOMBOL HAPUS BAGUS) */
 .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
@@ -268,9 +260,8 @@ textarea.m-input { height: 100px; resize: none; }
 }
 .del-btn-recent:hover { background: var(--red2); color: #fff; }
 
-
 /* LAYOUT LAPORAN / SUMMARY GRID */
-.sum-grid-new { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.sum-grid-new { display: grid; gap: 16px; margin-bottom: 24px; }
 .sg-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; text-align: center; }
 .sg-label { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; margin-bottom: 8px; }
 .sg-val { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 800; color: var(--text); }
@@ -278,36 +269,94 @@ textarea.m-input { height: 100px; resize: none; }
 
 /* AUTH SCREEN */
 #auth-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-.auth-box { background: var(--card); border-radius: 32px; padding: 40px; width: 90%; max-width: 420px; border: 1px solid var(--border); text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-.auth-logo { width: 72px; border-radius: 20px; margin-bottom: 24px; border: 1px solid var(--border2); }
+.auth-box { background: var(--card); border-radius: 24px; padding: 40px; width: 90%; max-width: 420px; border: 1px solid var(--border); text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+.auth-logo { width: 64px; border-radius: 16px; margin-bottom: 16px; border: 1px solid var(--border2); }
 
 /* Kebutuhan filter bar dsb */
 .period-bar { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: 20px; }
-.p-btn { padding: 12px 24px; border: 1px solid var(--border); border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; background: var(--card); color: var(--text3); white-space: nowrap; }
+.p-btn { padding: 10px 20px; border: 1px solid var(--border); border-radius: 100px; font-size: 11px; font-weight: 700; cursor: pointer; background: var(--bg2); color: var(--text3); white-space: nowrap; }
 .p-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-/* =========================================
-   MOBILE RESPONSIVE (100% GAYA M-BANKING)
-   ========================================= */
-@media (max-width: 900px) {
+/* ==========================================================================
+   DESKTOP RESPONSIVE (PRESISI UKURAN KODINGAN LAMA - 380px Kiri, Kanan Sisanya)
+   DAN FIX SEJAJAR SEMPURNA (TIDAK ADA RENGGANG KOSONG)
+   ========================================================================== */
+@media (min-width: 769px) {
+  .mobile-bottom-nav { display: none; }
+  
+  .bento-grid { 
+    grid-template-columns: 380px 1fr; 
+    align-items: stretch; /* MEMAKSA TINGGI KIRI & KANAN SAMA PERSIS */
+  }
+  .col-hero { grid-column: span 2; }
+  
+  .col-form { 
+    grid-column: 1; 
+    display: flex; 
+    flex-direction: column; 
+  }
+  #save-btn { 
+    margin-top: auto; /* MENDORONG TOMBOL SIMPAN MENTOK KE BAWAH, HILANGKAN RENGGANG KOSONG */
+  }
+  
+  .col-history { 
+    grid-column: 2; 
+    display: flex; 
+    flex-direction: column; 
+    max-height: 650px; /* BATASI TINGGI AGAR TIDAK MELAR TAK TERHINGGA */
+  }
+  .col-history .list-wrap { 
+    flex: 1; 
+    overflow-y: auto; /* BISA DI-SCROLL JIKA RIWAYAT PANJANG */
+    padding-right: 8px; /* Ruang untuk scrollbar */
+  }
+
+  .sum-grid-new { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVE (100% PERSIS BINANCE LAMA: FULL MENTOK LAYAR & EMPUK)
+   ========================================================================== */
+@media (max-width: 768px) {
   .app-container { flex-direction: column; }
   .sidebar { display: none; }
+  .top-header { padding: 16px; }
   
-  .top-header { padding: 12px 16px; }
-  .page { padding: 16px; padding-bottom: 100px; }
+  /* PENGHILANG JARAK SAMPING TOTAL BIAR MENTOK LAYAR SAMA SEPERTI YANG LAMA */
+  .page { padding: 0 0 100px 0 !important; width: 100%; overflow-x: hidden; }
   
-  .col-hero, .col-form, .col-history { grid-column: span 12; }
+  .bento-grid { display: flex; flex-direction: column; gap: 16px; background: transparent; padding: 0 !important; margin: 0 !important; }
+  
+  /* BUNGKUSAN CARD TRANSPARAN (AGAR KONTEN BISA NYENTUH LAYAR) */
+  .card { padding: 16px 0 !important; border-radius: 0 !important; border: none !important; background: transparent !important; box-shadow: none !important; margin-bottom: 0; }
+  
+  /* Elemen form dan teks diberi margin agar tetap aman terbaca (tidak nabrak layar) */
+  .card-title, .hero-balance-wrapper, .list-header, .period-bar, .form-row, .type-switcher, .btn-primary, #flt-type, #flt-search { 
+    width: calc(100% - 32px) !important; 
+    margin-left: 16px !important; 
+    margin-right: 16px !important; 
+  }
+  
+  .sum-grid-new { padding: 0 16px; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .sum-grid-new .sg-card:nth-child(3) { grid-column: span 2; } /* Saldo bersih bulet memanjang full */
+
   .hero-balance-wrapper { flex-direction: column; align-items: flex-start; }
-  .hero-stats { width: 100%; }
+  .hero-stats { width: calc(100% - 32px) !important; margin: 0 16px; }
   
-  .sum-grid-new { grid-template-columns: 1fr; gap: 12px; }
-  
-  .giant-input { font-size: 32px; }
-  
-  .recent-item { padding: 16px; flex-direction: row; justify-content: space-between; }
+  /* HISTORY ITEM (RIWAYAT TRANSAKSI): BULET MEMANJANG 100% MENTOK LAYAR (SAMA SEPERTI LAMA) */
+  .list-wrap { padding: 0 !important; margin: 0 !important; width: 100%; }
+  .recent-item { 
+    width: 100% !important; 
+    margin: 0 0 12px 0 !important; 
+    padding: 16px 16px !important; 
+    border-radius: 24px !important; 
+    border-left: none !important; 
+    border-right: none !important;
+    background: var(--card); 
+  }
   .ri-right-wrap { margin-left: 0; align-items: flex-end; }
   
-  /* MOBILE BOTTOM NAV SEBAGAI GANTI SIDEBAR */
+  /* MOBILE BOTTOM NAV */
   .mobile-bottom-nav {
     position: fixed; bottom: 0; left: 0; right: 0;
     background: rgba(18, 18, 21, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
@@ -323,10 +372,6 @@ textarea.m-input { height: 100px; resize: none; }
   .mb-nav-item.active { color: var(--blue); background: var(--bg3); }
   .mb-nav-icon { font-size: 20px; display: block; margin-bottom: 4px; }
 }
-
-@media (min-width: 901px) {
-  .mobile-bottom-nav { display: none; }
-}
 </style>
 </head>
 <body>
@@ -334,19 +379,19 @@ textarea.m-input { height: 100px; resize: none; }
 <div id="auth-screen">
   <div class="auth-box">
     <img src="RHN LOGO.jpg" alt="Logo" class="auth-logo" onerror="this.style.display='none'">
-    <h1 style="font-size: 24px; font-weight: 800; margin-bottom: 8px; color: var(--text);">RHN CAPITAL</h1>
-    <p style="color: var(--text3); font-size: 13px; margin-bottom: 32px;">Sistem Manajemen Arus Keuangan</p>
+    <h1 style="font-size: 22px; font-weight: 800; margin-bottom: 4px; color: var(--text);">RHN CAPITAL</h1>
+    <p style="color: var(--text3); font-size: 12px; font-weight: 500; margin-bottom: 24px;">Arus Keuangan Akses Masuk</p>
     
     <div class="type-switcher" style="margin-bottom: 24px;">
       <button class="ts-btn income active" id="tab-login" onclick="switchTab('login')">Masuk</button>
       <button class="ts-btn expense" id="tab-register" onclick="switchTab('register')">Daftar</button>
     </div>
     
-    <div id="auth-err" style="color:var(--red2); font-size:12px; margin-bottom:16px; display:none;"></div>
-    <input type="email" id="auth-email" class="m-input" placeholder="Alamat Email">
-    <input type="password" id="auth-pass" class="m-input" placeholder="Kata Sandi" onkeydown="if(event.key==='Enter')doAuth()">
-    <div id="field-confirm" style="display:none"><input type="password" id="auth-pass2" class="m-input" placeholder="Ulangi Kata Sandi"></div>
-    <button class="btn-primary" id="auth-submit-btn" onclick="doAuth()" style="margin-top: 8px;">AKSES MASUK</button>
+    <div id="auth-err" style="color:var(--red2); font-size:12px; margin-bottom:12px; display:none;"></div>
+    <div class="form-row"><input type="email" id="auth-email" class="f-input-dark" placeholder="Email"></div>
+    <div class="form-row"><input type="password" id="auth-pass" class="f-input-dark" placeholder="Sandi" onkeydown="if(event.key==='Enter')doAuth()"></div>
+    <div class="form-row" id="field-confirm" style="display:none"><input type="password" id="auth-pass2" class="f-input-dark" placeholder="Ulangi Sandi"></div>
+    <button class="btn-primary" id="auth-submit-btn" onclick="doAuth()" style="margin-top: 8px;">MASUK</button>
   </div>
 </div>
 
@@ -388,7 +433,7 @@ textarea.m-input { height: 100px; resize: none; }
   <main class="main-content">
     
     <header class="top-header">
-      <div style="font-weight: 700; font-size: 18px; color: var(--text);" id="mobile-page-title">Dashboard</div>
+      <div style="font-weight: 800; font-size: 16px; color: var(--text);" id="mobile-page-title">Dashboard</div>
       <div class="usd-pill" id="usd-rate-val">Memuat Kurs...</div>
     </header>
 
@@ -401,18 +446,26 @@ textarea.m-input { height: 100px; resize: none; }
         <div class="card col-form modern-form">
           <div class="card-title">Catat Transaksi</div>
           <div class="type-switcher">
-            <button class="ts-btn income active" id="btn-inc" onclick="selType('income')">Pemasukan</button>
-            <button class="ts-btn expense" id="btn-exp" onclick="selType('expense')">Pengeluaran</button>
+            <button class="ts-btn income active" id="btn-inc" onclick="selType('income')">+ Pemasukan</button>
+            <button class="ts-btn expense" id="btn-exp" onclick="selType('expense')">- Pengeluaran</button>
           </div>
           
-          <div class="giant-input-wrap">
-            <label>Jumlah Nominal (IDR)</label>
-            <input type="number" id="f-amount" class="giant-input" placeholder="0">
+          <div class="form-row">
+            <label class="form-label">JUMLAH (RP)</label>
+            <input type="number" id="f-amount" class="f-input-dark" placeholder="0">
           </div>
-          
-          <select id="f-cat" class="m-input"></select>
-          <input type="text" id="f-note" class="m-input" placeholder="Keterangan singkat...">
-          <input type="datetime-local" id="f-date" class="m-input">
+          <div class="form-row">
+            <label class="form-label">KATEGORI</label>
+            <select id="f-cat" class="f-input-dark"></select>
+          </div>
+          <div class="form-row">
+            <label class="form-label">KETERANGAN</label>
+            <input type="text" id="f-note" class="f-input-dark" placeholder="Keterangan singkat...">
+          </div>
+          <div class="form-row">
+            <label class="form-label">WAKTU</label>
+            <input type="datetime-local" id="f-date" class="f-input-dark">
+          </div>
           
           <button class="btn-primary" id="save-btn" onclick="addTx()">SIMPAN TRANSAKSI</button>
         </div>
@@ -429,7 +482,7 @@ textarea.m-input { height: 100px; resize: none; }
     </div>
 
     <div id="page-harian" class="page">
-      <input type="date" id="pick-daily" onchange="renderDaily()" class="m-input" style="max-width: 250px; margin-bottom: 24px;">
+      <input type="date" id="pick-daily" onchange="renderDaily()" class="f-input-dark" style="max-width: 250px; margin-bottom: 24px;">
       <div class="sum-grid-new" id="daily-sum"></div>
       <div class="card"><div id="daily-body" class="list-wrap"></div></div>
     </div>
@@ -458,12 +511,12 @@ textarea.m-input { height: 100px; resize: none; }
     <div id="page-riwayat" class="page">
       <div class="sum-grid-new" id="all-sum"></div>
       <div class="card" style="margin-bottom: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
-        <select id="flt-type" class="m-input" style="margin: 0; min-width: 200px; flex: 1;" onchange="renderAll()">
+        <select id="flt-type" class="f-input-dark" style="margin: 0; min-width: 200px; flex: 1;" onchange="renderAll()">
           <option value="">Semua Filter</option>
           <option value="income">Pemasukan Saja</option>
           <option value="expense">Pengeluaran Saja</option>
         </select>
-        <input type="text" id="flt-search" class="m-input" style="margin: 0; flex: 2; min-width: 250px;" placeholder="Cari berdasarkan keterangan atau kategori..." oninput="renderAll()">
+        <input type="text" id="flt-search" class="f-input-dark" style="margin: 0; flex: 2; min-width: 250px;" placeholder="Cari berdasarkan keterangan atau kategori..." oninput="renderAll()">
       </div>
       <div class="card"><div id="all-body" class="list-wrap"></div></div>
     </div>
@@ -520,10 +573,10 @@ fetchUSDRate().then(initLiveUSD); setInterval(fetchUSDRate, 300000);
 
 function showErr(msg){ const el=document.getElementById('auth-err'); el.textContent=msg; el.style.display='block'; }
 function hideErr(){ document.getElementById('auth-err').style.display='none'; }
-function setLoading(on){ document.getElementById('auth-submit-btn').disabled=on; document.getElementById('auth-submit-btn').textContent=on?'Memproses...':(authMode==='login'?'AKSES MASUK':'DAFTAR'); }
+function setLoading(on){ document.getElementById('auth-submit-btn').disabled=on; document.getElementById('auth-submit-btn').textContent=on?'Memproses...':(authMode==='login'?'MASUK':'DAFTAR'); }
 function setSyncStatus(ok){ document.getElementById('sync-dot').style.background=ok?'var(--green2)':'var(--red2)'; document.getElementById('sync-label').textContent=ok?'Terhubung':'Offline'; document.getElementById('sync-dot').style.boxShadow = ok ? '0 0 8px var(--green2)' : 'none'; }
 
-window.switchTab=function(mode){ authMode=mode; document.getElementById('tab-login').classList.toggle('active',mode==='login'); document.getElementById('tab-register').classList.toggle('active',mode==='register'); document.getElementById('field-confirm').style.display=mode==='register'?'block':'none'; document.getElementById('auth-submit-btn').textContent=mode==='login'?'AKSES MASUK':'DAFTAR'; hideErr(); };
+window.switchTab=function(mode){ authMode=mode; document.getElementById('tab-login').classList.toggle('active',mode==='login'); document.getElementById('tab-register').classList.toggle('active',mode==='register'); document.getElementById('field-confirm').style.display=mode==='register'?'block':'none'; document.getElementById('auth-submit-btn').textContent=mode==='login'?'MASUK':'DAFTAR'; hideErr(); };
 window.doAuth=async function(){ const email=document.getElementById('auth-email').value.trim(), pass=document.getElementById('auth-pass').value; hideErr(); if(!email||!pass)return showErr('Kredensial kosong.'); setLoading(true); try{ if(authMode==='login') await signInWithEmailAndPassword(auth,email,pass); else { if(pass!==document.getElementById('auth-pass2').value)return showErr('Sandi beda.'); await createUserWithEmailAndPassword(auth,email,pass); } } catch(e){ showErr(e.message); setLoading(false); } };
 window.doLogout=async function(){ if(unsubListener){unsubListener();unsubListener=null;} txs=[]; await signOut(auth); };
 
