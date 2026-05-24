@@ -7,7 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 /* ==========================================================================
-   TEMA NEO-FINTECH MODERN (ANTI MIRING & CENTER ALIGNED)
+   TEMA NEO-FINTECH MODERN (PERFECT ALIGNMENT & FULL SCREEN FIX)
    ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -102,7 +102,10 @@ body {
 .col-form { grid-column: span 5; }
 .col-history { grid-column: span 7; }
 
-.card { background: var(--bg-card); border-radius: 24px; padding: 24px; border: 1px solid var(--border); height: 100%; display: flex; flex-direction: column; }
+/* FIX KARTU (CARD) AGAR TIDAK MELAR RAKSASA DI HALAMAN LAIN */
+.card { background: var(--bg-card); border-radius: 24px; padding: 24px; border: 1px solid var(--border); display: flex; flex-direction: column; }
+/* KHUSUS KARTU DI DASHBOARD AGAR SEJAJAR */
+.bento-grid .card { height: 100%; }
 
 /* DASHBOARD METRICS: PUSAT DI TENGAH (CENTER ALIGNED) */
 .hero-balance-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; padding: 10px 0; }
@@ -122,7 +125,7 @@ body {
 .giant-input { width: 100%; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 36px; font-weight: 800; color: var(--text-main); background: transparent; border: none; outline: none; }
 .m-input { width: 100%; padding: 14px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 16px; color: var(--text-main); font-size: 14px; outline: none; margin-bottom: 12px; }
 
-/* Memaksa tombol simpan selalu menempel di dasar card */
+/* Memaksa tombol simpan selalu menempel di dasar card (hanya berefek jika di dalam bento-grid) */
 .btn-primary { 
   width: 100%; padding: 16px; background: var(--accent); color: #fff; border: none; 
   border-radius: 16px; font-size: 14px; font-weight: 800; cursor: pointer; 
@@ -165,14 +168,14 @@ body {
   .main-content { padding-bottom: 85px; }
   
   /* Form & History menyatu tanpa jarak pinggir */
-  .card { border-radius: 0; border-left: none; border-right: none; border-bottom: 1px solid var(--border); padding: 24px 16px; height: auto; }
+  .card { border-radius: 0; border-left: none; border-right: none; border-bottom: 1px solid var(--border); padding: 24px 16px; }
   .col-hero, .col-form, .col-history { grid-column: span 12; }
   .bento-grid { gap: 0; }
   
   /* Pastikan stats di HP juga rapi */
   .hero-stats { flex-direction: row; justify-content: center; gap: 12px; }
   .hs-box { max-width: none; flex: 1; padding: 12px; justify-content: center; }
-  .sum-grid-new { grid-template-columns: 1fr; gap: 12px; padding: 16px; margin-bottom: 0; }
+  .sum-grid-new { grid-template-columns: 1fr; gap: 12px; padding: 16px; margin-bottom: 0; border-bottom: none; }
   
   .mobile-bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(24,24,27,0.98); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; padding: 12px 8px 24px; z-index: 100; justify-content: space-between; }
   .mb-nav-item { flex: 1; text-align: center; color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
@@ -296,7 +299,7 @@ body {
 
     <div id="page-riwayat" class="page">
       <div class="sum-grid-new" id="all-sum"></div>
-      <div class="card" style="margin-bottom: 20px; display: flex; flex-direction: row; gap: 12px; flex-wrap: wrap;">
+      <div class="card" style="margin-bottom: 20px; display: flex; flex-direction: row; gap: 12px; flex-wrap: wrap; align-items: center;">
         <select id="flt-type" class="m-input" style="margin: 0; min-width: 200px; flex: 1;" onchange="renderAll()">
           <option value="">Semua Filter</option>
           <option value="income">Pemasukan Saja</option>
