@@ -7,7 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 /* ==========================================================================
-   TEMA NEO-FINTECH MODERN (PERFECT ALIGNMENT & FULL SCREEN FIX)
+   TEMA NEO-FINTECH MODERN (ANTI MIRING & KARTU PRESISI)
    ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -31,9 +31,10 @@ body.light-mode {
   --text-main: #09090b; --text-muted: #71717a;
 }
 
-/* ANTI MIRING / HORIZONTAL SCROLL FIX */
+/* ANTI MIRING / HORIZONTAL SCROLL FIX PADA LAYAR UTAMA */
 html, body {
-  max-width: 100vw;
+  width: 100%;
+  max-width: 100%;
   overflow-x: hidden;
 }
 
@@ -45,7 +46,7 @@ body {
 }
 
 /* SIDEBAR & SCROLLBAR */
-.app-container { display: flex; width: 100%; height: 100vh; max-width: 100vw; overflow-x: hidden; }
+.app-container { display: flex; width: 100%; height: 100vh; overflow-x: hidden; }
 .sidebar {
   width: 290px; background: var(--bg-sidebar); border-right: 1px solid var(--border);
   display: flex; flex-direction: column; overflow-y: auto; z-index: 50; flex-shrink: 0;
@@ -88,7 +89,7 @@ body {
 .btn-outline:hover { background: var(--bg-hover); }
 
 /* MAIN CONTENT */
-.main-content { flex: 1; height: 100vh; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; position: relative; }
+.main-content { flex: 1; height: 100vh; width: 100%; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; position: relative; }
 .top-header { padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: rgba(var(--bg-app), 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 10; border-bottom: 1px solid var(--border); }
 .usd-pill { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 13px; background: var(--bg-input); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); white-space: nowrap; }
 
@@ -96,21 +97,20 @@ body {
 .page.active { display: block; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* BENTO GRID */
+/* PERBAIKAN: KARTU SECARA DEFAULT TIDAK MEMANJANG (HEIGHT AUTO) */
+.card { background: var(--bg-card); border-radius: 24px; padding: 24px; border: 1px solid var(--border); }
+
+/* KHUSUS KARTU DI DALAM BENTO-GRID DASHBOARD YANG DIBUAT SEJAJAR */
 .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; align-items: stretch; }
+.bento-grid .card { height: 100%; display: flex; flex-direction: column; }
 .col-hero { grid-column: span 12; }
 .col-form { grid-column: span 5; }
 .col-history { grid-column: span 7; }
 
-/* FIX KARTU (CARD) AGAR TIDAK MELAR RAKSASA DI HALAMAN LAIN */
-.card { background: var(--bg-card); border-radius: 24px; padding: 24px; border: 1px solid var(--border); display: flex; flex-direction: column; }
-/* KHUSUS KARTU DI DASHBOARD AGAR SEJAJAR */
-.bento-grid .card { height: 100%; }
-
 /* DASHBOARD METRICS: PUSAT DI TENGAH (CENTER ALIGNED) */
 .hero-balance-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; padding: 10px 0; }
 .hb-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
-.hb-val { font-family: 'JetBrains Mono', monospace; font-size: 42px; font-weight: 800; line-height: 1.2; margin-bottom: 4px; letter-spacing: -1px; white-space: nowrap; /* Memaksa Rp sejajar */ }
+.hb-val { font-family: 'JetBrains Mono', monospace; font-size: 42px; font-weight: 800; line-height: 1.2; margin-bottom: 4px; letter-spacing: -1px; white-space: nowrap; }
 .hb-usd { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--text-muted); font-weight: 600; margin-bottom: 24px; }
 .hero-stats { display: flex; gap: 16px; width: 100%; justify-content: center; flex-wrap: wrap; }
 .hs-box { padding: 12px 20px; border-radius: 16px; flex: 1; max-width: 200px; display: flex; align-items: center; justify-content: flex-start; gap: 12px; background: var(--bg-input); border: 1px solid var(--border); }
@@ -125,7 +125,7 @@ body {
 .giant-input { width: 100%; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 36px; font-weight: 800; color: var(--text-main); background: transparent; border: none; outline: none; }
 .m-input { width: 100%; padding: 14px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 16px; color: var(--text-main); font-size: 14px; outline: none; margin-bottom: 12px; }
 
-/* Memaksa tombol simpan selalu menempel di dasar card (hanya berefek jika di dalam bento-grid) */
+/* Tombol simpan menempel di dasar card pada dashboard */
 .btn-primary { 
   width: 100%; padding: 16px; background: var(--accent); color: #fff; border: none; 
   border-radius: 16px; font-size: 14px; font-weight: 800; cursor: pointer; 
@@ -133,10 +133,8 @@ body {
 }
 .btn-primary:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
-/* Membatasi tinggi History List agar tidak molor panjang & bisa discroll */
+/* History List */
 #recent-list { flex: 1; overflow-y: auto; max-height: 400px; padding-right: 8px; }
-
-/* Tx Item */
 .tx-item { display: flex; align-items: center; padding: 14px; border-bottom: 1px solid var(--border); transition: 0.2s; }
 .tx-item:hover { background: var(--bg-input); border-radius: 16px; border-bottom-color: transparent; }
 .tx-item:last-child { border-bottom: none; }
@@ -147,17 +145,26 @@ body {
 .tx-title { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; }
 .tx-badge { font-size: 9px; background: var(--bg-app); border: 1px solid var(--border); padding: 2px 6px; border-radius: 6px; margin-left: 8px; flex-shrink: 0; color: var(--text-muted); font-weight: 700;}
 .tx-date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-.tx-amount { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 800; text-align: right; white-space: nowrap; /* Memaksa Rp sejajar */ }
+.tx-amount { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 800; text-align: right; white-space: nowrap; }
 .tx-del { color: var(--expense); font-size: 10px; font-weight: 800; cursor: pointer; background: transparent; border: none; margin-top: 4px; padding: 4px; }
 
+/* Filter Container untuk Riwayat */
+.filter-container { display: flex; flex-direction: row; gap: 12px; align-items: center; width: 100%; margin-bottom: 20px; }
+@media (max-width: 900px) {
+  .filter-container { flex-direction: column; gap: 8px; }
+}
+
 /* Period Bar & Grid Card for Laporan */
-.period-bar { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: 20px; }
+.period-bar { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: 20px; width: 100%; }
 .p-btn { padding: 12px 24px; border: 1px solid var(--border); border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; background: var(--bg-card); color: var(--text-muted); white-space: nowrap; transition: 0.2s; }
 .p-btn.active { background: var(--text-main); color: var(--bg-app); border-color: var(--text-main); }
 .sum-grid-new { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
 .sg-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; text-align: center; }
 .sg-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
 .sg-val { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 800; color: var(--text-main); white-space: nowrap; }
+
+/* NAVIGASI TAB LAPORAN (HANYA MUNCUL DI HP) */
+.mobile-tab-nav { display: none; }
 
 /* MOBILE FULL SCREEN MENTOK LAYAR - ANTI MIRING */
 @media (max-width: 900px) {
@@ -167,15 +174,19 @@ body {
   .page { padding: 0 !important; } 
   .main-content { padding-bottom: 85px; }
   
-  /* Form & History menyatu tanpa jarak pinggir */
+  /* Hilangkan sisi kartu di hp agar menyatu full layar */
   .card { border-radius: 0; border-left: none; border-right: none; border-bottom: 1px solid var(--border); padding: 24px 16px; }
   .col-hero, .col-form, .col-history { grid-column: span 12; }
   .bento-grid { gap: 0; }
   
-  /* Pastikan stats di HP juga rapi */
   .hero-stats { flex-direction: row; justify-content: center; gap: 12px; }
   .hs-box { max-width: none; flex: 1; padding: 12px; justify-content: center; }
   .sum-grid-new { grid-template-columns: 1fr; gap: 12px; padding: 16px; margin-bottom: 0; border-bottom: none; }
+  
+  /* Sub-menu pintar laporan di HP */
+  .mobile-tab-nav { display: flex; background: var(--bg-input); border-radius: 12px; padding: 4px; margin: 16px; gap: 4px; }
+  .mobile-tab-btn { flex: 1; padding: 10px; text-align: center; font-size: 11px; font-weight: 700; color: var(--text-muted); border-radius: 8px; cursor: pointer; transition: 0.2s; }
+  .mobile-tab-btn.active { background: var(--accent); color: #fff; }
   
   .mobile-bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(24,24,27,0.98); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; padding: 12px 8px 24px; z-index: 100; justify-content: space-between; }
   .mb-nav-item { flex: 1; text-align: center; color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
@@ -244,7 +255,6 @@ body {
     <div id="page-dashboard" class="page active">
       <div class="bento-grid">
         <div class="card col-hero" id="metric-cards"></div>
-        
         <div class="card col-form">
           <div style="font-weight: 800; margin-bottom: 16px;">CATAT TRANSAKSI</div>
           <div class="type-switcher" style="display:flex; background:var(--bg-input); padding:4px; border-radius:12px; margin-bottom:20px;">
@@ -277,35 +287,50 @@ body {
     </div>
 
     <div id="page-mingguan" class="page">
+      <div class="mobile-tab-nav">
+        <div class="mobile-tab-btn active" onclick="switchPage('mingguan')">Mingguan</div>
+        <div class="mobile-tab-btn" onclick="switchPage('bulanan')">Bulanan</div>
+        <div class="mobile-tab-btn" onclick="switchPage('tahunan')">Tahunan</div>
+      </div>
       <div style="padding: 16px;"><div class="period-bar" id="week-sel"></div></div>
       <div class="sum-grid-new" id="week-sum"></div>
-      <div class="card" style="margin-bottom: 20px;"><div style="height:250px"><canvas id="chartWeek"></canvas></div></div>
+      <div class="card" style="margin-bottom: 20px;"><div style="position: relative; height:250px; width: 100%;"><canvas id="chartWeek"></canvas></div></div>
       <div class="card"><div id="week-body"></div></div>
     </div>
 
     <div id="page-bulanan" class="page">
+      <div class="mobile-tab-nav">
+        <div class="mobile-tab-btn" onclick="switchPage('mingguan')">Mingguan</div>
+        <div class="mobile-tab-btn active" onclick="switchPage('bulanan')">Bulanan</div>
+        <div class="mobile-tab-btn" onclick="switchPage('tahunan')">Tahunan</div>
+      </div>
       <div style="padding: 16px;"><div class="period-bar" id="month-sel"></div></div>
       <div class="sum-grid-new" id="month-sum"></div>
-      <div class="card" style="margin-bottom: 20px;"><div style="height:250px"><canvas id="chartMonth"></canvas></div></div>
+      <div class="card" style="margin-bottom: 20px;"><div style="position: relative; height:250px; width: 100%;"><canvas id="chartMonth"></canvas></div></div>
       <div class="card"><div id="month-body"></div></div>
     </div>
 
     <div id="page-tahunan" class="page">
+      <div class="mobile-tab-nav">
+        <div class="mobile-tab-btn" onclick="switchPage('mingguan')">Mingguan</div>
+        <div class="mobile-tab-btn" onclick="switchPage('bulanan')">Bulanan</div>
+        <div class="mobile-tab-btn active" onclick="switchPage('tahunan')">Tahunan</div>
+      </div>
       <div style="padding: 16px;"><div class="period-bar" id="year-sel"></div></div>
       <div class="sum-grid-new" id="year-sum"></div>
-      <div class="card" style="margin-bottom: 20px;"><div style="height:250px"><canvas id="chartYear"></canvas></div></div>
+      <div class="card" style="margin-bottom: 20px;"><div style="position: relative; height:250px; width: 100%;"><canvas id="chartYear"></canvas></div></div>
       <div class="card"><div id="year-body"></div></div>
     </div>
 
     <div id="page-riwayat" class="page">
       <div class="sum-grid-new" id="all-sum"></div>
-      <div class="card" style="margin-bottom: 20px; display: flex; flex-direction: row; gap: 12px; flex-wrap: wrap; align-items: center;">
-        <select id="flt-type" class="m-input" style="margin: 0; min-width: 200px; flex: 1;" onchange="renderAll()">
+      <div class="card filter-container">
+        <select id="flt-type" class="m-input" style="margin: 0; flex: 1; width: 100%;" onchange="renderAll()">
           <option value="">Semua Filter</option>
           <option value="income">Pemasukan Saja</option>
           <option value="expense">Pengeluaran Saja</option>
         </select>
-        <input type="text" id="flt-search" class="m-input" style="margin: 0; flex: 2; min-width: 200px;" placeholder="Cari keterangan..." oninput="renderAll()">
+        <input type="text" id="flt-search" class="m-input" style="margin: 0; flex: 2; width: 100%;" placeholder="Cari keterangan..." oninput="renderAll()">
       </div>
       <div class="card"><div id="all-body"></div></div>
     </div>
@@ -424,7 +449,6 @@ function renderSumGrid(el,arr){
 const createTxCard = (t) => `<div class="tx-item"><div class="tx-icon ${t.type}">${t.type==='income'?'↙':'↗'}</div><div class="tx-info"><div class="tx-title">${t.note} <span class="tx-badge">${t.category}</span></div><div class="tx-date">${fmtDate(t.date)}</div></div><div style="text-align:right;"><div class="tx-amount ${t.type}">${t.type==='income'?'+':'-'}${fmt(t.amount)}</div><button class="tx-del" onclick="delTx('${t.id}')">Hapus</button></div></div>`;
 function renderList(container, arr) { if(container) container.innerHTML = arr.length ? arr.map(t => createTxCard(t)).join('') : '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:12px;">Belum ada data.</div>'; }
 
-/* TOTAL SALDO BERSIH DITENGAH / CENTER ALIGNED */
 function renderMetrics(){
   const inc=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0), exp=txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0), bal=inc-exp;
   document.getElementById('metric-cards').innerHTML=`
