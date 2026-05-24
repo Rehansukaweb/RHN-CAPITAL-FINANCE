@@ -7,7 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 /* ==========================================================================
-   TEMA NEO-FINTECH MODERN (ALIGNED CARDS & FULL SCREEN MOBILE)
+   TEMA NEO-FINTECH MODERN (FULL & ALIGNED)
    ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -77,7 +77,8 @@ body {
 .nav-item.active { background: var(--accent); color: #fff; }
 
 .sidebar-footer { padding: 16px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
-.btn-outline { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: transparent; color: var(--text-main); font-weight: 600; font-size: 11px; cursor: pointer; text-align: left; }
+.btn-outline { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: transparent; color: var(--text-main); font-weight: 600; font-size: 11px; cursor: pointer; text-align: left; transition: 0.2s; }
+.btn-outline:hover { background: var(--bg-hover); }
 
 /* MAIN CONTENT */
 .main-content { flex: 1; height: 100vh; overflow-y: auto; scroll-behavior: smooth; }
@@ -137,6 +138,15 @@ body {
 .tx-amount { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 800; text-align: right; }
 .tx-del { color: var(--expense); font-size: 10px; font-weight: 800; cursor: pointer; background: transparent; border: none; margin-top: 4px; }
 
+/* Period Bar & Grid Card for Laporan */
+.period-bar { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: 20px; }
+.p-btn { padding: 12px 24px; border: 1px solid var(--border); border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; background: var(--bg-card); color: var(--text-muted); white-space: nowrap; transition: 0.2s; }
+.p-btn.active { background: var(--text-main); color: var(--bg-app); border-color: var(--text-main); }
+.sum-grid-new { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.sg-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; text-align: center; }
+.sg-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+.sg-val { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 800; color: var(--text-main); }
+
 /* MOBILE FULL SCREEN MENTOK LAYAR */
 @media (max-width: 900px) {
   .sidebar { display: none; }
@@ -147,15 +157,16 @@ body {
   .main-content { padding-bottom: 80px; }
   
   /* Form & History menyatu tanpa jarak pinggir */
-  .card { border-radius: 0; border-left: none; border-right: none; border-bottom: 1px solid var(--border); padding: 20px 16px; }
+  .card { border-radius: 0; border-left: none; border-right: none; border-bottom: 1px solid var(--border); padding: 20px 16px; height: auto; }
   .col-hero, .col-form, .col-history { grid-column: span 12; }
   .bento-grid { gap: 0; }
   
   .hero-balance-wrapper { flex-direction: column; align-items: flex-start; }
   .hero-stats { width: 100%; justify-content: flex-start; }
+  .sum-grid-new { grid-template-columns: 1fr; gap: 12px; padding: 16px; }
   
   .mobile-bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(24,24,27,0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-top: 1px solid var(--border); display: flex; padding: 10px 10px 25px; z-index: 100; justify-content: space-between; }
-  .mb-nav-item { flex: 1; text-align: center; color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; }
+  .mb-nav-item { flex: 1; text-align: center; color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; cursor: pointer; }
   .mb-nav-item.active { color: var(--accent); }
   .mb-nav-icon { font-size: 20px; display: block; margin-bottom: 4px; }
 }
@@ -221,7 +232,6 @@ body {
     <div id="page-dashboard" class="page active">
       <div class="bento-grid">
         <div class="card col-hero" id="metric-cards"></div>
-        
         <div class="card col-form">
           <div style="font-weight: 800; margin-bottom: 16px;">CATAT TRANSAKSI</div>
           <div class="type-switcher" style="display:flex; background:var(--bg-input); padding:4px; border-radius:12px; margin-bottom:20px;">
@@ -234,7 +244,6 @@ body {
           <input type="datetime-local" id="f-date" class="m-input">
           <button class="btn-primary" id="save-btn" onclick="addTx()">SIMPAN TRANSAKSI</button>
         </div>
-
         <div class="card col-history">
           <div style="font-weight: 800; margin-bottom: 16px;">AKTIVITAS TERBARU</div>
           <div id="recent-list"></div>
@@ -242,17 +251,61 @@ body {
       </div>
     </div>
 
-    <div id="page-harian" class="page">...</div>
-    <div id="page-bulanan" class="page">...</div>
-    <div id="page-riwayat" class="page">...</div>
+    <div id="page-harian" class="page">
+      <div style="padding: 16px;">
+        <input type="date" id="pick-daily" onchange="renderDaily()" class="m-input" style="max-width: 250px; margin-bottom: 24px;">
+      </div>
+      <div class="sum-grid-new" id="daily-sum"></div>
+      <div class="card"><div id="daily-body"></div></div>
+    </div>
+
+    <div id="page-mingguan" class="page">
+      <div style="padding: 16px;"><div class="period-bar" id="week-sel"></div></div>
+      <div class="sum-grid-new" id="week-sum"></div>
+      <div class="card" style="margin-bottom: 20px;"><div style="height:250px"><canvas id="chartWeek"></canvas></div></div>
+      <div class="card"><div id="week-body"></div></div>
+    </div>
+
+    <div id="page-bulanan" class="page">
+      <div style="padding: 16px;"><div class="period-bar" id="month-sel"></div></div>
+      <div class="sum-grid-new" id="month-sum"></div>
+      <div class="card" style="margin-bottom: 20px;"><div style="height:250px"><canvas id="chartMonth"></canvas></div></div>
+      <div class="card"><div id="month-body"></div></div>
+    </div>
+
+    <div id="page-tahunan" class="page">
+      <div style="padding: 16px;"><div class="period-bar" id="year-sel"></div></div>
+      <div class="sum-grid-new" id="year-sum"></div>
+      <div class="card" style="margin-bottom: 20px;"><div style="height:250px"><canvas id="chartYear"></canvas></div></div>
+      <div class="card"><div id="year-body"></div></div>
+    </div>
+
+    <div id="page-riwayat" class="page">
+      <div class="sum-grid-new" id="all-sum"></div>
+      <div class="card" style="margin-bottom: 20px; display: flex; flex-direction: row; gap: 12px; flex-wrap: wrap;">
+        <select id="flt-type" class="m-input" style="margin: 0; min-width: 200px; flex: 1;" onchange="renderAll()">
+          <option value="">Semua Filter</option>
+          <option value="income">Pemasukan Saja</option>
+          <option value="expense">Pengeluaran Saja</option>
+        </select>
+        <input type="text" id="flt-search" class="m-input" style="margin: 0; flex: 2; min-width: 200px;" placeholder="Cari keterangan..." oninput="renderAll()">
+      </div>
+      <div class="card"><div id="all-body"></div></div>
+    </div>
     
     <div id="page-profil" class="page" style="padding:20px !important;">
-      <div class="card" style="text-align:center; padding: 40px 20px;">
+      <div class="card" style="text-align:center; padding: 40px 20px; border-radius: 24px;">
         <div class="u-avatar" id="mobile-user-avatar" style="margin:0 auto 10px; width:60px; height:60px; font-size:24px;">?</div>
         <div id="mobile-user-name" style="font-weight:800; font-size:18px;">...</div>
-        <div style="display: flex; gap:10px; justify-content:center; margin-top:20px;">
+        <div style="display: flex; gap:10px; justify-content:center; margin-top:20px; margin-bottom: 30px;">
           <button class="action-btn" onclick="toggleTheme()" style="padding: 12px 20px; font-size:16px;">🌙 Tema</button>
           <button class="action-btn logout" onclick="doLogout()" style="padding: 12px 20px; font-size:14px;">KELUAR AKUN</button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; text-align: left;">
+          <button class="btn-outline" onclick="window.location.href='latar.html'">↗ Web RHN Capital</button>
+          <button class="btn-outline" onclick="window.location.href='jurnal.html'">↗ Jurnal Forex</button>
+          <button class="btn-outline" onclick="window.location.href='aset.html'">↗ Jurnal Aset</button>
+          <button class="btn-outline" onclick="window.location.href='data.html'">↗ Data Pribadi</button>
         </div>
       </div>
     </div>
@@ -325,19 +378,67 @@ window.switchPage=function(p){
   document.getElementById('page-'+p).classList.add('active'); 
   document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.mb-nav-item').forEach(el=>el.classList.remove('active'));
+  
+  // Update nav UI active states
+  const titles = { 'dashboard':'Dashboard', 'harian':'Laporan Harian', 'mingguan':'Laporan Mingguan', 'bulanan':'Laporan Bulanan', 'tahunan':'Laporan Tahunan', 'riwayat':'Semua Riwayat', 'profil':'Profil Saya' };
+  document.getElementById('mobile-page-title').textContent = titles[p];
+
+  const navItems = document.querySelectorAll('.nav-item');
+  const pages=['dashboard','harian','mingguan','bulanan','tahunan','riwayat']; 
+  const idx = pages.indexOf(p);
+  if(navItems[idx]) navItems[idx].classList.add('active');
+
+  const mbNavItems = document.querySelectorAll('.mb-nav-item');
+  if(p==='dashboard') mbNavItems[0].classList.add('active');
+  else if(p==='harian') mbNavItems[1].classList.add('active');
+  else if(p==='mingguan' || p==='bulanan' || p==='tahunan') mbNavItems[2].classList.add('active');
+  else if(p==='riwayat') mbNavItems[3].classList.add('active');
+  else if(p==='profil') mbNavItems[4].classList.add('active');
+
   activePage=p; refreshAll(); 
 };
 
-const createTxCard = (t) => `<div class="tx-item"><div class="tx-icon ${t.type}">${t.type==='income'?'↙':'↗'}</div><div class="tx-info"><div class="tx-title">${t.note} <span style="font-size:9px; background:var(--bg-app); padding:2px 4px; border-radius:4px;">${t.category}</span></div><div class="tx-date">${fmtDate(t.date)}</div></div><div style="text-align:right;"><div class="tx-amount ${t.type}">${t.type==='income'?'+':'-'}${fmt(t.amount)}</div><button class="tx-del" onclick="delTx('${t.id}')">Hapus</button></div></div>`;
-function renderList(container, arr) { if(container) container.innerHTML = arr.length ? arr.map(t => createTxCard(t)).join('') : '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:12px;">Belum ada riwayat transaksi.</div>'; }
+function calcSum(arr){ const inc=arr.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0), exp=arr.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0); return{inc,exp,bal:inc-exp,count:arr.length}; }
+
+function renderSumGrid(el,arr){ 
+  const s=calcSum(arr); 
+  el.innerHTML=`<div class="sg-card inc"><div class="sg-label">Pemasukan</div><div class="sg-val">${fmt(s.inc)}</div></div><div class="sg-card"><div class="sg-label">Pengeluaran</div><div class="sg-val" style="color:var(--expense);">${fmt(s.exp)}</div></div><div class="sg-card"><div class="sg-label">Saldo Bersih</div><div class="sg-val" style="color:${s.bal>=0?'var(--text-main)':'var(--expense)'}">${fmt(s.bal)}</div></div>`; 
+}
+
+const createTxCard = (t) => `<div class="tx-item"><div class="tx-icon ${t.type}">${t.type==='income'?'↙':'↗'}</div><div class="tx-info"><div class="tx-title">${t.note} <span style="font-size:9px; background:var(--bg-app); padding:2px 4px; border-radius:4px; margin-left:6px;">${t.category}</span></div><div class="tx-date">${fmtDate(t.date)}</div></div><div style="text-align:right;"><div class="tx-amount ${t.type}">${t.type==='income'?'+':'-'}${fmt(t.amount)}</div><button class="tx-del" onclick="delTx('${t.id}')">Hapus</button></div></div>`;
+function renderList(container, arr) { if(container) container.innerHTML = arr.length ? arr.map(t => createTxCard(t)).join('') : '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:12px;">Belum ada data.</div>'; }
 
 function renderMetrics(){
   const inc=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0), exp=txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0), bal=inc-exp;
   document.getElementById('metric-cards').innerHTML=`<div class="hero-balance-wrapper"><div><div class="hb-label">TOTAL SALDO BERSIH</div><div class="hb-val">${fmt(bal)}</div><div class="hb-usd">${getUSD(bal)} USD</div></div><div class="hero-stats"><div class="hs-box inc"><div class="hs-icon">↙</div><div><div class="hs-l">Masuk</div><div class="hs-v">${fmt(inc)}</div></div></div><div class="hs-box exp"><div class="hs-icon">↗</div><div><div class="hs-l">Keluar</div><div class="hs-v">${fmt(exp)}</div></div></div></div></div>`;
 }
 
-function refreshAll(){ renderMetrics(); renderList(document.getElementById('recent-list'), txs.slice(0,8)); }
-document.getElementById('f-date').value=nowISO(); selType('income');
+function mkChart(id,labels,incData,expData){ if(charts[id]) charts[id].destroy(); const c=document.getElementById(id); if(!c)return; const isLight = document.body.classList.contains('light-mode'); charts[id]=new Chart(c,{type:'bar',data:{labels,datasets:[{label:'Pemasukan',data:incData,backgroundColor:isLight?'#10B981':'#10B981',borderRadius:4},{label:'Pengeluaran',data:expData,backgroundColor:isLight?'#F87171':'#F87171',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:isLight?'#71717a':'#a1a1aa',font:{size:10,family:"'Outfit'"}},grid:{display:false},border:{display:false}},y:{ticks:{color:isLight?'#71717a':'#a1a1aa',font:{size:10},callback:v=>Intl.NumberFormat('id-ID',{notation:'compact'}).format(v)},grid:{color:isLight?'#e4e4e7':'#27272a',drawBorder:false},border:{display:false}}}}}); }
+
+window.renderDaily=function(){ const pick=document.getElementById('pick-daily').value, target=pick?new Date(pick).toDateString():new Date().toDateString(), arr=txs.filter(t=>new Date(t.date).toDateString()===target).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('daily-sum'),arr); renderList(document.getElementById('daily-body'), arr); };
+function wkKey(d){const dt=new Date(d);const day=dt.getDay();const diff=dt.getDate()-day+(day===0?-6:1);return new Date(new Date(d).setDate(diff)).toISOString().slice(0,10)}
+function renderWeekly(){ const weeks={};txs.forEach(t=>{const k=wkKey(t.date);(weeks[k]=weeks[k]||[]).push(t)}); const keys=Object.keys(weeks).sort().reverse().slice(0,8); document.getElementById('week-sel').innerHTML=keys.map((k,i)=>{const m=new Date(k),s=new Date(k);s.setDate(s.getDate()+6);return`<button class="p-btn${i===0?' active':''}" onclick="selWeek('${k}',this)">${m.toLocaleDateString('id-ID',{day:'2-digit',month:'short'})} – ${s.toLocaleDateString('id-ID',{day:'2-digit',month:'short'})}</button>`}).join(''); if(keys.length)showWeek(keys[0]); }
+window.selWeek=function(k,btn){document.querySelectorAll('#week-sel .p-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');showWeek(k)};
+function showWeek(k){ const arr=txs.filter(t=>wkKey(t.date)===k).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('week-sum'),arr); renderList(document.getElementById('week-body'),arr); const days=['Sen','Sel','Rab','Kam','Jum','Sab','Min'],inc=new Array(7).fill(0),exp=new Array(7).fill(0); arr.forEach(t=>{const idx=(new Date(t.date).getDay()+6)%7;if(t.type==='income')inc[idx]+=t.amount;else exp[idx]+=t.amount}); mkChart('chartWeek',days,inc,exp); }
+function renderMonthly(){ const months={};txs.forEach(t=>{const k=t.date.slice(0,7);(months[k]=months[k]||[]).push(t)}); const keys=Object.keys(months).sort().reverse().slice(0,12); document.getElementById('month-sel').innerHTML=keys.map((k,i)=>{const[y,m]=k.split('-');const d=new Date(y,m-1);return`<button class="p-btn${i===0?' active':''}" onclick="selMonth('${k}',this)">${d.toLocaleDateString('id-ID',{month:'long',year:'numeric'})}</button>`}).join(''); if(keys.length)showMonth(keys[0]); }
+window.selMonth=function(k,btn){document.querySelectorAll('#month-sel .p-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');showMonth(k)};
+function showMonth(k){ const arr=txs.filter(t=>t.date.slice(0,7)===k).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('month-sum'),arr); renderList(document.getElementById('month-body'),arr); const[y,m]=k.split('-');const dim=new Date(y,m,0).getDate(), labels=[],inc=new Array(dim).fill(0),exp=new Array(dim).fill(0); for(let i=1;i<=dim;i++)labels.push(i+''); arr.forEach(t=>{const d=new Date(t.date).getDate()-1;if(t.type==='income')inc[d]+=t.amount;else exp[d]+=t.amount}); mkChart('chartMonth',labels,inc,exp); }
+function renderYearly(){ const years={};txs.forEach(t=>{const k=t.date.slice(0,4);(years[k]=years[k]||[]).push(t)}); const keys=Object.keys(years).sort().reverse(); document.getElementById('year-sel').innerHTML=keys.map((k,i)=>`<button class="p-btn${i===0?' active':''}" onclick="selYear('${k}',this)">${k}</button>`).join(''); if(keys.length)showYear(keys[0]); }
+window.selYear=function(k,btn){document.querySelectorAll('#year-sel .p-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');showYear(k)};
+function showYear(k){ const arr=txs.filter(t=>t.date.startsWith(k)).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('year-sum'),arr); renderList(document.getElementById('year-body'),arr); const MNTHS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'], inc=new Array(12).fill(0),exp=new Array(12).fill(0); arr.forEach(t=>{const m=new Date(t.date).getMonth();if(t.type==='income')inc[m]+=t.amount;else exp[m]+=t.amount}); mkChart('chartYear',MNTHS,inc,exp); }
+window.renderAll=function(){ const tf=document.getElementById('flt-type').value, s=(document.getElementById('flt-search').value||'').toLowerCase(); let arr=[...txs]; if(tf)arr=arr.filter(t=>t.type===tf); if(s)arr=arr.filter(t=>t.note.toLowerCase().includes(s)||t.category.toLowerCase().includes(s)); arr.sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('all-sum'),arr); renderList(document.getElementById('all-body'),arr); };
+
+function refreshAll(){ 
+  renderMetrics(); 
+  renderList(document.getElementById('recent-list'), txs.slice(0,8)); 
+  if(activePage==='harian')renderDaily(); 
+  if(activePage==='mingguan')renderWeekly(); 
+  if(activePage==='bulanan')renderMonthly(); 
+  if(activePage==='tahunan')renderYearly(); 
+  if(activePage==='riwayat')renderAll(); 
+}
+
+document.getElementById('pick-daily').value=nowISO().slice(0,10); document.getElementById('f-date').value=nowISO(); selType('income');
 
 window.toggleTheme = function() { 
   document.body.classList.toggle('light-mode'); 
