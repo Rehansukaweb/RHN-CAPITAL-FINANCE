@@ -7,7 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 /* ==========================================================================
-   TEMA NEO-FINTECH MODERN (ANTI MIRING & RESPONSIVE PRESISI)
+   TEMA NEO-FINTECH MODERN (ANTI MIRING & USD LENGKAP)
    ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -31,10 +31,10 @@ body.light-mode {
   --text-main: #09090b; --text-muted: #71717a;
 }
 
-/* ANTI MIRING / HORIZONTAL SCROLL FIX */
+/* ANTI MIRING / HORIZONTAL SCROLL FIX KUNCI MATI */
 html, body {
-  width: 100%;
-  max-width: 100%;
+  width: 100vw;
+  max-width: 100vw;
   overflow-x: hidden;
 }
 
@@ -69,7 +69,6 @@ body {
 .u-status { font-size: 10px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
 .sync-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); }
 
-/* Tombol Keluar & Tema Nempel di Kanan Nama di Desktop Sidebar */
 .user-profile .action-buttons { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
 .user-profile .action-btn { 
   background: var(--bg-input); border: 1px solid var(--border); color: var(--text-muted); 
@@ -107,7 +106,7 @@ body {
 .col-form { grid-column: span 5; }
 .col-history { grid-column: span 7; }
 
-/* DASHBOARD METRICS */
+/* DASHBOARD METRICS: PUSAT DI TENGAH (CENTER ALIGNED) */
 .hero-balance-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; padding: 10px 0; }
 .hb-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
 .hb-val { font-family: 'JetBrains Mono', monospace; font-size: 42px; font-weight: 800; line-height: 1.2; margin-bottom: 4px; letter-spacing: -1px; white-space: nowrap; }
@@ -117,8 +116,9 @@ body {
 .hs-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; background: var(--accent); color: #fff; flex-shrink: 0; }
 .hs-box.inc .hs-icon { background: var(--income); }
 .hs-box.exp .hs-icon { background: var(--expense); }
-.hs-l { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: left; }
-.hs-v { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; margin-top: 2px; text-align: left; white-space: nowrap; }
+.hs-l { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: left; margin-bottom: 2px; }
+.hs-v { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; text-align: left; white-space: nowrap; }
+.hs-usd { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-weight: 600; margin-top: 2px; text-align: left; white-space: nowrap; }
 
 /* Modern Form */
 .giant-input-wrap { text-align: center; margin-bottom: 20px; padding: 16px 0; border-bottom: 1px dashed var(--border); }
@@ -149,8 +149,11 @@ body {
 
 /* SPASI & ALIGNMENT HALAMAN LAPORAN */
 .filter-container { display: flex; flex-direction: row; gap: 12px; align-items: center; width: 100%; margin-bottom: 20px; }
-.period-bar { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: 20px; width: 100%; padding-bottom: 8px; }
-.p-btn { padding: 12px 24px; border: 1px solid var(--border); border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; background: var(--bg-card); color: var(--text-muted); white-space: nowrap; transition: 0.2s; }
+
+/* Wrapper untuk period-bar agar scroll horizontanya nggak nembus layar */
+.period-bar-wrapper { width: 100%; padding: 16px; overflow: hidden; max-width: 100vw; }
+.period-bar { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; width: 100%; padding-bottom: 8px; -webkit-overflow-scrolling: touch; }
+.p-btn { padding: 12px 24px; border: 1px solid var(--border); border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; background: var(--bg-card); color: var(--text-muted); white-space: nowrap; transition: 0.2s; flex-shrink: 0; }
 .p-btn.active { background: var(--text-main); color: var(--bg-app); border-color: var(--text-main); }
 
 .sum-grid-new { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
@@ -158,37 +161,38 @@ body {
 .sg-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
 .sg-val { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 800; color: var(--text-main); white-space: nowrap; }
 
-/* KARTU GRAFIK DESKTOP (Jarak Normal 20px) */
-.chart-card { margin-bottom: 20px; }
-/* MINIMUM HEIGHT LIST AGAR TIDAK GEPENG */
+/* KARTU GRAFIK DESKTOP */
+.chart-card { margin-bottom: 20px; width: 100%; max-width: 100vw; overflow: hidden; }
 .list-card-body { min-height: 200px; }
 
 /* NAVIGASI TAB LAPORAN KHUSUS HP */
 .mobile-report-tab-nav { display: none; }
 
-/* MOBILE FULL SCREEN MENTOK LAYAR */
+/* MOBILE FULL SCREEN MENTOK LAYAR - KUNCI MATI LEBARNYA */
 @media (max-width: 900px) {
   .sidebar { display: none; }
   .top-header { padding: 12px 16px; }
   
-  .page { padding: 0 !important; } 
-  .main-content { padding-bottom: 85px; width: 100%; max-width: 100vw; overflow-x: hidden; }
+  .page { padding: 0 !important; width: 100vw; max-width: 100vw; overflow-x: hidden; } 
+  .main-content { padding-bottom: 85px; width: 100vw; max-width: 100vw; overflow-x: hidden; }
   
-  /* Di HP, kartu kehilangan border pinggir dan membaur */
-  .card { border-radius: 0; border-left: none; border-right: none; border-bottom: 1px solid var(--border); padding: 24px 16px; height: auto !important; }
+  /* Di HP, kartu membaur */
+  .card { border-radius: 0; border-left: none; border-right: none; border-bottom: 1px solid var(--border); padding: 24px 16px; height: auto !important; width: 100%; }
   .col-hero, .col-form, .col-history { grid-column: span 12; }
-  .bento-grid { gap: 0; }
+  .bento-grid { gap: 0; width: 100%; }
   
-  .sum-grid-new { grid-template-columns: 1fr; gap: 12px; padding: 16px; margin-bottom: 0; border-bottom: 1px solid var(--border); }
+  .sum-grid-new { grid-template-columns: 1fr; gap: 12px; padding: 16px; margin-bottom: 0; border-bottom: 1px solid var(--border); width: 100%; }
   .sg-card { border-radius: 0; border: none; border-bottom: 1px solid var(--border); padding: 20px 16px; }
   .sg-card:last-child { border-bottom: none; }
   
-  /* HAPUS SPASI 20px KARTU GRAFIK DI HP */
   .chart-card { margin-bottom: 0 !important; border-bottom: 1px solid var(--border); }
   .list-card-body { min-height: auto; }
   
-  .hero-stats { flex-direction: row; justify-content: center; gap: 12px; flex-wrap: nowrap; }
-  .hs-box { max-width: none; flex: 1; padding: 12px; justify-content: center; }
+  /* BOX STATS MASUK DAN KELUAR DI HP (SESUAIKAN AGAR USD MUAT) */
+  .hero-stats { flex-direction: row; justify-content: space-between; gap: 8px; flex-wrap: nowrap; width: 100%; }
+  .hs-box { max-width: none; flex: 1; padding: 12px 10px; justify-content: flex-start; gap: 8px; }
+  .hs-icon { width: 30px; height: 30px; font-size: 14px; }
+  .hs-v { font-size: 13px; }
   
   /* Tombol Hapus Selalu Muncul di HP */
   .tx-amount { margin-right: 4px; }
@@ -198,12 +202,12 @@ body {
   .filter-container { flex-direction: column; gap: 8px; width: 100%; padding: 20px 16px; margin-bottom: 0; }
   .filter-container .m-input { width: 100%; margin-bottom: 0; flex: none; }
 
-  /* Tab Laporan Pintar di HP */
-  .mobile-report-tab-nav { display: flex; background: var(--bg-input); border-radius: 12px; padding: 4px; margin: 16px 16px 8px; gap: 4px; }
-  .mobile-tab-btn { flex: 1; padding: 10px; text-align: center; font-size: 11px; font-weight: 700; color: var(--text-muted); border-radius: 8px; cursor: pointer; transition: 0.2s; }
+  /* Tab Laporan Pintar di HP - Diperbaiki agar lebarnya tidak nembus layar */
+  .mobile-report-tab-nav { display: flex; background: var(--bg-input); border-radius: 12px; padding: 4px; margin: 16px; gap: 4px; width: calc(100% - 32px); }
+  .mobile-tab-btn { flex: 1; padding: 10px; text-align: center; font-size: 11px; font-weight: 700; color: var(--text-muted); border-radius: 8px; cursor: pointer; transition: 0.2s; white-space: nowrap; }
   .mobile-tab-btn.active { background: var(--accent); color: #fff; }
 
-  /* Profil Page Mobil PERBAIKAN UX Tombol Panjang */
+  /* Profil Page Mobile */
   #page-profil .action-buttons-flex { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; margin-bottom: 30px; width: 100%; }
   #page-profil .profil-page-btn { width: 100% !important; padding: 12px 16px; text-align: left; font-size: 13px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; }
   #page-profil .btn-tema { background: var(--bg-input); color: var(--text-main); border: 1px solid var(--border); }
@@ -213,6 +217,9 @@ body {
   .mb-nav-item { flex: 1; text-align: center; color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
   .mb-nav-item.active { color: var(--accent); }
   .mb-nav-icon { font-size: 22px; display: block; margin-bottom: 4px; }
+  
+  /* Override padding khusus wrapper scroll tanggal agar rapi */
+  .period-bar-wrapper { padding: 16px 16px 0 16px; }
 }
 @media (min-width: 901px) { .mobile-bottom-nav { display: none; } }
 </style>
@@ -314,7 +321,7 @@ body {
         <div class="mobile-tab-btn" onclick="switchPage('bulanan')">Bulanan</div>
         <div class="mobile-tab-btn" onclick="switchPage('tahunan')">Tahunan</div>
       </div>
-      <div style="padding: 16px;"><div class="period-bar" id="week-sel"></div></div>
+      <div class="period-bar-wrapper"><div class="period-bar" id="week-sel"></div></div>
       <div class="sum-grid-new" id="week-sum"></div>
       <div class="card chart-card"><div style="position: relative; height:250px; width: 100%;"><canvas id="chartWeek"></canvas></div></div>
       <div class="card"><div id="week-body" class="list-card-body"></div></div>
@@ -326,7 +333,7 @@ body {
         <div class="mobile-tab-btn active" onclick="switchPage('bulanan')">Bulanan</div>
         <div class="mobile-tab-btn" onclick="switchPage('tahunan')">Tahunan</div>
       </div>
-      <div style="padding: 16px;"><div class="period-bar" id="month-sel"></div></div>
+      <div class="period-bar-wrapper"><div class="period-bar" id="month-sel"></div></div>
       <div class="sum-grid-new" id="month-sum"></div>
       <div class="card chart-card"><div style="position: relative; height:250px; width: 100%;"><canvas id="chartMonth"></canvas></div></div>
       <div class="card"><div id="month-body" class="list-card-body"></div></div>
@@ -338,7 +345,7 @@ body {
         <div class="mobile-tab-btn" onclick="switchPage('bulanan')">Bulanan</div>
         <div class="mobile-tab-btn active" onclick="switchPage('tahunan')">Tahunan</div>
       </div>
-      <div style="padding: 16px;"><div class="period-bar" id="year-sel"></div></div>
+      <div class="period-bar-wrapper"><div class="period-bar" id="year-sel"></div></div>
       <div class="sum-grid-new" id="year-sum"></div>
       <div class="card chart-card"><div style="position: relative; height:250px; width: 100%;"><canvas id="chartYear"></canvas></div></div>
       <div class="card"><div id="year-body" class="list-card-body"></div></div>
@@ -404,7 +411,7 @@ const fmtDate = dt => new Date(dt).toLocaleDateString('id-ID',{day:'2-digit',mon
 const fmtTime = dt => new Date(dt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
 const nowISO = () => new Date().toISOString().slice(0,16);
 const kursIndo = new Intl.NumberFormat('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const getUSD = n => '$' + (n / currentUSDRate).toFixed(2);
+const getUSD = n => (n / currentUSDRate).toFixed(2) + ' USD'; // Format USD yang bersih dan aman
 
 function initLiveUSD() {
   const socket = new WebSocket('wss://stream.binance.com:9443/ws/usdtidr@ticker');
@@ -439,7 +446,6 @@ window.delTx=async function(id){ if(!currentUser||!confirm('Hapus?'))return; awa
 
 window.selType=function(t){ curType=t; document.getElementById('btn-inc').style.background=t==='income'?'var(--income)':'transparent'; document.getElementById('btn-inc').style.color=t==='income'?'#fff':'var(--text-muted)'; document.getElementById('btn-exp').style.background=t==='expense'?'var(--expense)':'transparent'; document.getElementById('btn-exp').style.color=t==='expense'?'#fff':'var(--text-muted)'; const s=document.getElementById('f-cat'); s.innerHTML='<option value="">Kategori...</option>'; CATS[t].forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;s.appendChild(o)}); };
 
-/* PERBAIKAN LOGIKA SWITCH PAGE & TAB KHUSUS HP */
 window.switchPage=function(p){ 
   document.querySelectorAll('.page').forEach(el=>el.classList.remove('active')); 
   document.getElementById('page-'+p).classList.add('active'); 
@@ -461,7 +467,6 @@ window.switchPage=function(p){
   else if(p==='riwayat') mbNavItems[3].classList.add('active');
   else if(p==='profil') mbNavItems[4].classList.add('active');
 
-  /* AKTIFKAN TAB LAPORAN DI HP DENGAN AMAN */
   document.querySelectorAll('.mobile-tab-btn').forEach(btn => {
     btn.classList.remove('active');
     if (p === 'mingguan' && btn.textContent === 'Mingguan') btn.classList.add('active');
@@ -482,6 +487,7 @@ function renderSumGrid(el,arr){
 const createTxCard = (t) => `<div class="tx-item"><div class="tx-icon ${t.type}">${t.type==='income'?'↙':'↗'}</div><div class="tx-info"><div class="tx-title">${t.note} <span class="tx-badge">${t.category}</span></div><div class="tx-date">${fmtDate(t.date)}</div></div><div style="text-align:right;"><div class="tx-amount ${t.type}">${t.type==='income'?'+':'-'}${fmt(t.amount)}</div><button class="tx-del" onclick="delTx('${t.id}')">Hapus</button></div></div>`;
 function renderList(container, arr) { if(container) container.innerHTML = arr.length ? arr.map(t => createTxCard(t)).join('') : '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:12px;">Belum ada data.</div>'; }
 
+/* LOGIKA USD DITAMBAHKAN UNTUK MASUK DAN KELUAR */
 function renderMetrics(){
   const inc=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0), exp=txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0), bal=inc-exp;
   document.getElementById('metric-cards').innerHTML=`
@@ -494,16 +500,18 @@ function renderMetrics(){
       <div class="hero-stats">
         <div class="hs-box inc">
           <div class="hs-icon">↙</div>
-          <div style="text-align: left;">
+          <div style="text-align: left; overflow: hidden;">
             <div class="hs-l">Masuk</div>
             <div class="hs-v">${fmt(inc)}</div>
+            <div class="hs-usd">${getUSD(inc)}</div>
           </div>
         </div>
         <div class="hs-box exp">
           <div class="hs-icon">↗</div>
-          <div style="text-align: left;">
+          <div style="text-align: left; overflow: hidden;">
             <div class="hs-l">Keluar</div>
             <div class="hs-v">${fmt(exp)}</div>
+            <div class="hs-usd">${getUSD(exp)}</div>
           </div>
         </div>
       </div>
@@ -513,8 +521,6 @@ function renderMetrics(){
 function mkChart(id,labels,incData,expData){ if(charts[id]) charts[id].destroy(); const c=document.getElementById(id); if(!c)return; const isLight = document.body.classList.contains('light-mode'); charts[id]=new Chart(c,{type:'bar',data:{labels,datasets:[{label:'Pemasukan',data:incData,backgroundColor:isLight?'#10B981':'#10B981',borderRadius:4},{label:'Pengeluaran',data:expData,backgroundColor:isLight?'#F87171':'#F87171',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:isLight?'#71717a':'#a1a1aa',font:{size:10,family:"'Outfit'"}},grid:{display:false},border:{display:false}},y:{ticks:{color:isLight?'#71717a':'#a1a1aa',font:{size:10},callback:v=>Intl.NumberFormat('id-ID',{notation:'compact'}).format(v)},grid:{color:isLight?'#e4e4e7':'#27272a',drawBorder:false},border:{display:false}}}}}); }
 
 window.renderDaily=function(){ const pick=document.getElementById('pick-daily').value, target=pick?new Date(pick).toDateString():new Date().toDateString(), arr=txs.filter(t=>new Date(t.date).toDateString()===target).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('daily-sum'),arr); renderList(document.getElementById('daily-body'), arr); };
-
-/* PERBAIKAN LOGIKA RENDER JIKA TRANSAKSI KOSONG AGAR TIDAK NGEBLANK */
 function wkKey(d){const dt=new Date(d);const day=dt.getDay();const diff=dt.getDate()-day+(day===0?-6:1);return new Date(new Date(d).setDate(diff)).toISOString().slice(0,10)}
 function renderWeekly(){ 
   const weeks={};
