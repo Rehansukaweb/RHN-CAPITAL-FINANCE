@@ -154,6 +154,11 @@ body {
 .card-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
 .card-sub { font-size: 12px; color: var(--text3); }
 
+/* KOTAK SUARA */
+.voice-wrapper {
+  background: var(--bg3); padding: 16px; border-radius: 12px; margin-bottom: 20px; border: 1px dashed var(--border2); text-align: center;
+}
+
 .type-toggle { display: flex; background: var(--bg3); border-radius: 12px; padding: 4px; margin-bottom: 20px; }
 .t-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; color: var(--text3); transition: 0.2s; }
 .t-btn.income.active { background: var(--bg2); color: var(--green2); }
@@ -274,7 +279,13 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   /* Biar filter & search bar berjejer ke bawah di HP */
   .filter-bar { flex-direction: column; } 
   
-  .type-toggle, .submit-btn { width: calc(100% - 32px) !important; margin-left: 16px !important; margin-right: 16px !important; }
+  /* PERBAIKAN PENTING: Lebar Kotak Suara Dibuat Sama Persis Dengan Form */
+  .type-toggle, .submit-btn, .voice-wrapper { 
+      width: calc(100% - 32px) !important; 
+      margin-left: 16px !important; 
+      margin-right: 16px !important; 
+  }
+
   .filter-bar select.f-input-dark, .filter-bar input.f-input-dark { width: 100%; border-radius: 16px; }
   .f-input-dark { padding: 18px 16px; font-size: 15px; border-radius: 16px; }
   
@@ -399,13 +410,10 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
         <div class="card-sub">Catat pemasukan atau pengeluaran baru</div>
       </div>
       
-      <!-- FITUR TAMBAHAN SUARA (DISISIPKAN DI SINI) -->
-      <div style="background: var(--bg3); padding: 16px; border-radius: 12px; margin-bottom: 20px; border: 1px dashed var(--border2); text-align: center;">
+      <div class="voice-wrapper">
         <button id="btn-mic" class="submit-btn" style="background-color: var(--blue-title); color: white; margin-top: 0; margin-bottom: 8px;">🎤 TEKAN UNTUK NGOMONG</button>
-        <div id="status-suara" style="font-size: 11px; color: var(--text3); font-style: italic;">Contoh: "Saya jajan bakso seharga 20000 senin minggu kemaren jam 14"</div>
+        <div id="status-suara" style="font-size: 11px; color: var(--text3); font-style: italic;">Contoh: "Saya jajan bakso seharga 30 ribu senin minggu kemaren jam 14"</div>
       </div>
-      <!-- END FITUR SUARA -->
-
       <div class="type-toggle">
         <button class="t-btn income active" id="btn-inc" onclick="selType('income')">+ Pemasukan</button>
         <button class="t-btn expense" id="btn-exp" onclick="selType('expense')">- Pengeluaran</button>
@@ -615,7 +623,7 @@ document.getElementById('pick-daily').value=nowISO().slice(0,10); document.getEl
 
 
 // ==========================================================================
-// TAMBAHAN SCRIPT UNTUK FITUR PENCATATAN SUARA (INSTANT AUTO-SAVE)
+// TAMBAHAN SCRIPT UNTUK FITUR PENCATATAN SUARA (INSTANT AUTO-SAVE + PERBAIKAN ANGKA)
 // ==========================================================================
 const btnMic = document.getElementById('btn-mic');
 const statusSuara = document.getElementById('status-suara');
@@ -638,11 +646,12 @@ if (SpeechRecognition) {
   });
 
   recognition.onresult = (event) => {
+    // Ambil hasil suara asli
     const hasil = event.results[0][0].transcript.toLowerCase();
     btnMic.innerHTML = "🎤 TEKAN UNTUK NGOMONG";
 
     // 1. AUTO PENGELUARAN/PEMASUKAN
-    let jenisTx = 'income'; // default
+    let jenisTx = 'income'; 
     if(hasil.includes("beli") || hasil.includes("jajan") || hasil.includes("bayar")) {
         jenisTx = 'expense';
         window.selType('expense');
@@ -655,41 +664,42 @@ if (SpeechRecognition) {
         fCat.selectedIndex = 1;
     }
 
-    // 2. EKSTRAK HARGA
+    // ================================================================
+    // PERBAIKAN LOGIKA ANGKA: Bersihkan Titik & Ganti Kata "Ribu"
+    // ================================================================
+    // Google kadang merubah suara jadi "30.000" atau "30 ribu".
+    // Kode ini menghapus titik, lalu menerjemahkan "ribu" jadi "000".
+    let hasilClean = hasil.replace(/\./g, '')                 // Hapus semua titik (30.000 -> 30000)
+                          .replace(/\bribu\b/g, '000')        // Kata "ribu" -> 000 (30 ribu -> 30 000)
+                          .replace(/\bjuta\b/g, '000000');    // Kata "juta" -> 000000
+    
     let harga = "";
-    const matchHarga = hasil.match(/seharga\s*(\d+)/) || hasil.match(/(?:rp|rupiah)\s*(\d+)/) || hasil.match(/(\d+)/);
+    // Pengecekan harga dilakukan menggunakan teks yang sudah bersih (hasilClean)
+    const matchHarga = hasilClean.match(/seharga\s*(\d+)/) || hasilClean.match(/(?:rp|rupiah)\s*(\d+)/) || hasilClean.match(/(\d+)/);
     if (matchHarga) harga = matchHarga[1];
 
-    // 3. EKSTRAK ITEM (KETERANGAN)
+    // 3. EKSTRAK ITEM (KETERANGAN) - Tetap pakai teks asli supaya nggak aneh
     let item = "";
     const matchItem = hasil.match(/(?:beli|jajan|bayar)\s+(.*?)\s+(?:seharga)/);
     if (matchItem) {
       item = matchItem[1];
     } else {
-      const altMatch = hasil.match(/(?:beli|jajan|bayar)\s+(.*?)\s+\d+/);
+      const altMatch = hasilClean.match(/(?:beli|jajan|bayar)\s+(.*?)\s+\d+/);
       if (altMatch) item = altMatch[1];
     }
     
-    // LOGIKA BRUTAL: Kalau nama barang kosong tapi ada harga, tembak nama default biar TETAP SIMPAN!
+    // Kalau nama barang kosong tapi ada harga, tembak nama default biar TETAP BISA SIMPAN!
     if (!item && harga) {
-        item = hasil.replace(/\d+/g, '').trim() || (jenisTx === 'expense' ? "Pengeluaran Suara" : "Pemasukan Suara");
+        item = hasil.replace(/\d+/g, '').replace(/\./g, '').trim() || (jenisTx === 'expense' ? "Pengeluaran (Suara)" : "Pemasukan (Suara)");
     }
 
-    // 4. LOGIKA WAKTU BARU (Lebih Pintar)
+    // 4. LOGIKA WAKTU BARU
     let targetDate = new Date(); 
     
-    if (hasil.match(/tahun\s+(kemaren|kemarin|lalu)/)) {
-        targetDate.setFullYear(targetDate.getFullYear() - 1);
-    }
-    if (hasil.match(/bulan\s+(kemaren|kemarin|lalu)/)) {
-        targetDate.setMonth(targetDate.getMonth() - 1);
-    }
-    if (hasil.match(/(minggu|pekan)\s+(kemaren|kemarin|lalu)/)) {
-        targetDate.setDate(targetDate.getDate() - 7);
-    }
-    else if (hasil.match(/(kemaren|kemarin)/)) {
-        targetDate.setDate(targetDate.getDate() - 1);
-    }
+    if (hasil.match(/tahun\s+(kemaren|kemarin|lalu)/)) targetDate.setFullYear(targetDate.getFullYear() - 1);
+    if (hasil.match(/bulan\s+(kemaren|kemarin|lalu)/)) targetDate.setMonth(targetDate.getMonth() - 1);
+    if (hasil.match(/(minggu|pekan)\s+(kemaren|kemarin|lalu)/)) targetDate.setDate(targetDate.getDate() - 7);
+    else if (hasil.match(/(kemaren|kemarin)/)) targetDate.setDate(targetDate.getDate() - 1);
 
     const hariMap = { 'minggu':0, 'senin':1, 'selasa':2, 'rabu':3, 'kamis':4, 'jumat':5, 'sabtu':6 };
     for(let h in hariMap) {
@@ -724,24 +734,22 @@ if (SpeechRecognition) {
 
     // 5. AUTO-SAVE DATABASE INSTAN (0 DETIK JEDA)
     if(harga) {
-        // Isi formnya cepet-cepet
         fNote.value = item.trim();
         fAmount.value = harga;
         fDate.value = localISOTime;
 
-        // LANGSUNG PANGGIL FUNGSI SIMPAN KE FIREBASE
+        // LANGSUNG PANGGIL FUNGSI SIMPAN
         window.addTx();
         
         statusSuara.innerText = "✅ Langsung tersimpan otomatis!";
         statusSuara.style.color = "var(--green2)";
         
         setTimeout(() => {
-            statusSuara.innerText = "Contoh: 'Saya jajan bakso seharga 20000 senin minggu kemaren jam 14'";
+            statusSuara.innerText = "Contoh: 'Saya jajan bakso seharga 30 ribu senin minggu kemaren jam 14'";
             statusSuara.style.color = "var(--text3)";
         }, 3000);
 
     } else {
-        // Cuma gagal kalau lu ngomong tapi NGGAK ADA ANGKA sama sekali
         statusSuara.innerText = `Terdengar: "${hasil}" - (Gagal: Nominal uang tidak terdeteksi)`;
         statusSuara.style.color = "var(--red2)";
     }
