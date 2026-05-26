@@ -248,7 +248,7 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   .metrics { 
     grid-template-columns: repeat(2, 1fr); 
     gap: 8px; 
-    padding: 0 !important; /* Membunuh padding 16px yang tersembunyi */
+    padding: 0 !important;
     margin: 0 !important;
     background: transparent; border: none; 
   }
@@ -257,12 +257,12 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   .sum-grid { 
     grid-template-columns: repeat(2, 1fr); 
     gap: 8px; 
-    padding: 0 !important; /* Membunuh padding 16px yang tersembunyi */
+    padding: 0 !important;
     margin: 0 0 24px 0 !important; 
     background: transparent; border: none; 
   }
   .sum-grid .m-card { border-radius: 24px !important; border-left: none; border-right: none; }
-  .sum-grid .m-card:nth-child(3) { grid-column: span 2; } /* Saldo bersih bulet memanjang full */
+  .sum-grid .m-card:nth-child(3) { grid-column: span 2; }
 
   /* BUNGKUSAN CARD TRANSPARAN (AGAR KONTEN BISA NYENTUH LAYAR) */
   .panel { display: flex; flex-direction: column; gap: 16px; background: transparent; }
@@ -281,11 +281,11 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   /* HISTORY ITEM (RIWAYAT TRANSAKSI): BULET MEMANJANG 100% MENTOK LAYAR */
   .list-wrap { padding: 0 !important; margin: 0 !important; width: 100%; }
   .recent-item { 
-      width: 100% !important; /* Paksa memanjang sentuh ujung layar */
+      width: 100% !important; 
       margin: 0 0 12px 0 !important; 
       padding: 16px 16px !important; 
-      border-radius: 24px !important; /* Tetap bulet empuk tidak kaku */
-      border-left: none !important; /* Menghilangkan batas kiri kanan biar nyatu ke HP */
+      border-radius: 24px !important; 
+      border-left: none !important; 
       border-right: none !important;
       background: var(--card); 
       flex-direction: row; 
@@ -398,6 +398,14 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
         <div class="card-title">Tambah Transaksi</div>
         <div class="card-sub">Catat pemasukan atau pengeluaran baru</div>
       </div>
+      
+      <!-- FITUR TAMBAHAN SUARA (DISISIPKAN DI SINI) -->
+      <div style="background: var(--bg3); padding: 16px; border-radius: 12px; margin-bottom: 20px; border: 1px dashed var(--border2); text-align: center;">
+        <button id="btn-mic" class="submit-btn" style="background-color: var(--blue-title); color: white; margin-top: 0; margin-bottom: 8px;">🎤 TEKAN UNTUK NGOMONG</button>
+        <div id="status-suara" style="font-size: 11px; color: var(--text3); font-style: italic;">Contoh: "Saya jajan bakso seharga 20000 senin minggu kemaren jam 14"</div>
+      </div>
+      <!-- END FITUR SUARA -->
+
       <div class="type-toggle">
         <button class="t-btn income active" id="btn-inc" onclick="selType('income')">+ Pemasukan</button>
         <button class="t-btn expense" id="btn-exp" onclick="selType('expense')">- Pengeluaran</button>
@@ -604,175 +612,150 @@ function showYear(k){ const arr=txs.filter(t=>t.date.startsWith(k)).sort((a,b)=>
 window.renderAll=function(){ const tf=document.getElementById('flt-type').value, s=(document.getElementById('flt-search').value||'').toLowerCase(); let arr=[...txs]; if(tf)arr=arr.filter(t=>t.type===tf); if(s)arr=arr.filter(t=>t.note.toLowerCase().includes(s)||t.category.toLowerCase().includes(s)); arr.sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('all-sum'),arr); renderList(document.getElementById('all-body'),arr); };
 function refreshAll(){ renderMetrics(); renderList(document.getElementById('recent-list'), txs.slice(0,10)); if(activePage==='harian')renderDaily(); if(activePage==='mingguan')renderWeekly(); if(activePage==='bulanan')renderMonthly(); if(activePage==='tahunan')renderYearly(); if(activePage==='riwayat')renderAll(); }
 document.getElementById('pick-daily').value=nowISO().slice(0,10); document.getElementById('f-date').value=nowISO(); selType('income');
-</script>
 
-<!-- ==========================================================================
-     🔥 MODULE: NLP ENGINE GAUL SEHARI-HARI (CORE 100% TIDAK DISENTUH) 🔥
-     ========================================================================== -->
-<style>
-.rhn-hud { position: fixed; bottom: 20px; right: 20px; width: 320px; background: rgba(10, 10, 12, 0.85); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 16px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 15px rgba(251,191,36,0.1); z-index: 999999; display: flex; flex-direction: column; overflow: hidden; font-family: 'JetBrains Mono', monospace; transition: width 0.3s, height 0.3s; }
-.rhn-hud-header { background: rgba(20, 20, 25, 0.9); padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(251, 191, 36, 0.2); cursor: grab; user-select: none; }
-.rhn-hud-header:active { cursor: grabbing; }
-.rhn-hud-title { font-size: 11px; font-weight: 800; color: var(--gold); letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
-.rhn-pulse { width: 6px; height: 6px; background: var(--green2); border-radius: 50%; box-shadow: 0 0 8px var(--green2); animation: pulse 1.5s infinite; }
-@keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.5); } 100% { opacity: 1; transform: scale(1); } }
-.hud-section { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.voice-ai-btn { width: 100%; background: linear-gradient(135deg, rgba(251,191,36,0.1), rgba(251,191,36,0.05)); border: 1px solid var(--gold); color: var(--gold); padding: 12px; border-radius: 12px; font-weight: 800; font-size: 12px; font-family: 'Outfit', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; text-transform: uppercase; }
-.voice-ai-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px rgba(251,191,36,0.4); }
-.voice-ai-btn.listening { background: var(--red2); border-color: var(--red2); color: #fff; animation: listen-pulse 1s infinite; box-shadow: 0 0 20px rgba(248,113,113,0.5); }
-@keyframes listen-pulse { 0% { transform: scale(1); } 50% { transform: scale(0.98); } 100% { transform: scale(1); } }
-.ai-status-text { font-size: 9px; color: var(--text3); text-align: center; margin-top: 8px; min-height: 12px; line-height: 1.4; }
-.min-btn { background: transparent; border: none; color: var(--text3); cursor: pointer; font-size: 14px; padding: 0 4px; }
-.min-btn:hover { color: #fff; }
-.rhn-hud.minimized .hud-section { display: none; }
-</style>
 
-<script>
-// HUD Logic
-const hud = document.createElement('div');
-hud.className = 'rhn-hud';
-hud.innerHTML = `
-    <div class="rhn-hud-header" id="hud-drag">
-        <div class="rhn-hud-title"><div class="rhn-pulse"></div> NLP TONGKRONGAN</div>
-        <button class="min-btn" onclick="document.querySelector('.rhn-hud').classList.toggle('minimized')">−</button>
-    </div>
-    <div class="hud-section">
-        <button class="voice-ai-btn" id="btn-voice-ai">🎤 NGOMONG SINI BRO</button>
-        <div class="ai-status-text" id="ai-status">Contoh: "Beli bensin gocap" atau "Dapet cuan cepek"</div>
-    </div>
-`;
-document.body.appendChild(hud);
+// ==========================================================================
+// TAMBAHAN SCRIPT UNTUK FITUR PENCATATAN SUARA (INSTANT AUTO-SAVE)
+// ==========================================================================
+const btnMic = document.getElementById('btn-mic');
+const statusSuara = document.getElementById('status-suara');
+const fAmount = document.getElementById('f-amount');
+const fNote = document.getElementById('f-note');
+const fDate = document.getElementById('f-date');
+const fCat = document.getElementById('f-cat');
 
-let isDragging = false, currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
-const dragItem = document.getElementById("hud-drag");
-dragItem.addEventListener("mousedown", dragStart);
-document.addEventListener("mouseup", dragEnd);
-document.addEventListener("mousemove", drag);
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (SpeechRecognition) {
+  const recognition = new SpeechRecognition();
+  recognition.lang = 'id-ID';
+  recognition.continuous = false;
+  
+  btnMic.addEventListener('click', () => {
+    recognition.start();
+    btnMic.innerHTML = "🔴 MENDENGARKAN...";
+    statusSuara.innerText = "Silakan bicara...";
+    statusSuara.style.color = "var(--green2)";
+  });
 
-function dragStart(e) { initialX = e.clientX - xOffset; initialY = e.clientY - yOffset; if (e.target === dragItem || dragItem.contains(e.target)) isDragging = true; }
-function dragEnd(e) { initialX = currentX; initialY = currentY; isDragging = false; }
-function drag(e) { if (isDragging) { e.preventDefault(); currentX = e.clientX - initialX; currentY = e.clientY - initialY; xOffset = currentX; yOffset = currentY; setTranslate(currentX, currentY, hud); } }
-function setTranslate(xPos, yPos, el) { el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`; }
+  recognition.onresult = (event) => {
+    const hasil = event.results[0][0].transcript.toLowerCase();
+    btnMic.innerHTML = "🎤 TEKAN UNTUK NGOMONG";
 
-// NLP Voice Logic
-const btnVoice = document.getElementById('btn-voice-ai');
-const aiStatus = document.getElementById('ai-status');
+    // 1. AUTO PENGELUARAN/PEMASUKAN
+    let jenisTx = 'income'; // default
+    if(hasil.includes("beli") || hasil.includes("jajan") || hasil.includes("bayar")) {
+        jenisTx = 'expense';
+        window.selType('expense');
+    } else if (hasil.includes("terima") || hasil.includes("dapat") || hasil.includes("gajian")) {
+        jenisTx = 'income';
+        window.selType('income');
+    }
 
-if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRec();
-    recognition.lang = 'id-ID';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
+    if(fCat.options.length > 1) {
+        fCat.selectedIndex = 1;
+    }
 
-    btnVoice.onclick = () => {
-        recognition.start();
-        btnVoice.classList.add('listening');
-        btnVoice.innerHTML = '🔴 NGE-REKAM...';
-        aiStatus.innerText = 'Langsung ngomong aja bro...';
-    };
+    // 2. EKSTRAK HARGA
+    let harga = "";
+    const matchHarga = hasil.match(/seharga\s*(\d+)/) || hasil.match(/(?:rp|rupiah)\s*(\d+)/) || hasil.match(/(\d+)/);
+    if (matchHarga) harga = matchHarga[1];
 
-    recognition.onresult = (event) => {
-        const rawTranscript = event.results[0][0].transcript;
-        const text = rawTranscript.toLowerCase();
-        aiStatus.innerText = `Nangkep omongan: "${rawTranscript}"`;
+    // 3. EKSTRAK ITEM (KETERANGAN)
+    let item = "";
+    const matchItem = hasil.match(/(?:beli|jajan|bayar)\s+(.*?)\s+(?:seharga)/);
+    if (matchItem) {
+      item = matchItem[1];
+    } else {
+      const altMatch = hasil.match(/(?:beli|jajan|bayar)\s+(.*?)\s+\d+/);
+      if (altMatch) item = altMatch[1];
+    }
+    
+    // LOGIKA BRUTAL: Kalau nama barang kosong tapi ada harga, tembak nama default biar TETAP SIMPAN!
+    if (!item && harga) {
+        item = hasil.replace(/\d+/g, '').trim() || (jenisTx === 'expense' ? "Pengeluaran Suara" : "Pemasukan Suara");
+    }
+
+    // 4. LOGIKA WAKTU BARU (Lebih Pintar)
+    let targetDate = new Date(); 
+    
+    if (hasil.match(/tahun\s+(kemaren|kemarin|lalu)/)) {
+        targetDate.setFullYear(targetDate.getFullYear() - 1);
+    }
+    if (hasil.match(/bulan\s+(kemaren|kemarin|lalu)/)) {
+        targetDate.setMonth(targetDate.getMonth() - 1);
+    }
+    if (hasil.match(/(minggu|pekan)\s+(kemaren|kemarin|lalu)/)) {
+        targetDate.setDate(targetDate.getDate() - 7);
+    }
+    else if (hasil.match(/(kemaren|kemarin)/)) {
+        targetDate.setDate(targetDate.getDate() - 1);
+    }
+
+    const hariMap = { 'minggu':0, 'senin':1, 'selasa':2, 'rabu':3, 'kamis':4, 'jumat':5, 'sabtu':6 };
+    for(let h in hariMap) {
+        if (h === 'minggu') {
+            if (hasil.includes('hari minggu')) {
+                let diff = hariMap[h] - targetDate.getDay();
+                if (diff > 0) diff -= 7;
+                targetDate.setDate(targetDate.getDate() + diff);
+            }
+        } else if(hasil.includes(h)) {
+            let diff = hariMap[h] - targetDate.getDay();
+            if (diff > 0) diff -= 7; 
+            targetDate.setDate(targetDate.getDate() + diff);
+        }
+    }
+
+    const matchTanggal = hasil.match(/tanggal\s*(\d+)/);
+    if (matchTanggal) targetDate.setDate(parseInt(matchTanggal[1]));
+
+    const bulanMap = {'januari':0, 'februari':1, 'maret':2, 'april':3, 'mei':4, 'juni':5, 'juli':6, 'agustus':7, 'september':8, 'oktober':9, 'november':10, 'desember':11};
+    for(let b in bulanMap) {
+        if(hasil.includes(b)) targetDate.setMonth(bulanMap[b]);
+    }
+
+    const matchJam = hasil.match(/jam\s*(\d+)/);
+    if(matchJam) {
+        targetDate.setHours(parseInt(matchJam[1]), 0, 0, 0);
+    }
+    
+    const tzoffset = targetDate.getTimezoneOffset() * 60000;
+    const localISOTime = new Date(targetDate.getTime() - tzoffset).toISOString().slice(0,16);
+
+    // 5. AUTO-SAVE DATABASE INSTAN (0 DETIK JEDA)
+    if(harga) {
+        // Isi formnya cepet-cepet
+        fNote.value = item.trim();
+        fAmount.value = harga;
+        fDate.value = localISOTime;
+
+        // LANGSUNG PANGGIL FUNGSI SIMPAN KE FIREBASE
+        window.addTx();
+        
+        statusSuara.innerText = "✅ Langsung tersimpan otomatis!";
+        statusSuara.style.color = "var(--green2)";
         
         setTimeout(() => {
-            let amount = 0;
-            const cleanText = text.replace(/\./g, '');
-            
-            // 1. Ekstrak Angka (Normal & Slang)
-            const match = cleanText.match(/\d+/);
-            if (match) {
-                amount = parseInt(match[0]);
-                if (cleanText.includes('ribu') && amount < 1000) amount *= 1000;
-                if (cleanText.includes('juta') && amount < 1000000) amount *= 1000000;
-            } else {
-                // Deteksi slang tongkrongan kalau google ga nulis angkanya
-                if (text.includes('goceng')) amount = 5000;
-                else if (text.includes('ceban')) amount = 10000;
-                else if (text.includes('noban')) amount = 20000;
-                else if (text.includes('gocap')) amount = 50000;
-                else if (text.includes('cepek')) amount = 100000;
-                else if (text.includes('nopek')) amount = 200000;
-                else if (text.includes('gopek')) amount = 500000;
-                else if (text.includes('seceng') || text.includes('seribu')) amount = 1000;
-            }
+            statusSuara.innerText = "Contoh: 'Saya jajan bakso seharga 20000 senin minggu kemaren jam 14'";
+            statusSuara.style.color = "var(--text3)";
+        }, 3000);
 
-            // 2. Analisis Konteks & Slang (Masuk / Keluar)
-            let type = null;
-            let cat = 'Lainnya';
-            
-            // Logika PEMASUKAN
-            if (/masuk|dapet|dikasih|nemu|cair|gajian|tf|transferan|cuan|profit|untung|wd/i.test(text)) {
-                type = 'income';
-                if (/dikasih|emak|mama|bapak|papa|ortu/i.test(text)) cat = 'Pemberian';
-                else if (/ongkos/i.test(text)) cat = 'Ongkos Harian';
-                else if (/cuan|profit|untung|wd/i.test(text)) cat = 'Profit';
-                else if (/cair|gajian|bonus/i.test(text)) cat = 'Bonus';
-            } 
-            // Logika PENGELUARAN
-            else if (/keluar|jajan|beli|bayar|buat|ngopi|nongkrong|abis|ilang|rugi|loss|rungkad/i.test(text)) {
-                type = 'expense';
-                if (/jajan|ngopi|nongkrong|nyemil|rokok/i.test(text)) cat = 'Jajan';
-                else if (/makan|sarapan|gofood|grabfood|warteg|indomie/i.test(text)) cat = 'Makan';
-                else if (/ongkos|bensin|gojek|grab|angkot|parkir|tol|transport/i.test(text)) cat = 'Transportasi';
-                else if (/listrik|tagihan|pulsa|kuota|wifi/i.test(text)) cat = 'Utilitas';
-                else if (/loss|rugi|rungkad|mc|nyangkut/i.test(text)) cat = 'Loss';
-            }
-            // Smart Fallback (kalau murni ngomong objeknya aja)
-            else if (/cuan|profit/i.test(text)) type = 'income';
-            else if (/jajan|beli|ngopi|makan|bensin|gojek|grab|pulsa|kuota/i.test(text)) type = 'expense';
+    } else {
+        // Cuma gagal kalau lu ngomong tapi NGGAK ADA ANGKA sama sekali
+        statusSuara.innerText = `Terdengar: "${hasil}" - (Gagal: Nominal uang tidak terdeteksi)`;
+        statusSuara.style.color = "var(--red2)";
+    }
+  };
 
-            // 3. Eksekusi
-            if (type && amount > 0) {
-                window.selType(type);
-                
-                setTimeout(() => {
-                    const catSelect = document.getElementById('f-cat');
-                    const noteInput = document.getElementById('f-note');
-                    const amtInput = document.getElementById('f-amount');
-                    const dateInput = document.getElementById('f-date');
-                    const btnSave = document.getElementById('save-btn');
-                    
-                    if (catSelect && noteInput && amtInput && btnSave) {
-                        for (let i = 0; i < catSelect.options.length; i++) {
-                            if (catSelect.options[i].text === cat) { catSelect.selectedIndex = i; break; }
-                        }
-                        
-                        amtInput.value = amount;
-                        // Bikin huruf depannya kapital biar rapi di database
-                        noteInput.value = rawTranscript.charAt(0).toUpperCase() + rawTranscript.slice(1);
-                        
-                        // Set waktu Live realtime banget
-                        const now = new Date();
-                        const y = now.getFullYear(), m = String(now.getMonth()+1).padStart(2,'0'), d = String(now.getDate()).padStart(2,'0');
-                        const h = String(now.getHours()).padStart(2,'0'), min = String(now.getMinutes()).padStart(2,'0');
-                        if (dateInput) dateInput.value = `${y}-${m}-${d}T${h}:${min}`;
-                        
-                        aiStatus.innerText = "Mantap bro, data diamankan!";
-                        btnSave.click();
-                    }
-                }, 100);
-            } else {
-                aiStatus.innerText = "Kurang jelas bro. Sebut nominal (cth: gocap/50 ribu) sama peruntukannya.";
-            }
-            
-            btnVoice.classList.remove('listening');
-            btnVoice.innerHTML = '🎤 NGOMONG SINI BRO';
-            setTimeout(()=> { aiStatus.innerText = 'Contoh: "Beli bensin gocap" atau "Dapet cuan cepek"'; }, 4000);
-            
-        }, 300); 
-    };
-
-    recognition.onerror = (e) => {
-        btnVoice.classList.remove('listening');
-        btnVoice.innerHTML = '🎤 NGOMONG SINI BRO';
-        aiStatus.innerText = "Mic error bro. Cek izin browser lu.";
-    };
+  recognition.onspeechend = () => { recognition.stop(); btnMic.innerHTML = "🎤 TEKAN UNTUK NGOMONG"; };
+  recognition.onerror = (e) => { 
+    statusSuara.innerText = "Error: " + e.error; 
+    btnMic.innerHTML = "🎤 TEKAN UNTUK NGOMONG"; 
+    statusSuara.style.color = "var(--red2)"; 
+  };
 } else {
-    btnVoice.disabled = true;
-    btnVoice.innerHTML = '⚠️ BROWSER GA SUPPORT';
+  btnMic.style.display = "none";
+  statusSuara.innerText = "Fitur suara hanya bisa jalan di Chrome.";
 }
 </script>
 </body>
