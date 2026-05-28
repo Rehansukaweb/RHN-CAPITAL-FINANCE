@@ -149,7 +149,7 @@ body {
 .sum-grid { display: grid; gap: 16px; margin-bottom: 24px; }
 
 /* FORMS */
-.card { background: var(--card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); margin-bottom: 24px; }
+.card { background: var(--card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); margin-bottom: 24px; display: flex; flex-direction: column; }
 .card-head { margin-bottom: 16px; }
 .card-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
 .card-sub { font-size: 12px; color: var(--text3); }
@@ -182,6 +182,7 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
 .form-label { font-size: 10px; font-weight: 800; color: var(--text3); margin-bottom: 8px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
 .form-row textarea { height: 100px; resize: none; }
 .submit-btn { width: 100%; padding: 16px; background: var(--text); color: var(--bg); border: none; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; transition: 0.2s; text-transform: uppercase; margin-top: 8px; }
+#save-btn { margin-top: auto; }
 
 /* HISTORY CARDS */
 .list-wrap { padding: 8px 0; }
@@ -320,7 +321,12 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
     display: grid; 
     grid-template-columns: 380px 1fr; 
     gap: 24px; 
-    align-items: start; 
+    align-items: stretch; 
+  }
+  
+  /* PERBAIKAN: Paksa kotak kiri dan kanan setinggi grid biar nggak kopong */
+  .panel > .card {
+    height: 100%;
   }
 
   /* Rapihin sedikit jarak pinggir biar elegan di layar gede */
@@ -427,7 +433,7 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
     
     <div class="card">
       <div class="card-head"><div class="card-title">Aktivitas Terakhir</div></div>
-      <div id="recent-list" class="list-wrap" style="max-height:600px;overflow-y:auto;"></div>
+      <div id="recent-list" class="list-wrap"></div>
     </div>
   </div>
 </div>
@@ -618,7 +624,8 @@ function renderYearly(){ const years={};txs.forEach(t=>{const k=t.date.slice(0,4
 window.selYear=function(k,btn){document.querySelectorAll('#year-sel .p-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');showYear(k)};
 function showYear(k){ const arr=txs.filter(t=>t.date.startsWith(k)).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('year-sum'),arr); renderList(document.getElementById('year-body'),arr); const MNTHS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'], inc=new Array(12).fill(0),exp=new Array(12).fill(0); arr.forEach(t=>{const m=new Date(t.date).getMonth();if(t.type==='income')inc[m]+=t.amount;else exp[m]+=t.amount}); mkChart('chartYear',MNTHS,inc,exp); }
 window.renderAll=function(){ const tf=document.getElementById('flt-type').value, s=(document.getElementById('flt-search').value||'').toLowerCase(); let arr=[...txs]; if(tf)arr=arr.filter(t=>t.type===tf); if(s)arr=arr.filter(t=>t.note.toLowerCase().includes(s)||t.category.toLowerCase().includes(s)); arr.sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('all-sum'),arr); renderList(document.getElementById('all-body'),arr); };
-function refreshAll(){ renderMetrics(); renderList(document.getElementById('recent-list'), txs.slice(0,10)); if(activePage==='harian')renderDaily(); if(activePage==='mingguan')renderWeekly(); if(activePage==='bulanan')renderMonthly(); if(activePage==='tahunan')renderYearly(); if(activePage==='riwayat')renderAll(); }
+// PERBAIKAN: Batasin pas 7 item aja biar sejajar total sama form di sebelahnya
+function refreshAll(){ renderMetrics(); renderList(document.getElementById('recent-list'), txs.slice(0,7)); if(activePage==='harian')renderDaily(); if(activePage==='mingguan')renderWeekly(); if(activePage==='bulanan')renderMonthly(); if(activePage==='tahunan')renderYearly(); if(activePage==='riwayat')renderAll(); }
 document.getElementById('pick-daily').value=nowISO().slice(0,10); document.getElementById('f-date').value=nowISO(); selType('income');
 
 
@@ -661,7 +668,25 @@ if (SpeechRecognition) {
     }
 
     if(fCat.options.length > 1) {
-        fCat.selectedIndex = 1;
+        fCat.selectedIndex = 1; // Default ke opsi pertama
+
+        // LOGIKA BARU: Pilih kategori cerdas berdasarkan kata kunci
+        if (jenisTx === 'expense') {
+            if (hasil.includes("parkir") || hasil.includes("bensin") || hasil.includes("ongkos") || hasil.includes("gojek") || hasil.includes("grab")) fCat.value = 'Transportasi';
+            else if (hasil.includes("makan") || hasil.includes("nasi") || hasil.includes("mie")) fCat.value = 'Makan';
+            else if (hasil.includes("minum") || hasil.includes("kopi") || hasil.includes("es") || hasil.includes("jus")) fCat.value = 'Minum';
+            else if (hasil.includes("listrik") || hasil.includes("air") || hasil.includes("wifi") || hasil.includes("internet") || hasil.includes("pulsa")) fCat.value = 'Utilitas';
+            else if (hasil.includes("infak") || hasil.includes("sedekah") || hasil.includes("zakat") || hasil.includes("masjid")) fCat.value = 'Infak';
+            else if (hasil.includes("kas")) fCat.value = 'Kas';
+            else if (hasil.includes("aset") || hasil.includes("investasi") || hasil.includes("saham") || hasil.includes("kripto")) fCat.value = 'Pembelian Aset(Investasi)';
+            else if (hasil.includes("loss") || hasil.includes("rugi")) fCat.value = 'Loss';
+        } else if (jenisTx === 'income') {
+            if (hasil.includes("investasi") || hasil.includes("saham")) fCat.value = 'Investasi';
+            else if (hasil.includes("bonus")) fCat.value = 'Bonus';
+            else if (hasil.includes("dividen")) fCat.value = 'Dividen';
+            else if (hasil.includes("profit")) fCat.value = 'Profit';
+            else if (hasil.includes("transfer")) fCat.value = 'Transfer Masuk';
+        }
     }
 
     // ================================================================
