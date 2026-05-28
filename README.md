@@ -7,30 +7,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-/* =============================================
-   REDESIGN: EDITORIAL SPLIT-PANEL + SIDEBAR NAV
-   Warna & Font: identik asli
-   ============================================= */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+/* ==========================================================================
+   TEMA ORIGINAL (GELAP PEKAT) + TEKS NOMINAL PUTIH ELEGAN
+   ========================================================================== */
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 :root {
-  --bg: #050505;
-  --bg2: #121215;
+  /* DARK MODE: ORIGINAL PITCH BLACK */
+  --bg: #050505; 
+  --bg2: #121215; 
   --bg3: #1A1A1F;
   --card: #121215;
-  --border: #222228;
+  --border: #222228; 
   --border2: #33333E;
-  --text: #FFFFFF;
-  --text2: #CCCCCC;
+  --text: #FFFFFF; 
+  --text2: #CCCCCC; 
   --text3: #888899;
-  --gold: #FBBF24;
-  --gold2: #F59E0B;
-  --green2: #10B981;
+  
+  --gold: #FBBF24; 
+  --gold2: #F59E0B; 
+  --green2: #10B981; 
   --red2: #F87171;
   --blue: #3B82F6;
   --blue-title: #007BFF;
+  
   --shadow-float: 0 12px 32px rgba(0,0,0,0.5);
-  --radius: 16px;
+  --radius: 16px; 
 }
 
 body.light-mode {
@@ -51,620 +53,460 @@ body {
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* =============================================
-   LAYOUT: SIDEBAR (kiri) + KONTEN (kanan)
-   ============================================= */
-.app-shell {
-  display: flex;
-  min-height: 100vh;
+/* TOP TEXT & EXTERNAL LINKS */
+.top-title {
+  color: var(--blue-title); font-size: 22px; font-weight: 800;
+  padding: 16px 24px 8px; letter-spacing: -0.5px;
 }
-
-/* ---- SIDEBAR ---- */
-.sidebar {
-  width: 240px;
-  flex-shrink: 0;
-  background: var(--bg2);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  padding: 28px 0 24px;
-  position: fixed;
-  top: 0; left: 0; bottom: 0;
-  z-index: 100;
-  overflow-y: auto;
-  transition: transform 0.3s ease;
-}
-
-.sidebar-logo {
-  display: flex; align-items: center; gap: 12px;
-  padding: 0 20px 28px;
+.top-ext-links {
+  display: flex; gap: 16px; padding: 0 24px 16px;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 20px;
+  flex-wrap: wrap; align-items: center; justify-content: flex-start;
 }
-.logo-img { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--gold2); padding: 2px; flex-shrink: 0; }
-.logo-img img { width: 100%; height: 100%; border-radius: 6px; object-fit: cover; display: block; }
-.logo-text .main-text { font-size: 15px; font-weight: 800; color: var(--text); }
-.logo-text .sub-text { font-size: 9px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1.5px; }
-
-/* Sidebar brand title */
-.sidebar-brand-title {
-  color: var(--blue-title);
-  font-size: 11px; font-weight: 800;
-  padding: 0 20px 16px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* Sidebar nav buttons */
-.sidebar-nav { display: flex; flex-direction: column; gap: 4px; padding: 0 12px; flex: 1; }
-.nav-btn {
-  padding: 11px 16px;
-  font-size: 12px; font-weight: 700;
-  color: var(--text3);
-  border: none;
-  border-radius: 10px;
-  background: transparent;
-  cursor: pointer;
-  transition: 0.2s;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-align: left;
-  display: flex; align-items: center; gap: 10px;
-}
-.nav-btn .nav-icon { font-size: 14px; width: 20px; text-align: center; }
-.nav-btn:hover { background: var(--bg3); color: var(--text2); }
-.nav-btn.active { background: var(--text); color: var(--bg); }
-
-/* External links di sidebar bawah */
-.sidebar-ext { padding: 20px 12px 0; border-top: 1px solid var(--border); margin-top: auto; display: flex; flex-direction: column; gap: 4px; }
 .nav-ext-btn {
-  background: transparent; border: none;
-  color: var(--gold); font-weight: 700; font-size: 10px;
-  font-family: 'Outfit', sans-serif; cursor: pointer;
-  text-transform: uppercase; letter-spacing: 0.5px;
-  text-align: left; padding: 8px 16px; border-radius: 8px;
-  transition: 0.2s;
+  background: transparent; border: none; color: var(--gold);
+  font-weight: 700; font-size: 11px; font-family: 'Outfit', sans-serif;
+  cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px;
 }
-.nav-ext-btn:hover { background: var(--bg3); color: var(--text); }
+.nav-ext-btn:hover { color: var(--text); }
 
-/* ---- STATUS BAR (atas konten) ---- */
-.topbar {
-  position: fixed;
-  top: 0; left: 240px; right: 0;
-  height: 60px;
-  background: var(--bg2);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 28px;
-  z-index: 99;
-  gap: 16px;
-}
-.topbar-left { display: flex; align-items: center; gap: 12px; }
-.topbar-right { display: flex; align-items: center; gap: 12px; }
+/* HEADER (Logo, USD, Sinkron, User) */
+.header-area { padding: 20px 24px; }
+.logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.logo-img { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--gold2); padding: 2px; }
+.logo-img img { width: 100%; height: 100%; border-radius: 8px; object-fit: cover; }
+.logo-text .main-text { font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: 0.5px; }
+.logo-text .sub-text { font-size: 10px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
 
+.status-row { display: flex; gap: 12px; margin-bottom: 20px; }
 .status-pill {
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 10px; padding: 6px 14px;
-  display: flex; align-items: center; gap: 8px;
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+  padding: 8px 16px; display: flex; align-items: center; justify-content: center; gap: 8px;
 }
-.usd-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--text); }
-.sync-dot { width: 7px; height: 7px; border-radius: 50%; box-shadow: 0 0 6px currentColor; flex-shrink: 0; }
-.sync-text { font-size: 9px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; }
+.usd-val { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: var(--text); }
+.sync-dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 8px currentColor; }
+.sync-text { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; }
 
+/* ROW USER (BULAN, AVATAR, KELUAR) */
+.user-row { display: flex; align-items: center; gap: 12px; position: relative; width: 100%; }
 .theme-btn {
-  background: var(--bg3); border: 1px solid var(--border);
-  color: var(--gold); width: 36px; height: 36px;
-  border-radius: 10px; display: flex; align-items: center; justify-content: center;
-  font-size: 14px; cursor: pointer; transition: 0.2s; flex-shrink: 0;
+  background: var(--bg2); border: 1px solid var(--border); color: var(--gold);
+  width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  font-size: 16px; cursor: pointer; flex-shrink: 0; transition: 0.3s;
 }
-.theme-btn:hover { background: var(--border); }
-
+.theme-btn:hover { background: var(--bg3); }
 .user-pill {
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 10px; padding: 6px 12px 6px 6px;
-  display: flex; align-items: center; gap: 10px;
+  flex: 1; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+  padding: 4px 12px 4px 4px; display: flex; align-items: center; justify-content: space-between;
 }
+.user-pill-left { display: flex; align-items: center; gap: 10px; }
 .u-avatar {
-  width: 26px; height: 26px; border-radius: 50%;
-  border: 1px solid var(--gold); display: flex;
-  align-items: center; justify-content: center;
-  color: var(--gold); font-weight: 700; font-size: 11px; flex-shrink: 0;
+  width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--gold);
+  display: flex; align-items: center; justify-content: center; color: var(--gold); font-weight: 700; font-size: 12px;
 }
 .u-name { font-size: 12px; font-weight: 600; color: var(--text); }
 .logout-btn {
-  background: transparent; border: 1px solid var(--border2);
-  color: var(--text3); padding: 4px 10px;
-  border-radius: 7px; font-size: 10px; font-weight: 700;
-  cursor: pointer; text-transform: uppercase;
+  background: transparent; border: 1px solid var(--border2); color: var(--text3);
+  padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; text-transform: uppercase;
 }
 
-/* Hamburger for mobile */
-.hamburger {
-  display: none;
-  background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text); width: 36px; height: 36px;
-  border-radius: 10px; align-items: center; justify-content: center;
-  font-size: 16px; cursor: pointer; flex-shrink: 0;
+/* NAVIGATION TABS */
+.nav {
+  padding: 0 24px 24px; display: flex; gap: 12px;
+  overflow-x: auto; scrollbar-width: none; white-space: nowrap;
 }
-.sidebar-overlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,0.6); z-index: 99;
+.nav::-webkit-scrollbar { display: none; }
+.nav-btn {
+  padding: 10px 20px; font-size: 11px; font-weight: 700; color: var(--text3);
+  border: 1px solid var(--border); border-radius: 100px; background: transparent;
+  cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px;
 }
-.sidebar-overlay.show { display: block; }
+.nav-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-/* ---- MAIN KONTEN ---- */
-.content-area {
-  margin-left: 240px;
-  padding-top: 60px;
-  min-height: 100vh;
-  flex: 1;
+/* MAIN CONTENT */
+.main { padding: 0 24px 80px; max-width: 1400px; margin: 0 auto; }
+.page { display: none; animation: fadeIn 0.4s ease; } .page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* METRICS GRID & CARDS */
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.m-card { background: var(--card); border-radius: var(--radius); padding: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; }
+.m-label { font-size: 9px; font-weight: 800; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; letter-spacing: 0.5px; }
+.m-val { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 800; margin-bottom: 4px; white-space: nowrap; color: var(--text); }
+
+.usd-pill {
+  display: inline-block; background: var(--bg3); color: var(--text3);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 600;
+  padding: 2px 8px; border-radius: 6px; align-self: flex-start; margin-bottom: 8px;
 }
-.main { padding: 28px; max-width: 1200px; }
-
-.page { display: none; animation: fadeIn 0.35s ease; }
-.page.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-/* ---- PAGE HEADER ---- */
-.page-header { margin-bottom: 24px; }
-.page-header h1 { font-size: 24px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
-.page-header p { font-size: 12px; color: var(--text3); margin-top: 2px; }
-
-/* =============================================
-   METRICS GRID — gaya kartu horizontal dgn border kiri berwarna
-   ============================================= */
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 28px;
-}
-.m-card {
-  background: var(--card);
-  border-radius: 14px;
-  padding: 18px 20px;
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--border2);
-  display: flex; flex-direction: column;
-  position: relative; overflow: hidden;
-}
-.m-card.inc { border-left-color: var(--green2); }
-.m-card.exp { border-left-color: var(--red2); }
-.m-card.bal { border-left-color: var(--gold); }
-.m-card.cnt { border-left-color: var(--blue); }
-
-.m-card::before {
-  content: '';
-  position: absolute; top: 0; right: 0;
-  width: 80px; height: 80px;
-  border-radius: 50%;
-  opacity: 0.04;
-}
-.m-card.inc::before { background: var(--green2); }
-.m-card.exp::before { background: var(--red2); }
-.m-card.bal::before { background: var(--gold); }
-.m-card.cnt::before { background: var(--blue); }
-
-.m-label { font-size: 9px; font-weight: 800; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; letter-spacing: 0.8px; }
-.m-val { font-family: 'JetBrains Mono', monospace; font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 4px; white-space: nowrap; }
-.usd-pill { display: inline-block; background: var(--bg3); color: var(--text3); font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 600; padding: 2px 8px; border-radius: 6px; align-self: flex-start; margin-bottom: 8px; }
-.m-sub { font-size: 10px; font-weight: 500; color: var(--text3); margin-bottom: 10px; flex-grow: 1; }
-.m-bar { height: 3px; background: var(--bg3); border-radius: 2px; width: 100%; overflow: hidden; }
+.m-sub { font-size: 10px; font-weight: 500; color: var(--text3); margin-bottom: 12px; flex-grow: 1; }
+.m-bar { height: 4px; background: var(--bg3); border-radius: 2px; width: 100%; overflow: hidden; }
 .m-bar-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
-.inc .m-bar-fill { background: var(--green2); }
-.exp .m-bar-fill { background: var(--red2); }
-.bal .m-bar-fill { background: var(--gold); }
-.cnt .m-bar-fill { background: var(--blue); }
+.inc .m-bar-fill { background: var(--green2); } .exp .m-bar-fill { background: var(--red2); }
+.bal .m-bar-fill { background: var(--border2); } .cnt .m-bar-fill { background: var(--blue); }
 
-/* =============================================
-   SUMMARY GRID
-   ============================================= */
+/* SUMMARY GRID */
 .sum-grid { display: grid; gap: 16px; margin-bottom: 24px; }
 
-/* =============================================
-   PANEL: 2 kolom — Form kiri, List kanan
-   ============================================= */
-.panel {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 20px;
-  align-items: start;
-}
+/* FORMS */
+.card { background: var(--card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); margin-bottom: 24px; display: flex; flex-direction: column; }
+.card-head { margin-bottom: 16px; }
+.card-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.card-sub { font-size: 12px; color: var(--text3); }
 
-/* =============================================
-   CARD
-   ============================================= */
-.card {
-  background: var(--card);
-  border-radius: 16px;
-  padding: 24px;
-  border: 1px solid var(--border);
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-}
-.card-head { margin-bottom: 20px; }
-.card-title { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
-.card-sub { font-size: 11px; color: var(--text3); }
-
-/* =============================================
-   FORM ELEMENTS
-   ============================================= */
+/* KOTAK SUARA */
 .voice-wrapper {
-  background: var(--bg3);
-  padding: 14px 16px;
-  border-radius: 12px;
-  margin-bottom: 18px;
-  border: 1px dashed var(--border2);
-  text-align: center;
+  background: var(--bg3); padding: 16px; border-radius: 12px; margin-bottom: 20px; border: 1px dashed var(--border2); text-align: center;
 }
 
-.type-toggle { display: flex; background: var(--bg3); border-radius: 10px; padding: 4px; margin-bottom: 18px; }
-.t-btn { flex: 1; padding: 10px; border: none; border-radius: 7px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; color: var(--text3); transition: 0.2s; }
+.type-toggle { display: flex; background: var(--bg3); border-radius: 12px; padding: 4px; margin-bottom: 20px; }
+.t-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; color: var(--text3); transition: 0.2s; }
 .t-btn.income.active { background: var(--bg2); color: var(--green2); }
 .t-btn.expense.active { background: var(--bg2); color: var(--text); }
 
 .f-input-dark {
-  width: 100%; padding: 14px 16px;
-  border-radius: 10px; border: 1px solid var(--border);
-  background-color: var(--bg3) !important;
-  color: var(--text) !important;
-  outline: none; font-family: 'Outfit', sans-serif;
-  font-size: 14px; font-weight: 500;
-  appearance: none; -webkit-appearance: none;
-  transition: border-color 0.3s;
+  width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border);
+  background-color: var(--bg2) !important; color: var(--text) !important;
+  outline: none; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500;
+  appearance: none; -webkit-appearance: none; transition: border-color 0.3s;
 }
 .f-input-dark:focus { border-color: var(--gold); }
 .f-input-dark::placeholder { color: var(--text3); }
 select.f-input-dark {
   background-image: url('data:image/svg+xml;utf8,<svg fill="%23888899" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-  background-repeat: no-repeat; background-position: right 14px center;
-  padding-right: 38px; cursor: pointer;
+  background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; cursor: pointer;
 }
 select.f-input-dark option { background: var(--card); color: var(--text); }
 
-.form-row { margin-bottom: 14px; }
-.form-label { font-size: 9px; font-weight: 800; color: var(--text3); margin-bottom: 7px; display: block; text-transform: uppercase; letter-spacing: 0.8px; }
-.form-row textarea { height: 88px; resize: none; }
-
-.submit-btn {
-  width: 100%; padding: 15px;
-  background: var(--text); color: var(--bg);
-  border: none; border-radius: 10px;
-  font-size: 12px; font-weight: 800;
-  cursor: pointer; transition: 0.2s;
-  text-transform: uppercase; letter-spacing: 0.5px;
-  margin-top: 6px;
-}
-.submit-btn:hover { opacity: 0.88; }
+.form-row { margin-bottom: 16px; }
+.form-label { font-size: 10px; font-weight: 800; color: var(--text3); margin-bottom: 8px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+.form-row textarea { height: 100px; resize: none; }
+.submit-btn { width: 100%; padding: 16px; background: var(--text); color: var(--bg); border: none; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; transition: 0.2s; text-transform: uppercase; margin-top: 8px; }
 #save-btn { margin-top: auto; }
 
-/* =============================================
-   HISTORY LIST ITEMS — gaya baru: baris compact dengan garis kiri
-   ============================================= */
-.list-wrap { padding: 4px 0; }
+/* HISTORY CARDS */
+.list-wrap { padding: 8px 0; }
 .recent-item {
-  padding: 14px 16px;
-  margin-bottom: 10px;
-  border-radius: 12px;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--border2);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: border-color 0.2s;
+  padding: 16px; margin-bottom: 12px; border-radius: 16px; 
+  background: var(--bg2); border: 1px solid var(--border); 
+  display: flex; align-items: center; justify-content: space-between;
 }
-.recent-item:has(.ri-icon.inc) { border-left-color: var(--green2); }
-.recent-item:has(.ri-icon.exp) { border-left-color: var(--red2); }
-
 .ri-icon {
-  width: 34px; height: 34px; border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 800;
-  background: var(--bg2); margin-right: 12px; flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800; background: var(--bg3); margin-right: 12px; flex-shrink: 0;
 }
-.ri-icon.inc { color: var(--green2); }
-.ri-icon.exp { color: var(--red2); }
-.ri-left { display: flex; align-items: center; flex: 1; min-width: 0; }
+.ri-icon.inc { color: var(--green2); } .ri-icon.exp { color: var(--red2); }
+.ri-left { display: flex; align-items: center; flex: 1; }
 
-.ri-note { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 2px; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; line-height: 1.4; }
-.ri-meta { font-size: 10px; font-weight: 500; color: var(--text3); }
-.cat-badge { font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 5px; background: var(--bg); border: 1px solid var(--border); color: var(--text3); text-transform: uppercase; display: inline-block; white-space: nowrap; }
+.ri-note { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; line-height: 1.4; }
+.ri-meta { font-size: 11px; font-weight: 500; color: var(--text3); }
+.cat-badge { font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 6px; background: var(--bg); border: 1px solid var(--border); color: var(--text3); text-transform: uppercase; display: inline-block; white-space: nowrap; }
 
-.ri-right-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink: 0; margin-left: 12px; }
+.ri-right-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; margin-left: 12px; }
 .ri-amounts-col { display: flex; flex-direction: column; align-items: flex-end; }
-.ri-amount { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 800; white-space: nowrap; color: var(--text); }
-.ri-usd { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; color: var(--text3); margin-top: 1px; }
-.del-btn-recent { background: transparent; border: none; color: var(--red2); font-size: 10px; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 4px; opacity: 0.7; }
-.del-btn-recent:hover { opacity: 1; }
+.ri-amount { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 800; white-space: nowrap; color: var(--text); }
+.ri-usd { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: var(--text3); margin-top: 2px; }
+.del-btn-recent { background: transparent; border: none; color: var(--red2); font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 4px; }
 
-/* =============================================
-   CHART & PERIOD BAR
-   ============================================= */
-.chart-wrap { margin-bottom: 20px; }
-.chart-legend { display: flex; gap: 16px; margin-bottom: 14px; }
-.leg-item { display: flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; }
-.leg-dot { width: 8px; height: 8px; border-radius: 2px; }
+/* CHART & FILTERS BAR */
+.chart-wrap { margin-bottom: 24px; }
+.chart-legend { display: flex; gap: 16px; margin-bottom: 16px; justify-content: center; }
+.leg-item { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; }
+.leg-dot { width: 10px; height: 10px; border-radius: 2px; }
 
-.period-bar { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: 18px; padding-bottom: 4px; }
-.period-bar::-webkit-scrollbar { display: none; }
-.p-btn { padding: 8px 18px; border: 1px solid var(--border); border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; background: var(--bg3); color: var(--text3); white-space: nowrap; transition: 0.2s; }
-.p-btn.active { border-color: var(--gold); color: var(--gold); background: var(--bg2); }
+/* Period Bar (Mingguan, Bulanan) */
+.period-bar { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: 20px; padding-bottom: 8px; }
+.p-btn { padding: 10px 20px; border: 1px solid var(--border); border-radius: 100px; font-size: 11px; font-weight: 700; cursor: pointer; background: var(--bg2); color: var(--text3); white-space: nowrap; }
+.p-btn.active { border-color: var(--text); color: var(--text); background: var(--bg); }
 
-/* =============================================
-   FILTER BAR
-   ============================================= */
-.filter-bar { display: flex; gap: 12px; width: 100%; margin-bottom: 20px; align-items: center; }
-.filter-bar select.f-input-dark { width: 220px; flex-shrink: 0; }
+/* FILTER BAR RIWAYAT */
+.filter-bar { display: flex; gap: 16px; width: 100%; margin-bottom: 24px; align-items: center; }
+.filter-bar select.f-input-dark { width: 250px; flex-shrink: 0; }
 .filter-bar input.f-input-dark { flex: 1; }
 
-/* =============================================
-   AUTH SCREEN
-   ============================================= */
+/* AUTH SCREEN */
 #auth-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-.auth-box { background: var(--card); border-radius: 20px; padding: 40px 28px; width: 90%; max-width: 380px; border: 1px solid var(--border); text-align: center; }
-.auth-box img { width: 56px; border-radius: 14px; margin-bottom: 14px; border: 1px solid var(--border2); }
-.auth-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.auth-box { background: var(--card); border-radius: 24px; padding: 40px 24px; width: 90%; max-width: 400px; border: 1px solid var(--border); text-align: center; }
+.auth-box img { width: 64px; border-radius: 16px; margin-bottom: 16px; border: 1px solid var(--border2); }
+.auth-title { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
 .auth-sub { font-size: 12px; color: var(--text3); font-weight: 500; margin-bottom: 24px; }
-.auth-tabs { display: flex; background: var(--bg3); border-radius: 10px; padding: 4px; margin-bottom: 22px; }
-.auth-tab { flex: 1; padding: 10px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; border: none; color: var(--text3); border-radius: 7px; }
+.auth-tabs { display: flex; background: var(--bg3); border-radius: 12px; padding: 4px; margin-bottom: 24px; }
+.auth-tab { flex: 1; padding: 12px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; border: none; color: var(--text3); border-radius: 8px; }
 .auth-tab.active { background: var(--bg2); color: var(--text); }
-.auth-field input { width: 100%; padding: 14px 16px; font-size: 14px; font-weight: 500; font-family: 'Outfit', sans-serif; border: 1px solid var(--border); border-radius: 10px; background: var(--bg3); color: var(--text); margin-bottom: 10px; outline: none; }
-.auth-btn { width: 100%; padding: 15px; background: var(--text); color: var(--bg); border: none; border-radius: 10px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 6px; }
+.auth-field input { width: 100%; padding: 16px; font-size: 14px; font-weight: 500; font-family: 'Outfit', sans-serif; border: 1px solid var(--border); border-radius: 12px; background: var(--bg2); color: var(--text); margin-bottom: 12px; outline: none; }
+.auth-btn { width: 100%; padding: 16px; background: var(--text); color: var(--bg); border: none; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-top: 8px; }
 
-/* =============================================
-   MOBILE RESPONSIVE
-   ============================================= */
-@media (max-width: 900px) {
-  .sidebar { transform: translateX(-100%); }
-  .sidebar.open { transform: translateX(0); }
-  .content-area { margin-left: 0; }
-  .topbar { left: 0; }
-  .hamburger { display: flex; }
-
-  .metrics { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .sum-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+/* ==========================================================================
+   MOBILE RESPONSIVE (100% PERSIS BINANCE: FULL MENTOK LAYAR & BULET EMPUK)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .top-ext-links { justify-content: center; padding: 0 16px 16px; }
+  .header-area { padding: 16px; }
+  .status-row { flex-direction: row; }
+  .status-pill { flex: 1; }
+  .user-row { flex-direction: row; justify-content: flex-start; }
+  .nav { padding: 0 16px 20px; }
+  
+  /* PENGHILANG JARAK SAMPING TOTAL BIAR MENTOK LAYAR */
+  .main { padding: 0 0 80px 0 !important; width: 100%; overflow-x: hidden; }
+  
+  /* METRICS & SUMMARY: KOTAK BULET MEMANJANG, MENTOK KIRI KANAN */
+  .metrics { 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 8px; 
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent; border: none; 
+  }
+  .metrics .m-card { border-radius: 24px !important; border-left: none; border-right: none; }
+  
+  .sum-grid { 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 8px; 
+    padding: 0 !important;
+    margin: 0 0 24px 0 !important; 
+    background: transparent; border: none; 
+  }
+  .sum-grid .m-card { border-radius: 24px !important; border-left: none; border-right: none; }
   .sum-grid .m-card:nth-child(3) { grid-column: span 2; }
 
-  .panel { grid-template-columns: 1fr; }
+  /* BUNGKUSAN CARD TRANSPARAN (AGAR KONTEN BISA NYENTUH LAYAR) */
+  .panel { display: flex; flex-direction: column; gap: 16px; background: transparent; }
+  .card { padding: 16px 0 !important; border-radius: 0 !important; border: none !important; background: transparent !important; margin-bottom: 0; }
+  
+  /* Elemen form dan teks diberi margin agar tetap aman terbaca (tidak nabrak layar) */
+  .card-head, .form-row, .filter-bar, .chart-wrap, .period-bar { padding-left: 16px !important; padding-right: 16px !important; }
+  
+  /* Biar filter & search bar berjejer ke bawah di HP */
+  .filter-bar { flex-direction: column; } 
+  
+  /* PERBAIKAN PENTING: Lebar Kotak Suara Dibuat Sama Persis Dengan Form */
+  .type-toggle, .submit-btn, .voice-wrapper { 
+      width: calc(100% - 32px) !important; 
+      margin-left: 16px !important; 
+      margin-right: 16px !important; 
+  }
 
-  .main { padding: 16px; }
-
-  .filter-bar { flex-direction: column; }
-  .filter-bar select.f-input-dark,
-  .filter-bar input.f-input-dark { width: 100%; }
+  .filter-bar select.f-input-dark, .filter-bar input.f-input-dark { width: 100%; border-radius: 16px; }
+  .f-input-dark { padding: 18px 16px; font-size: 15px; border-radius: 16px; }
+  
+  /* HISTORY ITEM (RIWAYAT TRANSAKSI): BULET MEMANJANG 100% MENTOK LAYAR */
+  .list-wrap { padding: 0 !important; margin: 0 !important; width: 100%; }
+  .recent-item { 
+      width: 100% !important; 
+      margin: 0 0 12px 0 !important; 
+      padding: 16px 16px !important; 
+      border-radius: 24px !important; 
+      border-left: none !important; 
+      border-right: none !important;
+      background: var(--card); 
+      flex-direction: row; 
+      justify-content: space-between; 
+      align-items: center; 
+  }
+  .ri-right-wrap { margin-left: 0; align-items: flex-end; }
+  .del-btn-recent { margin-top: 6px; }
+  .cat-badge { display: inline-block !important; }
 }
 
-@media (min-width: 901px) {
-  .sum-grid { grid-template-columns: repeat(3, 1fr); }
-  .panel > .card { height: 100%; }
-}
+/* ==========================================================================
+   DESKTOP RESPONSIVE (LEBIH RAPI & TERSTRUKTUR GRID)
+   ========================================================================== */
+@media (min-width: 769px) {
+  .metrics { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .sum-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  
+  /* Form di kiri (380px), Riwayat di kanan sisa layarnya */
+  .panel { 
+    display: grid; 
+    grid-template-columns: 380px 1fr; 
+    gap: 24px; 
+    align-items: stretch; 
+  }
+  
+  /* PERBAIKAN: Paksa kotak kiri dan kanan setinggi grid biar nggak kopong */
+  .panel > .card {
+    height: 100%;
+  }
 
-/* Scrollbar styling */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
+  /* Rapihin sedikit jarak pinggir biar elegan di layar gede */
+  .main, .header-area, .nav, .top-ext-links, .top-title { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+  }
+}
 </style>
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
+<div class="top-title">RHN-CAPITAL</div>
+<div class="top-ext-links">
+  <button class="nav-ext-btn" onclick="window.location.href='latar.html'">📈 HALAMAN RHN CAPITAL ↗</button>
+  <button class="nav-ext-btn" onclick="window.location.href='jurnal.html'">📈 JURNAL FOREX ↗</button>
+  <button class="nav-ext-btn" onclick="window.location.href='aset.html'">📈 JURNAL ASET ↗</button>
+  <button class="nav-ext-btn" onclick="window.location.href='data.html'">📈 DATA PRIBADI ↗</button>
+</div>
+
 <div id="auth-screen">
   <div class="auth-box">
     <img src="RHN LOGO.jpg" alt="RHN Capital Logo">
     <div class="auth-title">RHN CAPITAL</div>
-    <div class="auth-sub">Arus Keuangan — Akses Masuk</div>
+    <div class="auth-sub">Arus Keuangan Akses Masuk</div>
     <div class="auth-tabs">
       <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Masuk</button>
       <button class="auth-tab" id="tab-register" onclick="switchTab('register')">Daftar</button>
     </div>
     <div id="auth-err" style="color:var(--red2);font-size:12px;margin-bottom:12px;display:none;"></div>
-    <div class="auth-field"><input type="email" id="auth-email" class="f-input-dark" placeholder="Email"></div>
-    <div class="auth-field"><input type="password" id="auth-pass" class="f-input-dark" placeholder="Sandi" onkeydown="if(event.key==='Enter')doAuth()"></div>
-    <div class="auth-field" id="field-confirm" style="display:none"><input type="password" id="auth-pass2" class="f-input-dark" placeholder="Ulangi Sandi"></div>
+    <div class="form-row"><input type="email" id="auth-email" class="f-input-dark" placeholder="Email"></div>
+    <div class="form-row"><input type="password" id="auth-pass" class="f-input-dark" placeholder="Sandi" onkeydown="if(event.key==='Enter')doAuth()"></div>
+    <div class="form-row" id="field-confirm" style="display:none"><input type="password" id="auth-pass2" class="f-input-dark" placeholder="Ulangi Sandi"></div>
     <button class="auth-btn" id="auth-submit-btn" onclick="doAuth()">MASUK</button>
   </div>
 </div>
 
-<!-- APP SCREEN -->
-<div id="app-screen" style="display:none;">
-<div class="app-shell">
+<div id="app-screen">
+<div class="header-area">
+  <div class="logo-row">
+    <div class="logo-img"><img src="RHN LOGO.jpg" alt="Logo"></div>
+    <div class="logo-text">
+      <div class="main-text">RHN CAPITAL</div>
+      <div class="sub-text">ARUS KEUANGAN</div>
+    </div>
+  </div>
+  
+  <div class="status-row">
+    <div class="status-pill">
+      <span class="usd-val" id="usd-rate-val">...</span>
+    </div>
+    <div class="status-pill">
+      <span class="sync-dot" id="sync-dot" style="background:var(--text3);"></span>
+      <span class="sync-text" id="sync-label">MENGHUBUNGKAN...</span>
+    </div>
+  </div>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <div class="logo-img"><img src="RHN LOGO.jpg" alt="Logo"></div>
-      <div class="logo-text">
-        <div class="main-text">RHN CAPITAL</div>
-        <div class="sub-text">ARUS KEUANGAN</div>
+  <div class="user-row">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-toggle">🌙</button>
+    <div class="user-pill">
+      <div class="user-pill-left">
+        <div class="u-avatar" id="user-avatar">?</div>
+        <div class="u-name" id="user-name">Memuat...</div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">KELUAR</button>
+    </div>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="switchPage('dashboard')">DASHBOARD</button>
+  <button class="nav-btn" onclick="switchPage('harian')">HARIAN</button>
+  <button class="nav-btn" onclick="switchPage('mingguan')">MINGGUAN</button>
+  <button class="nav-btn" onclick="switchPage('bulanan')">BULANAN</button>
+  <button class="nav-btn" onclick="switchPage('tahunan')">TAHUNAN</button>
+  <button class="nav-btn" onclick="switchPage('riwayat')">RIWAYAT</button>
+</div>
+
+<div class="main">
+
+<div id="page-dashboard" class="page active">
+  <div class="metrics" id="metric-cards"></div>
+  <div class="panel">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">Tambah Transaksi</div>
+        <div class="card-sub">Catat pemasukan atau pengeluaran baru</div>
+      </div>
+      
+      <div class="voice-wrapper">
+        <button id="btn-mic" class="submit-btn" style="background-color: var(--blue-title); color: white; margin-top: 0; margin-bottom: 8px;">🎤 TEKAN UNTUK NGOMONG</button>
+        <div id="status-suara" style="font-size: 11px; color: var(--text3); font-style: italic;">Contoh: "Saya jajan bakso seharga 30 ribu senin minggu kemaren jam 14"</div>
+      </div>
+      <div class="type-toggle">
+        <button class="t-btn income active" id="btn-inc" onclick="selType('income')">+ Pemasukan</button>
+        <button class="t-btn expense" id="btn-exp" onclick="selType('expense')">- Pengeluaran</button>
+      </div>
+      <div class="form-row"><label class="form-label">JUMLAH (RP)</label><input type="number" id="f-amount" class="f-input-dark" placeholder="0"></div>
+      <div class="form-row"><label class="form-label">KATEGORI</label><select id="f-cat" class="f-input-dark"></select></div>
+      <div class="form-row"><label class="form-label">KETERANGAN</label><textarea id="f-note" class="f-input-dark" placeholder="Catatan transaksi..."></textarea></div>
+      <div class="form-row"><label class="form-label">WAKTU</label><input type="datetime-local" id="f-date" class="f-input-dark"></div>
+      <button class="submit-btn" id="save-btn" onclick="addTx()">SIMPAN TRANSAKSI</button>
+    </div>
+    
+    <div class="card">
+      <div class="card-head"><div class="card-title">Aktivitas Terakhir</div></div>
+      <div id="recent-list" class="list-wrap"></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-harian" class="page">
+  <div class="sum-grid" id="daily-sum"></div>
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Laporan Harian</div>
+      <div style="margin-top:12px;">
+         <input type="date" id="pick-daily" onchange="renderDaily()" class="f-input-dark">
       </div>
     </div>
+    <div class="list-wrap" id="daily-body"></div>
+  </div>
+</div>
 
-    <div class="sidebar-brand-title">RHN-CAPITAL</div>
-
-    <nav class="sidebar-nav">
-      <button class="nav-btn active" onclick="switchPage('dashboard')"><span class="nav-icon">◈</span> DASHBOARD</button>
-      <button class="nav-btn" onclick="switchPage('harian')"><span class="nav-icon">◻</span> HARIAN</button>
-      <button class="nav-btn" onclick="switchPage('mingguan')"><span class="nav-icon">◻</span> MINGGUAN</button>
-      <button class="nav-btn" onclick="switchPage('bulanan')"><span class="nav-icon">◻</span> BULANAN</button>
-      <button class="nav-btn" onclick="switchPage('tahunan')"><span class="nav-icon">◻</span> TAHUNAN</button>
-      <button class="nav-btn" onclick="switchPage('riwayat')"><span class="nav-icon">◻</span> RIWAYAT</button>
-    </nav>
-
-    <div class="sidebar-ext">
-      <button class="nav-ext-btn" onclick="window.location.href='latar.html'">📈 HALAMAN RHN CAPITAL ↗</button>
-      <button class="nav-ext-btn" onclick="window.location.href='jurnal.html'">📈 JURNAL FOREX ↗</button>
-      <button class="nav-ext-btn" onclick="window.location.href='aset.html'">📈 JURNAL ASET ↗</button>
-      <button class="nav-ext-btn" onclick="window.location.href='data.html'">📈 DATA PRIBADI ↗</button>
+<div id="page-mingguan" class="page">
+  <div class="period-bar" id="week-sel"></div>
+  <div class="sum-grid" id="week-sum"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-title">Laporan Mingguan</div></div>
+    <div class="chart-wrap">
+      <div class="chart-legend"><div class="leg-item"><div class="leg-dot" style="background:var(--green2)"></div>Pemasukan</div><div class="leg-item"><div class="leg-dot" style="background:var(--red2)"></div>Pengeluaran</div></div>
+      <div style="height:200px"><canvas id="chartWeek"></canvas></div>
     </div>
-  </aside>
+    <div class="list-wrap" id="week-body"></div>
+  </div>
+</div>
 
-  <!-- OVERLAY MOBILE -->
-  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
-
-  <!-- MAIN CONTENT -->
-  <div class="content-area">
-
-    <!-- TOP BAR -->
-    <div class="topbar">
-      <div class="topbar-left">
-        <button class="hamburger" id="hamburger-btn" onclick="openSidebar()">☰</button>
-        <div class="status-pill">
-          <span class="usd-val" id="usd-rate-val">...</span>
-        </div>
-        <div class="status-pill">
-          <span class="sync-dot" id="sync-dot" style="background:var(--text3);"></span>
-          <span class="sync-text" id="sync-label">MENGHUBUNGKAN...</span>
-        </div>
-      </div>
-      <div class="topbar-right">
-        <button class="theme-btn" onclick="toggleTheme()" id="theme-toggle">🌙</button>
-        <div class="user-pill">
-          <div class="u-avatar" id="user-avatar">?</div>
-          <div class="u-name" id="user-name">Memuat...</div>
-          <button class="logout-btn" onclick="doLogout()">KELUAR</button>
-        </div>
-      </div>
+<div id="page-bulanan" class="page">
+  <div class="period-bar" id="month-sel"></div>
+  <div class="sum-grid" id="month-sum"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-title">Laporan Bulanan</div></div>
+    <div class="chart-wrap">
+      <div class="chart-legend"><div class="leg-item"><div class="leg-dot" style="background:var(--green2)"></div>Pemasukan</div><div class="leg-item"><div class="leg-dot" style="background:var(--red2)"></div>Pengeluaran</div></div>
+      <div style="height:200px"><canvas id="chartMonth"></canvas></div>
     </div>
+    <div class="list-wrap" id="month-body"></div>
+  </div>
+</div>
 
-    <!-- PAGES -->
-    <div class="main">
+<div id="page-tahunan" class="page">
+  <div class="period-bar" id="year-sel"></div>
+  <div class="sum-grid" id="year-sum"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-title">Laporan Tahunan</div></div>
+    <div class="chart-wrap">
+      <div class="chart-legend"><div class="leg-item"><div class="leg-dot" style="background:var(--green2)"></div>Pemasukan</div><div class="leg-item"><div class="leg-dot" style="background:var(--red2)"></div>Pengeluaran</div></div>
+      <div style="height:200px"><canvas id="chartYear"></canvas></div>
+    </div>
+    <div class="list-wrap" id="year-body"></div>
+  </div>
+</div>
 
-      <!-- DASHBOARD -->
-      <div id="page-dashboard" class="page active">
-        <div class="page-header">
-          <h1>Dashboard</h1>
-          <p>Ringkasan arus keuangan keseluruhan</p>
-        </div>
-        <div class="metrics" id="metric-cards"></div>
-        <div class="panel">
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title">Tambah Transaksi</div>
-              <div class="card-sub">Catat pemasukan atau pengeluaran baru</div>
-            </div>
-            <div class="voice-wrapper">
-              <button id="btn-mic" class="submit-btn" style="background-color: var(--blue-title); color: white; margin-top: 0; margin-bottom: 8px;">🎤 TEKAN UNTUK NGOMONG</button>
-              <div id="status-suara" style="font-size: 11px; color: var(--text3); font-style: italic;">Contoh: "Saya jajan bakso seharga 30 ribu senin minggu kemaren jam 14"</div>
-            </div>
-            <div class="type-toggle">
-              <button class="t-btn income active" id="btn-inc" onclick="selType('income')">+ Pemasukan</button>
-              <button class="t-btn expense" id="btn-exp" onclick="selType('expense')">- Pengeluaran</button>
-            </div>
-            <div class="form-row"><label class="form-label">JUMLAH (RP)</label><input type="number" id="f-amount" class="f-input-dark" placeholder="0"></div>
-            <div class="form-row"><label class="form-label">KATEGORI</label><select id="f-cat" class="f-input-dark"></select></div>
-            <div class="form-row"><label class="form-label">KETERANGAN</label><textarea id="f-note" class="f-input-dark" placeholder="Catatan transaksi..."></textarea></div>
-            <div class="form-row"><label class="form-label">WAKTU</label><input type="datetime-local" id="f-date" class="f-input-dark"></div>
-            <button class="submit-btn" id="save-btn" onclick="addTx()">SIMPAN TRANSAKSI</button>
-          </div>
-          <div class="card">
-            <div class="card-head"><div class="card-title">Aktivitas Terakhir</div></div>
-            <div id="recent-list" class="list-wrap"></div>
-          </div>
-        </div>
-      </div>
+<div id="page-riwayat" class="page">
+  <div class="sum-grid" id="all-sum"></div>
+  <div class="card">
+    <div class="card-head"><div class="card-title">Semua Riwayat</div></div>
+    <div class="filter-bar">
+      <select id="flt-type" class="f-input-dark" onchange="renderAll()">
+        <option value="">Semua Filter</option>
+        <option value="income">Pemasukan Saja</option>
+        <option value="expense">Pengeluaran Saja</option>
+      </select>
+      <input type="text" id="flt-search" class="f-input-dark" placeholder="Cari berdasarkan keterangan atau kategori..." oninput="renderAll()">
+    </div>
+    <div class="list-wrap" id="all-body"></div>
+  </div>
+</div>
 
-      <!-- HARIAN -->
-      <div id="page-harian" class="page">
-        <div class="page-header"><h1>Laporan Harian</h1><p>Pantau transaksi per hari</p></div>
-        <div class="sum-grid" id="daily-sum"></div>
-        <div class="card">
-          <div class="card-head">
-            <div class="card-title">Pilih Tanggal</div>
-            <div style="margin-top:10px;"><input type="date" id="pick-daily" onchange="renderDaily()" class="f-input-dark" style="max-width:240px;"></div>
-          </div>
-          <div class="list-wrap" id="daily-body"></div>
-        </div>
-      </div>
-
-      <!-- MINGGUAN -->
-      <div id="page-mingguan" class="page">
-        <div class="page-header"><h1>Laporan Mingguan</h1><p>Pantau transaksi per pekan</p></div>
-        <div class="period-bar" id="week-sel"></div>
-        <div class="sum-grid" id="week-sum"></div>
-        <div class="card">
-          <div class="card-head"><div class="card-title">Grafik Mingguan</div></div>
-          <div class="chart-wrap">
-            <div class="chart-legend">
-              <div class="leg-item"><div class="leg-dot" style="background:var(--green2)"></div>Pemasukan</div>
-              <div class="leg-item"><div class="leg-dot" style="background:var(--red2)"></div>Pengeluaran</div>
-            </div>
-            <div style="height:200px"><canvas id="chartWeek"></canvas></div>
-          </div>
-          <div class="list-wrap" id="week-body"></div>
-        </div>
-      </div>
-
-      <!-- BULANAN -->
-      <div id="page-bulanan" class="page">
-        <div class="page-header"><h1>Laporan Bulanan</h1><p>Pantau transaksi per bulan</p></div>
-        <div class="period-bar" id="month-sel"></div>
-        <div class="sum-grid" id="month-sum"></div>
-        <div class="card">
-          <div class="card-head"><div class="card-title">Grafik Bulanan</div></div>
-          <div class="chart-wrap">
-            <div class="chart-legend">
-              <div class="leg-item"><div class="leg-dot" style="background:var(--green2)"></div>Pemasukan</div>
-              <div class="leg-item"><div class="leg-dot" style="background:var(--red2)"></div>Pengeluaran</div>
-            </div>
-            <div style="height:200px"><canvas id="chartMonth"></canvas></div>
-          </div>
-          <div class="list-wrap" id="month-body"></div>
-        </div>
-      </div>
-
-      <!-- TAHUNAN -->
-      <div id="page-tahunan" class="page">
-        <div class="page-header"><h1>Laporan Tahunan</h1><p>Pantau transaksi per tahun</p></div>
-        <div class="period-bar" id="year-sel"></div>
-        <div class="sum-grid" id="year-sum"></div>
-        <div class="card">
-          <div class="card-head"><div class="card-title">Grafik Tahunan</div></div>
-          <div class="chart-wrap">
-            <div class="chart-legend">
-              <div class="leg-item"><div class="leg-dot" style="background:var(--green2)"></div>Pemasukan</div>
-              <div class="leg-item"><div class="leg-dot" style="background:var(--red2)"></div>Pengeluaran</div>
-            </div>
-            <div style="height:200px"><canvas id="chartYear"></canvas></div>
-          </div>
-          <div class="list-wrap" id="year-body"></div>
-        </div>
-      </div>
-
-      <!-- RIWAYAT -->
-      <div id="page-riwayat" class="page">
-        <div class="page-header"><h1>Semua Riwayat</h1><p>Seluruh riwayat transaksi</p></div>
-        <div class="sum-grid" id="all-sum"></div>
-        <div class="card">
-          <div class="card-head"><div class="card-title">Filter & Cari</div></div>
-          <div class="filter-bar">
-            <select id="flt-type" class="f-input-dark" onchange="renderAll()">
-              <option value="">Semua Filter</option>
-              <option value="income">Pemasukan Saja</option>
-              <option value="expense">Pengeluaran Saja</option>
-            </select>
-            <input type="text" id="flt-search" class="f-input-dark" placeholder="Cari berdasarkan keterangan atau kategori..." oninput="renderAll()">
-          </div>
-          <div class="list-wrap" id="all-body"></div>
-        </div>
-      </div>
-
-    </div><!-- /main -->
-  </div><!-- /content-area -->
-</div><!-- /app-shell -->
-</div><!-- /app-screen -->
-
-<script>
-function openSidebar() {
-  document.getElementById('sidebar').classList.add('open');
-  document.getElementById('sidebar-overlay').classList.add('show');
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('show');
-}
-</script>
+</div></div>
 
 <script type="module">
 window.toggleTheme = function() {
@@ -728,17 +570,7 @@ window.delTx=async function(id){ if(!currentUser||!confirm('Yakin mau hapus riwa
 
 window.selType=function(t){ curType=t; document.getElementById('btn-inc').classList.toggle('active',t==='income'); document.getElementById('btn-exp').classList.toggle('active',t==='expense'); const s=document.getElementById('f-cat'); s.innerHTML='<option value="">Pilih kategori...</option>'; CATS[t].forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;s.appendChild(o)}); };
 
-window.switchPage=function(p){ 
-  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active')); 
-  document.querySelectorAll('.nav-btn').forEach(el=>{ el.classList.remove('active'); el.querySelector('.nav-icon').textContent='◻'; }); 
-  document.getElementById('page-'+p).classList.add('active'); 
-  const pages=['dashboard','harian','mingguan','bulanan','tahunan','riwayat']; 
-  const activeBtn = document.querySelectorAll('.nav-btn')[pages.indexOf(p)];
-  activeBtn.classList.add('active'); 
-  activeBtn.querySelector('.nav-icon').textContent='◈';
-  activePage=p; refreshAll(); 
-  closeSidebar();
-};
+window.switchPage=function(p){ document.querySelectorAll('.page').forEach(el=>el.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(el=>el.classList.remove('active')); document.getElementById('page-'+p).classList.add('active'); const pages=['dashboard','harian','mingguan','bulanan','tahunan','riwayat']; document.querySelectorAll('.nav-btn')[pages.indexOf(p)].classList.add('active'); activePage=p;refreshAll(); };
 
 function calcSum(arr){ const inc=arr.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0), exp=arr.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0); return{inc,exp,bal:inc-exp,count:arr.length}; }
 
@@ -820,9 +652,11 @@ if (SpeechRecognition) {
   });
 
   recognition.onresult = (event) => {
+    // Ambil hasil suara asli
     const hasil = event.results[0][0].transcript.toLowerCase();
     btnMic.innerHTML = "🎤 TEKAN UNTUK NGOMONG";
 
+    // 1. AUTO PENGELUARAN/PEMASUKAN
     let jenisTx = 'income'; 
     if(hasil.includes("beli") || hasil.includes("jajan") || hasil.includes("bayar")) {
         jenisTx = 'expense';
@@ -833,8 +667,9 @@ if (SpeechRecognition) {
     }
 
     if(fCat.options.length > 1) {
-        fCat.selectedIndex = 1;
+        fCat.selectedIndex = 1; // Default ke opsi pertama
 
+        // LOGIKA BARU: Pilih kategori cerdas berdasarkan kata kunci
         if (jenisTx === 'expense') {
             if (hasil.includes("parkir") || hasil.includes("bensin") || hasil.includes("ongkos") || hasil.includes("gojek") || hasil.includes("grab")) fCat.value = 'Transportasi';
             else if (hasil.includes("makan") || hasil.includes("nasi") || hasil.includes("mie")) fCat.value = 'Makan';
@@ -853,14 +688,21 @@ if (SpeechRecognition) {
         }
     }
 
-    let hasilClean = hasil.replace(/\./g, '')
-                          .replace(/\bribu\b/g, '000')
-                          .replace(/\bjuta\b/g, '000000');
+    // ================================================================
+    // PERBAIKAN LOGIKA ANGKA: Bersihkan Titik & Ganti Kata "Ribu"
+    // ================================================================
+    // Google kadang merubah suara jadi "30.000" atau "30 ribu".
+    // Kode ini menghapus titik, lalu menerjemahkan "ribu" jadi "000".
+    let hasilClean = hasil.replace(/\./g, '')                 // Hapus semua titik (30.000 -> 30000)
+                          .replace(/\bribu\b/g, '000')        // Kata "ribu" -> 000 (30 ribu -> 30 000)
+                          .replace(/\bjuta\b/g, '000000');    // Kata "juta" -> 000000
     
     let harga = "";
+    // Pengecekan harga dilakukan menggunakan teks yang sudah bersih (hasilClean)
     const matchHarga = hasilClean.match(/seharga\s*(\d+)/) || hasilClean.match(/(?:rp|rupiah)\s*(\d+)/) || hasilClean.match(/(\d+)/);
     if (matchHarga) harga = matchHarga[1];
 
+    // 3. EKSTRAK ITEM (KETERANGAN) - Bersihkan dari keterangan waktu
     let item = "";
     let kataKerja = "";
     const matchItem = hasil.match(/(beli|jajan|bayar|terima|dapat)\s+(.*?)\s+(?:seharga|sebesar)/);
@@ -876,6 +718,7 @@ if (SpeechRecognition) {
     }
     
     if (item) {
+        // Hapus kata-kata waktu yang nyangkut di nama barang/kegiatan
         item = item.replace(/jam\s*\d+(\s*(pagi|siang|sore|malam))?/g, '')
                    .replace(/pagi|siang|sore|malam/g, '')
                    .replace(/kemaren|kemarin|besok/g, '')
@@ -891,10 +734,12 @@ if (SpeechRecognition) {
         item = item.trim();
     }
     
+    // Kalau nama barang kosong tapi ada harga, tembak nama default biar TETAP BISA SIMPAN!
     if (!item && harga) {
         item = hasil.replace(/\d+/g, '').replace(/\./g, '').trim() || (jenisTx === 'expense' ? "Pengeluaran (Suara)" : "Pemasukan (Suara)");
     }
 
+    // 4. LOGIKA WAKTU BARU
     let targetDate = new Date(); 
     
     if (hasil.match(/tahun\s+(kemaren|kemarin|lalu)/)) targetDate.setFullYear(targetDate.getFullYear() - 1);
@@ -933,11 +778,13 @@ if (SpeechRecognition) {
     const tzoffset = targetDate.getTimezoneOffset() * 60000;
     const localISOTime = new Date(targetDate.getTime() - tzoffset).toISOString().slice(0,16);
 
+    // 5. AUTO-SAVE DATABASE INSTAN (0 DETIK JEDA)
     if(harga) {
         fNote.value = item.trim();
         fAmount.value = harga;
         fDate.value = localISOTime;
 
+        // LANGSUNG PANGGIL FUNGSI SIMPAN
         window.addTx();
         
         statusSuara.innerText = "✅ Langsung tersimpan otomatis!";
