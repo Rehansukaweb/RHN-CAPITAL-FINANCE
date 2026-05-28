@@ -6,6 +6,7 @@
 <title>Arus Keuangan — RHN CAPITAL</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
 /* ==========================================================================
    TEMA ORIGINAL (GELAP PEKAT) + TEKS NOMINAL PUTIH ELEGAN
@@ -149,15 +150,10 @@ body {
 .sum-grid { display: grid; gap: 16px; margin-bottom: 24px; }
 
 /* FORMS */
-.card { background: var(--card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); margin-bottom: 24px; display: flex; flex-direction: column; }
+.card { background: var(--card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); margin-bottom: 24px; }
 .card-head { margin-bottom: 16px; }
 .card-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
 .card-sub { font-size: 12px; color: var(--text3); }
-
-/* KOTAK SUARA */
-.voice-wrapper {
-  background: var(--bg3); padding: 16px; border-radius: 12px; margin-bottom: 20px; border: 1px dashed var(--border2); text-align: center;
-}
 
 .type-toggle { display: flex; background: var(--bg3); border-radius: 12px; padding: 4px; margin-bottom: 20px; }
 .t-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; color: var(--text3); transition: 0.2s; }
@@ -182,7 +178,6 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
 .form-label { font-size: 10px; font-weight: 800; color: var(--text3); margin-bottom: 8px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
 .form-row textarea { height: 100px; resize: none; }
 .submit-btn { width: 100%; padding: 16px; background: var(--text); color: var(--bg); border: none; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; transition: 0.2s; text-transform: uppercase; margin-top: 8px; }
-#save-btn { margin-top: auto; }
 
 /* HISTORY CARDS */
 .list-wrap { padding: 8px 0; }
@@ -254,7 +249,7 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   .metrics { 
     grid-template-columns: repeat(2, 1fr); 
     gap: 8px; 
-    padding: 0 !important;
+    padding: 0 !important; /* Membunuh padding 16px yang tersembunyi */
     margin: 0 !important;
     background: transparent; border: none; 
   }
@@ -263,12 +258,12 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   .sum-grid { 
     grid-template-columns: repeat(2, 1fr); 
     gap: 8px; 
-    padding: 0 !important;
+    padding: 0 !important; /* Membunuh padding 16px yang tersembunyi */
     margin: 0 0 24px 0 !important; 
     background: transparent; border: none; 
   }
   .sum-grid .m-card { border-radius: 24px !important; border-left: none; border-right: none; }
-  .sum-grid .m-card:nth-child(3) { grid-column: span 2; }
+  .sum-grid .m-card:nth-child(3) { grid-column: span 2; } /* Saldo bersih bulet memanjang full */
 
   /* BUNGKUSAN CARD TRANSPARAN (AGAR KONTEN BISA NYENTUH LAYAR) */
   .panel { display: flex; flex-direction: column; gap: 16px; background: transparent; }
@@ -280,24 +275,18 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   /* Biar filter & search bar berjejer ke bawah di HP */
   .filter-bar { flex-direction: column; } 
   
-  /* PERBAIKAN PENTING: Lebar Kotak Suara Dibuat Sama Persis Dengan Form */
-  .type-toggle, .submit-btn, .voice-wrapper { 
-      width: calc(100% - 32px) !important; 
-      margin-left: 16px !important; 
-      margin-right: 16px !important; 
-  }
-
+  .type-toggle, .submit-btn { width: calc(100% - 32px) !important; margin-left: 16px !important; margin-right: 16px !important; }
   .filter-bar select.f-input-dark, .filter-bar input.f-input-dark { width: 100%; border-radius: 16px; }
   .f-input-dark { padding: 18px 16px; font-size: 15px; border-radius: 16px; }
   
   /* HISTORY ITEM (RIWAYAT TRANSAKSI): BULET MEMANJANG 100% MENTOK LAYAR */
   .list-wrap { padding: 0 !important; margin: 0 !important; width: 100%; }
   .recent-item { 
-      width: 100% !important; 
+      width: 100% !important; /* Paksa memanjang sentuh ujung layar */
       margin: 0 0 12px 0 !important; 
       padding: 16px 16px !important; 
-      border-radius: 24px !important; 
-      border-left: none !important; 
+      border-radius: 24px !important; /* Tetap bulet empuk tidak kaku */
+      border-left: none !important; /* Menghilangkan batas kiri kanan biar nyatu ke HP */
       border-right: none !important;
       background: var(--card); 
       flex-direction: row; 
@@ -321,12 +310,7 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
     display: grid; 
     grid-template-columns: 380px 1fr; 
     gap: 24px; 
-    align-items: stretch; 
-  }
-  
-  /* PERBAIKAN: Paksa kotak kiri dan kanan setinggi grid biar nggak kopong */
-  .panel > .card {
-    height: 100%;
+    align-items: start; 
   }
 
   /* Rapihin sedikit jarak pinggir biar elegan di layar gede */
@@ -415,11 +399,6 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
         <div class="card-title">Tambah Transaksi</div>
         <div class="card-sub">Catat pemasukan atau pengeluaran baru</div>
       </div>
-      
-      <div class="voice-wrapper">
-        <button id="btn-mic" class="submit-btn" style="background-color: var(--blue-title); color: white; margin-top: 0; margin-bottom: 8px;">🎤 TEKAN UNTUK NGOMONG</button>
-        <div id="status-suara" style="font-size: 11px; color: var(--text3); font-style: italic;">Contoh: "Saya jajan bakso seharga 30 ribu senin minggu kemaren jam 14"</div>
-      </div>
       <div class="type-toggle">
         <button class="t-btn income active" id="btn-inc" onclick="selType('income')">+ Pemasukan</button>
         <button class="t-btn expense" id="btn-exp" onclick="selType('expense')">- Pengeluaran</button>
@@ -433,7 +412,7 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
     
     <div class="card">
       <div class="card-head"><div class="card-title">Aktivitas Terakhir</div></div>
-      <div id="recent-list" class="list-wrap"></div>
+      <div id="recent-list" class="list-wrap" style="max-height:600px;overflow-y:auto;"></div>
     </div>
   </div>
 </div>
@@ -564,7 +543,7 @@ onAuthStateChanged(auth,user=>{
 
 function listenTransactions(uid){ if(unsubListener)unsubListener(); unsubListener=onSnapshot(query(collection(db,'users',uid,'transactions'),orderBy('createdAt','desc')), snap=>{txs=snap.docs.map(d=>({id:d.id,...d.data()}));setSyncStatus(true);refreshAll();}, err=>{console.error(err);setSyncStatus(false);} ); }
 
-window.addTx=async function(){ if(!currentUser)return; const amt=parseFloat(document.getElementById('f-amount').value), cat=document.getElementById('f-cat').value, note=document.getElementById('f-note').value.trim(), dt=document.getElementById('f-date').value; if(!amt||!cat)return alert('Isi data yang lengkap.'); document.getElementById('save-btn').textContent='...'; try{ await addDoc(collection(db,'users',currentUser.uid,'transactions'),{type:curType,amount:amt,category:cat,note:note||'-',date:dt||nowISO(),createdAt:serverTimestamp()}); document.getElementById('f-amount').value=''; document.getElementById('f-note').value=''; } catch(e){alert(e.message);} document.getElementById('save-btn').textContent='SIMPAN TRANSAKSI'; };
+window.addTx=async function(){ if(!currentUser)return; const amt=parseFloat(document.getElementById('f-amount').value), cat=document.getElementById('f-cat').value, note=document.getElementById('f-note').value.trim(), dt=document.getElementById('f-date').value; if(!amt||!cat)return Swal.fire({icon:'warning',text:'Isi data dengan lengkap saja',confirmButtonColor:'#3085d6',confirmButtonText:'OKE'}); document.getElementById('save-btn').textContent='...'; try{ await addDoc(collection(db,'users',currentUser.uid,'transactions'),{type:curType,amount:amt,category:cat,note:note||'-',date:dt||nowISO(),createdAt:serverTimestamp()}); document.getElementById('f-amount').value=''; document.getElementById('f-note').value=''; } catch(e){alert(e.message);} document.getElementById('save-btn').textContent='SIMPAN TRANSAKSI'; };
 
 window.delTx=async function(id){ if(!currentUser||!confirm('Yakin mau hapus riwayat ini?'))return; await deleteDoc(doc(db,'users',currentUser.uid,'transactions',id)); };
 
@@ -624,193 +603,8 @@ function renderYearly(){ const years={};txs.forEach(t=>{const k=t.date.slice(0,4
 window.selYear=function(k,btn){document.querySelectorAll('#year-sel .p-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');showYear(k)};
 function showYear(k){ const arr=txs.filter(t=>t.date.startsWith(k)).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('year-sum'),arr); renderList(document.getElementById('year-body'),arr); const MNTHS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'], inc=new Array(12).fill(0),exp=new Array(12).fill(0); arr.forEach(t=>{const m=new Date(t.date).getMonth();if(t.type==='income')inc[m]+=t.amount;else exp[m]+=t.amount}); mkChart('chartYear',MNTHS,inc,exp); }
 window.renderAll=function(){ const tf=document.getElementById('flt-type').value, s=(document.getElementById('flt-search').value||'').toLowerCase(); let arr=[...txs]; if(tf)arr=arr.filter(t=>t.type===tf); if(s)arr=arr.filter(t=>t.note.toLowerCase().includes(s)||t.category.toLowerCase().includes(s)); arr.sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('all-sum'),arr); renderList(document.getElementById('all-body'),arr); };
-function refreshAll(){ renderMetrics(); renderList(document.getElementById('recent-list'), txs.slice(0,7)); if(activePage==='harian')renderDaily(); if(activePage==='mingguan')renderWeekly(); if(activePage==='bulanan')renderMonthly(); if(activePage==='tahunan')renderYearly(); if(activePage==='riwayat')renderAll(); }
+function refreshAll(){ renderMetrics(); renderList(document.getElementById('recent-list'), txs.slice(0,10)); if(activePage==='harian')renderDaily(); if(activePage==='mingguan')renderWeekly(); if(activePage==='bulanan')renderMonthly(); if(activePage==='tahunan')renderYearly(); if(activePage==='riwayat')renderAll(); }
 document.getElementById('pick-daily').value=nowISO().slice(0,10); document.getElementById('f-date').value=nowISO(); selType('income');
-
-
-// ==========================================================================
-// TAMBAHAN SCRIPT UNTUK FITUR PENCATATAN SUARA (INSTANT AUTO-SAVE + PERBAIKAN ANGKA)
-// ==========================================================================
-const btnMic = document.getElementById('btn-mic');
-const statusSuara = document.getElementById('status-suara');
-const fAmount = document.getElementById('f-amount');
-const fNote = document.getElementById('f-note');
-const fDate = document.getElementById('f-date');
-const fCat = document.getElementById('f-cat');
-
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-if (SpeechRecognition) {
-  const recognition = new SpeechRecognition();
-  recognition.lang = 'id-ID';
-  recognition.continuous = false;
-  
-  btnMic.addEventListener('click', () => {
-    recognition.start();
-    btnMic.innerHTML = "🔴 MENDENGARKAN...";
-    statusSuara.innerText = "Silakan bicara...";
-    statusSuara.style.color = "var(--green2)";
-  });
-
-  recognition.onresult = (event) => {
-    // Ambil hasil suara asli
-    const hasil = event.results[0][0].transcript.toLowerCase();
-    btnMic.innerHTML = "🎤 TEKAN UNTUK NGOMONG";
-
-    // 1. AUTO PENGELUARAN/PEMASUKAN
-    let jenisTx = 'income'; 
-    if(hasil.includes("beli") || hasil.includes("jajan") || hasil.includes("bayar")) {
-        jenisTx = 'expense';
-        window.selType('expense');
-    } else if (hasil.includes("terima") || hasil.includes("dapat") || hasil.includes("gajian")) {
-        jenisTx = 'income';
-        window.selType('income');
-    }
-
-    if(fCat.options.length > 1) {
-        fCat.selectedIndex = 1; // Default ke opsi pertama
-
-        // LOGIKA BARU: Pilih kategori cerdas berdasarkan kata kunci
-        if (jenisTx === 'expense') {
-            if (hasil.includes("parkir") || hasil.includes("bensin") || hasil.includes("ongkos") || hasil.includes("gojek") || hasil.includes("grab")) fCat.value = 'Transportasi';
-            else if (hasil.includes("makan") || hasil.includes("nasi") || hasil.includes("mie")) fCat.value = 'Makan';
-            else if (hasil.includes("minum") || hasil.includes("kopi") || hasil.includes("es") || hasil.includes("jus")) fCat.value = 'Minum';
-            else if (hasil.includes("listrik") || hasil.includes("air") || hasil.includes("wifi") || hasil.includes("internet") || hasil.includes("pulsa")) fCat.value = 'Utilitas';
-            else if (hasil.includes("infak") || hasil.includes("sedekah") || hasil.includes("zakat") || hasil.includes("masjid")) fCat.value = 'Infak';
-            else if (hasil.includes("kas")) fCat.value = 'Kas';
-            else if (hasil.includes("aset") || hasil.includes("investasi") || hasil.includes("saham") || hasil.includes("kripto")) fCat.value = 'Pembelian Aset(Investasi)';
-            else if (hasil.includes("loss") || hasil.includes("rugi")) fCat.value = 'Loss';
-        } else if (jenisTx === 'income') {
-            if (hasil.includes("investasi") || hasil.includes("saham")) fCat.value = 'Investasi';
-            else if (hasil.includes("bonus")) fCat.value = 'Bonus';
-            else if (hasil.includes("dividen")) fCat.value = 'Dividen';
-            else if (hasil.includes("profit")) fCat.value = 'Profit';
-            else if (hasil.includes("transfer")) fCat.value = 'Transfer Masuk';
-        }
-    }
-
-    // ================================================================
-    // PERBAIKAN LOGIKA ANGKA: Bersihkan Titik & Ganti Kata "Ribu"
-    // ================================================================
-    // Google kadang merubah suara jadi "30.000" atau "30 ribu".
-    // Kode ini menghapus titik, lalu menerjemahkan "ribu" jadi "000".
-    let hasilClean = hasil.replace(/\./g, '')                 // Hapus semua titik (30.000 -> 30000)
-                          .replace(/\bribu\b/g, '000')        // Kata "ribu" -> 000 (30 ribu -> 30 000)
-                          .replace(/\bjuta\b/g, '000000');    // Kata "juta" -> 000000
-    
-    let harga = "";
-    // Pengecekan harga dilakukan menggunakan teks yang sudah bersih (hasilClean)
-    const matchHarga = hasilClean.match(/seharga\s*(\d+)/) || hasilClean.match(/(?:rp|rupiah)\s*(\d+)/) || hasilClean.match(/(\d+)/);
-    if (matchHarga) harga = matchHarga[1];
-
-    // 3. EKSTRAK ITEM (KETERANGAN) - Bersihkan dari keterangan waktu
-    let item = "";
-    let kataKerja = "";
-    const matchItem = hasil.match(/(beli|jajan|bayar|terima|dapat)\s+(.*?)\s+(?:seharga|sebesar)/);
-    if (matchItem) {
-      kataKerja = matchItem[1];
-      item = matchItem[2];
-    } else {
-      const altMatch = hasilClean.match(/(beli|jajan|bayar|terima|dapat)\s+(.*?)\s+\d+/);
-      if (altMatch) {
-        kataKerja = altMatch[1];
-        item = altMatch[2];
-      }
-    }
-    
-    if (item) {
-        // Hapus kata-kata waktu yang nyangkut di nama barang/kegiatan
-        item = item.replace(/jam\s*\d+(\s*(pagi|siang|sore|malam))?/g, '')
-                   .replace(/pagi|siang|sore|malam/g, '')
-                   .replace(/kemaren|kemarin|besok/g, '')
-                   .replace(/hari\s+(ini|minggu|senin|selasa|rabu|kamis|jumat|sabtu)/g, '')
-                   .replace(/minggu\s+(ini|kemaren|kemarin|lalu)/g, '')
-                   .replace(/bulan\s+(ini|kemaren|kemarin|lalu)/g, '')
-                   .replace(/tahun\s+(ini|kemaren|kemarin|lalu)/g, '')
-                   .replace(/tanggal\s*\d+/g, '')
-                   .replace(/\s+/g, ' ')
-                   .trim();
-                   
-        item = kataKerja + " " + item;
-        item = item.trim();
-    }
-    
-    // Kalau nama barang kosong tapi ada harga, tembak nama default biar TETAP BISA SIMPAN!
-    if (!item && harga) {
-        item = hasil.replace(/\d+/g, '').replace(/\./g, '').trim() || (jenisTx === 'expense' ? "Pengeluaran (Suara)" : "Pemasukan (Suara)");
-    }
-
-    // 4. LOGIKA WAKTU BARU
-    let targetDate = new Date(); 
-    
-    if (hasil.match(/tahun\s+(kemaren|kemarin|lalu)/)) targetDate.setFullYear(targetDate.getFullYear() - 1);
-    if (hasil.match(/bulan\s+(kemaren|kemarin|lalu)/)) targetDate.setMonth(targetDate.getMonth() - 1);
-    if (hasil.match(/(minggu|pekan)\s+(kemaren|kemarin|lalu)/)) targetDate.setDate(targetDate.getDate() - 7);
-    else if (hasil.match(/(kemaren|kemarin)/)) targetDate.setDate(targetDate.getDate() - 1);
-
-    const hariMap = { 'minggu':0, 'senin':1, 'selasa':2, 'rabu':3, 'kamis':4, 'jumat':5, 'sabtu':6 };
-    for(let h in hariMap) {
-        if (h === 'minggu') {
-            if (hasil.includes('hari minggu')) {
-                let diff = hariMap[h] - targetDate.getDay();
-                if (diff > 0) diff -= 7;
-                targetDate.setDate(targetDate.getDate() + diff);
-            }
-        } else if(hasil.includes(h)) {
-            let diff = hariMap[h] - targetDate.getDay();
-            if (diff > 0) diff -= 7; 
-            targetDate.setDate(targetDate.getDate() + diff);
-        }
-    }
-
-    const matchTanggal = hasil.match(/tanggal\s*(\d+)/);
-    if (matchTanggal) targetDate.setDate(parseInt(matchTanggal[1]));
-
-    const bulanMap = {'januari':0, 'februari':1, 'maret':2, 'april':3, 'mei':4, 'juni':5, 'juli':6, 'agustus':7, 'september':8, 'oktober':9, 'november':10, 'desember':11};
-    for(let b in bulanMap) {
-        if(hasil.includes(b)) targetDate.setMonth(bulanMap[b]);
-    }
-
-    const matchJam = hasil.match(/jam\s*(\d+)/);
-    if(matchJam) {
-        targetDate.setHours(parseInt(matchJam[1]), 0, 0, 0);
-    }
-    
-    const tzoffset = targetDate.getTimezoneOffset() * 60000;
-    const localISOTime = new Date(targetDate.getTime() - tzoffset).toISOString().slice(0,16);
-
-    // 5. AUTO-SAVE DATABASE INSTAN (0 DETIK JEDA)
-    if(harga) {
-        fNote.value = item.trim();
-        fAmount.value = harga;
-        fDate.value = localISOTime;
-
-        // LANGSUNG PANGGIL FUNGSI SIMPAN
-        window.addTx();
-        
-        statusSuara.innerText = "✅ Langsung tersimpan otomatis!";
-        statusSuara.style.color = "var(--green2)";
-        
-        setTimeout(() => {
-            statusSuara.innerText = "Contoh: 'Saya jajan bakso seharga 30 ribu senin minggu kemaren jam 14'";
-            statusSuara.style.color = "var(--text3)";
-        }, 3000);
-
-    } else {
-        statusSuara.innerText = `Terdengar: "${hasil}" - (Gagal: Nominal uang tidak terdeteksi)`;
-        statusSuara.style.color = "var(--red2)";
-    }
-  };
-
-  recognition.onspeechend = () => { recognition.stop(); btnMic.innerHTML = "🎤 TEKAN UNTUK NGOMONG"; };
-  recognition.onerror = (e) => { 
-    statusSuara.innerText = "Error: " + e.error; 
-    btnMic.innerHTML = "🎤 TEKAN UNTUK NGOMONG"; 
-    statusSuara.style.color = "var(--red2)"; 
-  };
-} else {
-  btnMic.style.display = "none";
-  statusSuara.innerText = "Fitur suara hanya bisa jalan di Chrome.";
-}
 </script>
 </body>
 </html>
