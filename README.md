@@ -624,7 +624,6 @@ function renderYearly(){ const years={};txs.forEach(t=>{const k=t.date.slice(0,4
 window.selYear=function(k,btn){document.querySelectorAll('#year-sel .p-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');showYear(k)};
 function showYear(k){ const arr=txs.filter(t=>t.date.startsWith(k)).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('year-sum'),arr); renderList(document.getElementById('year-body'),arr); const MNTHS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'], inc=new Array(12).fill(0),exp=new Array(12).fill(0); arr.forEach(t=>{const m=new Date(t.date).getMonth();if(t.type==='income')inc[m]+=t.amount;else exp[m]+=t.amount}); mkChart('chartYear',MNTHS,inc,exp); }
 window.renderAll=function(){ const tf=document.getElementById('flt-type').value, s=(document.getElementById('flt-search').value||'').toLowerCase(); let arr=[...txs]; if(tf)arr=arr.filter(t=>t.type===tf); if(s)arr=arr.filter(t=>t.note.toLowerCase().includes(s)||t.category.toLowerCase().includes(s)); arr.sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('all-sum'),arr); renderList(document.getElementById('all-body'),arr); };
-// PERBAIKAN: Batasin pas 7 item aja biar sejajar total sama form di sebelahnya
 function refreshAll(){ renderMetrics(); renderList(document.getElementById('recent-list'), txs.slice(0,7)); if(activePage==='harian')renderDaily(); if(activePage==='mingguan')renderWeekly(); if(activePage==='bulanan')renderMonthly(); if(activePage==='tahunan')renderYearly(); if(activePage==='riwayat')renderAll(); }
 document.getElementById('pick-daily').value=nowISO().slice(0,10); document.getElementById('f-date').value=nowISO(); selType('income');
 
@@ -703,14 +702,36 @@ if (SpeechRecognition) {
     const matchHarga = hasilClean.match(/seharga\s*(\d+)/) || hasilClean.match(/(?:rp|rupiah)\s*(\d+)/) || hasilClean.match(/(\d+)/);
     if (matchHarga) harga = matchHarga[1];
 
-    // 3. EKSTRAK ITEM (KETERANGAN) - Tetap pakai teks asli supaya nggak aneh
+    // 3. EKSTRAK ITEM (KETERANGAN) - Bersihkan dari keterangan waktu
     let item = "";
-    const matchItem = hasil.match(/(?:beli|jajan|bayar)\s+(.*?)\s+(?:seharga)/);
+    let kataKerja = "";
+    const matchItem = hasil.match(/(beli|jajan|bayar|terima|dapat)\s+(.*?)\s+(?:seharga|sebesar)/);
     if (matchItem) {
-      item = matchItem[1];
+      kataKerja = matchItem[1];
+      item = matchItem[2];
     } else {
-      const altMatch = hasilClean.match(/(?:beli|jajan|bayar)\s+(.*?)\s+\d+/);
-      if (altMatch) item = altMatch[1];
+      const altMatch = hasilClean.match(/(beli|jajan|bayar|terima|dapat)\s+(.*?)\s+\d+/);
+      if (altMatch) {
+        kataKerja = altMatch[1];
+        item = altMatch[2];
+      }
+    }
+    
+    if (item) {
+        // Hapus kata-kata waktu yang nyangkut di nama barang/kegiatan
+        item = item.replace(/jam\s*\d+(\s*(pagi|siang|sore|malam))?/g, '')
+                   .replace(/pagi|siang|sore|malam/g, '')
+                   .replace(/kemaren|kemarin|besok/g, '')
+                   .replace(/hari\s+(ini|minggu|senin|selasa|rabu|kamis|jumat|sabtu)/g, '')
+                   .replace(/minggu\s+(ini|kemaren|kemarin|lalu)/g, '')
+                   .replace(/bulan\s+(ini|kemaren|kemarin|lalu)/g, '')
+                   .replace(/tahun\s+(ini|kemaren|kemarin|lalu)/g, '')
+                   .replace(/tanggal\s*\d+/g, '')
+                   .replace(/\s+/g, ' ')
+                   .trim();
+                   
+        item = kataKerja + " " + item;
+        item = item.trim();
     }
     
     // Kalau nama barang kosong tapi ada harga, tembak nama default biar TETAP BISA SIMPAN!
