@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Arus Keuangan — RHN CAPITAL</title>
 
-<!-- TAMBAHAN UNTUK PWA (AGAR BISA DI-INSTALL KE HP) -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
 <link rel="apple-touch-icon" href="RHN LOGO.jpg">
@@ -332,6 +331,183 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
     margin: 0 auto; 
   }
 }
+
+/* ==========================================================================
+   AI ANALISIS — TAMBAHAN BARU (TIDAK MENGUBAH KODE LAMA)
+   ========================================================================== */
+
+/* Container utama halaman AI */
+#page-ai .ai-hero {
+  background: linear-gradient(135deg, rgba(251,191,36,0.08) 0%, rgba(59,130,246,0.06) 100%);
+  border: 1px solid rgba(251,191,36,0.2);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+#page-ai .ai-hero-icon {
+  width: 56px; height: 56px; border-radius: 16px;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(251,191,36,0.3);
+}
+#page-ai .ai-hero-text .ai-hero-title {
+  font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px;
+}
+#page-ai .ai-hero-text .ai-hero-sub {
+  font-size: 12px; color: var(--text3); font-weight: 500; line-height: 1.6;
+}
+
+/* Pilihan topik analisis */
+#page-ai .ai-topics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+@media (min-width: 769px) {
+  #page-ai .ai-topics { grid-template-columns: repeat(4, 1fr); }
+}
+#page-ai .ai-topic-btn {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+#page-ai .ai-topic-btn:hover {
+  border-color: var(--gold);
+  background: rgba(251,191,36,0.05);
+}
+#page-ai .ai-topic-btn.selected {
+  border-color: var(--gold);
+  background: rgba(251,191,36,0.08);
+  box-shadow: 0 0 0 1px var(--gold);
+}
+#page-ai .ai-topic-emoji { font-size: 22px; }
+#page-ai .ai-topic-label {
+  font-size: 10px; font-weight: 800; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.3;
+}
+
+/* Tombol analisis */
+#page-ai .ai-run-btn {
+  width: 100%; padding: 18px;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+  color: #000; border: none; border-radius: 14px;
+  font-size: 13px; font-weight: 800; cursor: pointer;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(251,191,36,0.25);
+  transition: opacity 0.2s, transform 0.1s;
+}
+#page-ai .ai-run-btn:disabled {
+  opacity: 0.5; cursor: not-allowed; transform: none;
+}
+#page-ai .ai-run-btn:not(:disabled):hover { opacity: 0.9; }
+#page-ai .ai-run-btn:not(:disabled):active { transform: scale(0.98); }
+
+/* Area hasil analisis */
+#page-ai .ai-result-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  min-height: 200px;
+  display: none;
+}
+#page-ai .ai-result-box.visible { display: block; }
+
+#page-ai .ai-result-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+#page-ai .ai-result-title {
+  font-size: 13px; font-weight: 800; color: var(--gold);
+  text-transform: uppercase; letter-spacing: 1px;
+  display: flex; align-items: center; gap: 8px;
+}
+#page-ai .ai-result-badge {
+  font-size: 9px; font-weight: 800; padding: 4px 10px; border-radius: 20px;
+  background: rgba(16,185,129,0.15); color: var(--green2);
+  border: 1px solid rgba(16,185,129,0.3); text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* Konten teks hasil AI */
+#page-ai .ai-result-content {
+  font-size: 14px; font-weight: 400; color: var(--text2);
+  line-height: 1.8; white-space: pre-wrap;
+}
+#page-ai .ai-result-content strong {
+  color: var(--text); font-weight: 700;
+}
+
+/* Loading state */
+#page-ai .ai-loading {
+  display: none; align-items: center; justify-content: center;
+  gap: 12px; padding: 40px;
+}
+#page-ai .ai-loading.visible { display: flex; }
+#page-ai .ai-loading-dots { display: flex; gap: 6px; }
+#page-ai .ai-loading-dots span {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold); opacity: 0.3;
+  animation: ai-pulse 1.2s infinite ease-in-out;
+}
+#page-ai .ai-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+#page-ai .ai-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes ai-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+#page-ai .ai-loading-text {
+  font-size: 12px; font-weight: 600; color: var(--text3);
+}
+
+/* Kartu ringkasan data yang dikirim ke AI */
+#page-ai .ai-data-summary {
+  background: var(--bg3);
+  border-radius: 12px; padding: 14px 16px;
+  margin-bottom: 20px;
+  display: flex; gap: 24px; flex-wrap: wrap;
+}
+#page-ai .ai-data-item { display: flex; flex-direction: column; gap: 2px; }
+#page-ai .ai-data-label { font-size: 9px; font-weight: 800; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
+#page-ai .ai-data-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--text); }
+
+/* Tombol salin hasil */
+#page-ai .ai-copy-btn {
+  margin-top: 20px; padding: 10px 20px;
+  background: transparent; border: 1px solid var(--border2);
+  color: var(--text3); border-radius: 10px;
+  font-size: 11px; font-weight: 700; cursor: pointer;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  transition: 0.2s;
+}
+#page-ai .ai-copy-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Error state */
+#page-ai .ai-error {
+  display: none; background: rgba(248,113,113,0.1);
+  border: 1px solid rgba(248,113,113,0.3); border-radius: 12px;
+  padding: 16px; color: var(--red2); font-size: 13px;
+  font-weight: 600; margin-bottom: 16px;
+}
+#page-ai .ai-error.visible { display: block; }
+
+/* Mobile adjustments untuk AI page */
+@media (max-width: 768px) {
+  #page-ai .ai-hero { flex-direction: column; text-align: center; padding: 20px 16px; }
+  #page-ai .ai-result-box { padding: 20px 16px; }
+  #page-ai .ai-data-summary { gap: 16px; }
+}
 </style>
 </head>
 <body>
@@ -400,6 +576,7 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   <button class="nav-btn" onclick="switchPage('bulanan')">BULANAN</button>
   <button class="nav-btn" onclick="switchPage('tahunan')">TAHUNAN</button>
   <button class="nav-btn" onclick="switchPage('riwayat')">RIWAYAT</button>
+  <button class="nav-btn" onclick="switchPage('ai')" id="nav-ai-btn">🤖 AI ANALISIS</button>
 </div>
 
 <div class="main">
@@ -419,7 +596,15 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
       <div class="form-row"><label class="form-label">JUMLAH (RP)</label><input type="number" id="f-amount" class="f-input-dark" placeholder="0"></div>
       <div class="form-row"><label class="form-label">KATEGORI</label><select id="f-cat" class="f-input-dark"></select></div>
       <div class="form-row"><label class="form-label">KETERANGAN</label><textarea id="f-note" class="f-input-dark" placeholder="Catatan transaksi..."></textarea></div>
-      <div class="form-row"><label class="form-label">WAKTU</label><input type="datetime-local" id="f-date" class="f-input-dark"></div>
+      
+      <div class="form-row">
+        <label class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
+          <span>WAKTU</span>
+          <button type="button" onclick="setRealLocalTime()" style="background:transparent; border:none; color:var(--gold); font-size:10px; font-weight:800; font-family:'Outfit', sans-serif; cursor:pointer;">SEKARANG ⏱</button>
+        </label>
+        <input type="datetime-local" id="f-date" class="f-input-dark">
+      </div>
+      
       <button class="submit-btn" id="cancel-edit-btn" onclick="cancelEdit()" style="display:none; background:var(--bg3); color:var(--text); margin-bottom:8px;">BATAL EDIT</button>
       <button class="submit-btn" id="save-btn" onclick="addTx()">SIMPAN TRANSAKSI</button>
     </div>
@@ -500,6 +685,113 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   </div>
 </div>
 
+<!-- =====================================================================
+     HALAMAN AI ANALISIS — TAMBAHAN BARU (TIDAK MENYENTUH KODE LAMA)
+     ===================================================================== -->
+<div id="page-ai" class="page">
+
+  <!-- Hero Banner -->
+  <div class="ai-hero">
+    <div class="ai-hero-icon">🤖</div>
+    <div class="ai-hero-text">
+      <div class="ai-hero-title">Analisis Keuangan AI</div>
+      <div class="ai-hero-sub">Sistem kecerdasan buatan akan membaca seluruh data transaksi Anda dan memberikan laporan analisis mendalam, rekomendasi strategis, serta peringatan dini terhadap pola keuangan yang berisiko.</div>
+    </div>
+  </div>
+
+  <!-- Pilihan Topik -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-head">
+      <div class="card-title">Pilih Topik Analisis</div>
+      <div class="card-sub">Pilih satu atau lebih topik yang ingin dianalisis oleh AI</div>
+    </div>
+    <div class="ai-topics" id="ai-topics-grid">
+      <button class="ai-topic-btn selected" data-topic="ringkasan">
+        <span class="ai-topic-emoji">📊</span>
+        <span class="ai-topic-label">Ringkasan Umum</span>
+      </button>
+      <button class="ai-topic-btn" data-topic="pengeluaran">
+        <span class="ai-topic-emoji">💸</span>
+        <span class="ai-topic-label">Analisis Pengeluaran</span>
+      </button>
+      <button class="ai-topic-btn" data-topic="tren">
+        <span class="ai-topic-emoji">📈</span>
+        <span class="ai-topic-label">Tren & Pola</span>
+      </button>
+      <button class="ai-topic-btn" data-topic="rekomendasi">
+        <span class="ai-topic-emoji">💡</span>
+        <span class="ai-topic-label">Rekomendasi Strategis</span>
+      </button>
+      <button class="ai-topic-btn" data-topic="risiko">
+        <span class="ai-topic-emoji">⚠️</span>
+        <span class="ai-topic-label">Deteksi Risiko</span>
+      </button>
+      <button class="ai-topic-btn" data-topic="investasi">
+        <span class="ai-topic-emoji">🏦</span>
+        <span class="ai-topic-label">Evaluasi Investasi</span>
+      </button>
+      <button class="ai-topic-btn" data-topic="efisiensi">
+        <span class="ai-topic-emoji">⚡</span>
+        <span class="ai-topic-label">Efisiensi Keuangan</span>
+      </button>
+      <button class="ai-topic-btn" data-topic="proyeksi">
+        <span class="ai-topic-emoji">🔮</span>
+        <span class="ai-topic-label">Proyeksi ke Depan</span>
+      </button>
+    </div>
+
+    <!-- Ringkasan data yang akan dikirim -->
+    <div class="ai-data-summary" id="ai-data-summary">
+      <div class="ai-data-item">
+        <span class="ai-data-label">Total Transaksi</span>
+        <span class="ai-data-val" id="ai-stat-count">0</span>
+      </div>
+      <div class="ai-data-item">
+        <span class="ai-data-label">Total Pemasukan</span>
+        <span class="ai-data-val" id="ai-stat-inc">Rp 0</span>
+      </div>
+      <div class="ai-data-item">
+        <span class="ai-data-label">Total Pengeluaran</span>
+        <span class="ai-data-val" id="ai-stat-exp">Rp 0</span>
+      </div>
+      <div class="ai-data-item">
+        <span class="ai-data-label">Saldo Bersih</span>
+        <span class="ai-data-val" id="ai-stat-bal">Rp 0</span>
+      </div>
+    </div>
+
+    <!-- Error jika ada -->
+    <div class="ai-error" id="ai-error-box"></div>
+
+    <!-- Tombol jalankan analisis -->
+    <button class="ai-run-btn" id="ai-run-btn" onclick="runAIAnalysis()">
+      🤖 JALANKAN ANALISIS AI
+    </button>
+  </div>
+
+  <!-- Loading state -->
+  <div class="ai-loading" id="ai-loading">
+    <div class="ai-loading-dots">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="ai-loading-text">AI sedang menganalisis data keuangan Anda...</div>
+  </div>
+
+  <!-- Hasil Analisis -->
+  <div class="ai-result-box" id="ai-result-box">
+    <div class="ai-result-header">
+      <div class="ai-result-title">
+        🤖 Hasil Analisis AI
+      </div>
+      <span class="ai-result-badge">SELESAI</span>
+    </div>
+    <div class="ai-result-content" id="ai-result-content"></div>
+    <button class="ai-copy-btn" onclick="copyAIResult()">📋 SALIN HASIL ANALISIS</button>
+  </div>
+
+</div>
+<!-- ===== AKHIR HALAMAN AI ANALISIS ===== -->
+
 </div></div>
 
 <script type="module">
@@ -568,7 +860,7 @@ window.cancelEdit=function(){ editId=null; document.getElementById('f-amount').v
 
 window.selType=function(t){ curType=t; document.getElementById('btn-inc').classList.toggle('active',t==='income'); document.getElementById('btn-exp').classList.toggle('active',t==='expense'); const s=document.getElementById('f-cat'); s.innerHTML='<option value="">Pilih kategori...</option>'; CATS[t].forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;s.appendChild(o)}); };
 
-window.switchPage=function(p){ document.querySelectorAll('.page').forEach(el=>el.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(el=>el.classList.remove('active')); document.getElementById('page-'+p).classList.add('active'); const pages=['dashboard','harian','mingguan','bulanan','tahunan','riwayat']; document.querySelectorAll('.nav-btn')[pages.indexOf(p)].classList.add('active'); activePage=p;refreshAll(); };
+window.switchPage=function(p){ document.querySelectorAll('.page').forEach(el=>el.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(el=>el.classList.remove('active')); document.getElementById('page-'+p).classList.add('active'); const pages=['dashboard','harian','mingguan','bulanan','tahunan','riwayat','ai']; document.querySelectorAll('.nav-btn')[pages.indexOf(p)].classList.add('active'); activePage=p;refreshAll(); };
 
 function calcSum(arr){ const inc=arr.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0), exp=arr.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0); return{inc,exp,bal:inc-exp,count:arr.length}; }
 
@@ -624,28 +916,215 @@ function showYear(k){ const arr=txs.filter(t=>t.date.startsWith(k)).sort((a,b)=>
 window.renderAll=function(){ const tf=document.getElementById('flt-type').value, s=(document.getElementById('flt-search').value||'').toLowerCase(); let arr=[...txs]; if(tf)arr=arr.filter(t=>t.type===tf); if(s)arr=arr.filter(t=>t.note.toLowerCase().includes(s)||t.category.toLowerCase().includes(s)); arr.sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('all-sum'),arr); renderList(document.getElementById('all-body'),arr); };
 
 /* DIUBAH MENJADI 5 AKTIFITAS TERAKHIR */
-function refreshAll(){ renderMetrics(); renderList(document.getElementById('recent-list'), txs.slice(0,5)); if(activePage==='harian')renderDaily(); if(activePage==='mingguan')renderWeekly(); if(activePage==='bulanan')renderMonthly(); if(activePage==='tahunan')renderYearly(); if(activePage==='riwayat')renderAll(); }
+function refreshAll(){ renderMetrics(); renderList(document.getElementById('recent-list'), txs.slice(0,5)); if(activePage==='harian')renderDaily(); if(activePage==='mingguan')renderWeekly(); if(activePage==='bulanan')renderMonthly(); if(activePage==='tahunan')renderYearly(); if(activePage==='riwayat')renderAll(); if(activePage==='ai')refreshAIStats(); }
 
 document.getElementById('pick-daily').value=nowISO().slice(0,10); document.getElementById('f-date').value=nowISO(); selType('income');
 
 window.exportCSV=function(){ if(!txs.length)return Swal.fire('Kosong','Tidak ada data untuk diunduh','info'); let csv="Tanggal,Waktu,Tipe,Kategori,Nominal(Rp),Keterangan\n"; txs.forEach(t=>{ const d=t.date.split('T'); csv+=`${d[0]},${d[1]||'-'},${t.type==='income'?'Pemasukan':'Pengeluaran'},${t.category},${t.amount},"${t.note}"\n`; }); const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download='Laporan_Keuangan_RHN.csv'; link.click(); };
 
+// =========================================================================
+// AI ANALISIS — FUNGSI BARU (TIDAK MENYENTUH FUNGSI LAMA DI ATAS)
+// =========================================================================
+
+// Update statistik ringkasan di halaman AI
+function refreshAIStats() {
+  if (!txs.length) return;
+  const s = calcSum(txs);
+  document.getElementById('ai-stat-count').textContent = txs.length + ' transaksi';
+  document.getElementById('ai-stat-inc').textContent = fmt(s.inc);
+  document.getElementById('ai-stat-exp').textContent = fmt(s.exp);
+  const balEl = document.getElementById('ai-stat-bal');
+  balEl.textContent = fmt(s.bal);
+  balEl.style.color = s.bal >= 0 ? 'var(--green2)' : 'var(--red2)';
+}
+
+// Toggle pilihan topik
+document.getElementById('ai-topics-grid').addEventListener('click', function(e) {
+  const btn = e.target.closest('.ai-topic-btn');
+  if (btn) btn.classList.toggle('selected');
+});
+
+// Fungsi utama jalankan analisis AI
+window.runAIAnalysis = async function() {
+  if (!txs.length) {
+    const errBox = document.getElementById('ai-error-box');
+    errBox.textContent = 'Tidak ada data transaksi. Tambahkan transaksi terlebih dahulu.';
+    errBox.classList.add('visible');
+    return;
+  }
+
+  const selectedTopics = [...document.querySelectorAll('#ai-topics-grid .ai-topic-btn.selected')]
+    .map(btn => btn.dataset.topic);
+
+  if (!selectedTopics.length) {
+    const errBox = document.getElementById('ai-error-box');
+    errBox.textContent = 'Pilih minimal satu topik analisis terlebih dahulu.';
+    errBox.classList.add('visible');
+    return;
+  }
+
+  // Reset UI
+  document.getElementById('ai-error-box').classList.remove('visible');
+  document.getElementById('ai-result-box').classList.remove('visible');
+  document.getElementById('ai-loading').classList.add('visible');
+  document.getElementById('ai-run-btn').disabled = true;
+
+  // Siapkan data ringkasan untuk AI (tidak kirim semua raw data, cukup agregat)
+  const s = calcSum(txs);
+  const now = new Date();
+  const thisMonth = now.toISOString().slice(0, 7);
+  const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString().slice(0, 7);
+
+  const thisMonthTxs = txs.filter(t => t.date.slice(0, 7) === thisMonth);
+  const lastMonthTxs = txs.filter(t => t.date.slice(0, 7) === lastMonth);
+  const thisMonthSum = calcSum(thisMonthTxs);
+  const lastMonthSum = calcSum(lastMonthTxs);
+
+  // Agregat per kategori pengeluaran
+  const catExpMap = {};
+  txs.filter(t => t.type === 'expense').forEach(t => {
+    catExpMap[t.category] = (catExpMap[t.category] || 0) + t.amount;
+  });
+  const topExpCats = Object.entries(catExpMap)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([cat, amt]) => `${cat}: ${fmt(amt)}`)
+    .join(', ');
+
+  // Agregat per kategori pemasukan
+  const catIncMap = {};
+  txs.filter(t => t.type === 'income').forEach(t => {
+    catIncMap[t.category] = (catIncMap[t.category] || 0) + t.amount;
+  });
+  const topIncCats = Object.entries(catIncMap)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([cat, amt]) => `${cat}: ${fmt(amt)}`)
+    .join(', ');
+
+  // Transaksi terbesar
+  const biggestExp = [...txs].filter(t => t.type === 'expense').sort((a, b) => b.amount - a.amount).slice(0, 3).map(t => `${t.note} (${fmt(t.amount)})`).join(', ');
+  const biggestInc = [...txs].filter(t => t.type === 'income').sort((a, b) => b.amount - a.amount).slice(0, 3).map(t => `${t.note} (${fmt(t.amount)})`).join(', ');
+
+  const topicLabels = {
+    ringkasan: 'Ringkasan Umum Keuangan',
+    pengeluaran: 'Analisis Mendalam Pengeluaran',
+    tren: 'Tren dan Pola Keuangan',
+    rekomendasi: 'Rekomendasi Strategis',
+    risiko: 'Deteksi Risiko Keuangan',
+    investasi: 'Evaluasi Portofolio Investasi',
+    efisiensi: 'Efisiensi Penggunaan Dana',
+    proyeksi: 'Proyeksi Keuangan ke Depan'
+  };
+
+  const topicsRequested = selectedTopics.map(t => topicLabels[t]).join(', ');
+
+  const prompt = `Anda adalah analis keuangan profesional dari RHN CAPITAL. Berikan laporan analisis keuangan yang formal, mendalam, dan actionable berdasarkan data berikut.
+
+DATA KEUANGAN PENGGUNA:
+- Total Transaksi: ${txs.length} transaksi
+- Total Pemasukan Keseluruhan: ${fmt(s.inc)}
+- Total Pengeluaran Keseluruhan: ${fmt(s.exp)}
+- Saldo Bersih: ${fmt(s.bal)} (${s.bal >= 0 ? 'SURPLUS' : 'DEFISIT'})
+- Rasio Pengeluaran vs Pemasukan: ${s.inc > 0 ? Math.round((s.exp / s.inc) * 100) : 0}%
+
+BULAN INI (${thisMonth}):
+- Pemasukan: ${fmt(thisMonthSum.inc)} | Pengeluaran: ${fmt(thisMonthSum.exp)} | Saldo: ${fmt(thisMonthSum.bal)}
+
+BULAN LALU (${lastMonth}):
+- Pemasukan: ${fmt(lastMonthSum.inc)} | Pengeluaran: ${fmt(lastMonthSum.exp)} | Saldo: ${fmt(lastMonthSum.bal)}
+
+TOP KATEGORI PENGELUARAN TERBESAR: ${topExpCats || 'Tidak ada data'}
+TOP KATEGORI PEMASUKAN TERBESAR: ${topIncCats || 'Tidak ada data'}
+TRANSAKSI PENGELUARAN TERBESAR: ${biggestExp || 'Tidak ada data'}
+TRANSAKSI PEMASUKAN TERBESAR: ${biggestInc || 'Tidak ada data'}
+KURS USD/IDR SAAT INI: ${kursIndo.format(currentUSDRate)}
+
+TOPIK ANALISIS YANG DIMINTA: ${topicsRequested}
+
+Berikan analisis yang komprehensif, terstruktur dengan heading yang jelas untuk setiap topik yang diminta. Gunakan bahasa Indonesia yang formal dan profesional. Sertakan angka-angka konkret, persentase, dan rekomendasi yang spesifik dan dapat ditindaklanjuti. Jangan gunakan markdown simbol seperti ** atau ##, gunakan huruf kapital dan spasi untuk penekanan.`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error?.message || 'Terjadi kesalahan pada server AI.');
+    }
+
+    const resultText = data.content
+      .filter(block => block.type === 'text')
+      .map(block => block.text)
+      .join('\n');
+
+    document.getElementById('ai-result-content').textContent = resultText;
+    document.getElementById('ai-result-box').classList.add('visible');
+
+  } catch (err) {
+    const errBox = document.getElementById('ai-error-box');
+    errBox.textContent = 'Gagal menghubungi AI: ' + err.message;
+    errBox.classList.add('visible');
+  } finally {
+    document.getElementById('ai-loading').classList.remove('visible');
+    document.getElementById('ai-run-btn').disabled = false;
+  }
+};
+
+// Salin hasil analisis ke clipboard
+window.copyAIResult = function() {
+  const content = document.getElementById('ai-result-content').textContent;
+  if (!content) return;
+  navigator.clipboard.writeText(content).then(() => {
+    const Toast = Swal.mixin({
+      toast: true, position: 'top-end', showConfirmButton: false, timer: 2000,
+      background: 'var(--bg2)', color: 'var(--text)'
+    });
+    Toast.fire({ icon: 'success', title: 'Hasil analisis berhasil disalin!' });
+  });
+};
+
+// =========================================================================
+
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(e => console.log('SW Error:', e)); }); }
 </script>
 
-<!-- ==========================================================================
-     TAMBAHAN DARI GEMINI: 6 FITUR BARU, BUG FIX HAPUS, & TANPA AUTO-SCROLL
-     ========================================================================== -->
 <style>
-  /* Menu Navigasi Sticky & Auto-Hide */
-  .nav { position: sticky !important; top: 0; z-index: 100; background-color: var(--bg); padding-top: 16px !important; border-bottom: 1px solid var(--border); transition: transform 0.3s ease; }
-  .nav.hidden-nav { transform: translateY(-100%); }
+  /* FIX TOTAL: ANTI-GERAK, ANTI-GOYANG, ANTI-LOMPAT */
+  html { overflow-y: scroll !important; } /* Tahan scrollbar biar ga geser kiri-kanan */
+  .page { animation: none !important; transition: none !important; } /* Matikan kedip/fade layar */
+  .m-bar-fill { transition: none !important; } /* Matikan gerak lambat progress bar */
   
-  /* Fitur 5: Sticky Search Bar di Tab Riwayat */
+  /* ==========================================================================
+     PERMINTAAN BARU: GARIS HITAM DI BAWAH NAVIGASI & SPASI BIAR GAK MEPET
+     ========================================================================== */
+  .nav { 
+      position: sticky !important; 
+      top: 0; 
+      z-index: 100; 
+      background-color: var(--bg); 
+      border-bottom: 4px solid #000000 !important; /* Garis hitam lebih tegas dan tebal */
+      padding-bottom: 12px !important; /* Jarak dipendekin biar pas kayak screenshot lu */
+      transition: none !important; 
+  } 
+  
+  .main {
+      padding-top: 16px !important; /* Spasi dibalikin rapet kayak aslinya */
+  }
+  
+  /* Sticky Search Bar di Tab Riwayat */
   .filter-bar { position: sticky !important; top: 70px; z-index: 90; background: var(--bg); padding-top: 16px !important; margin-top: -16px; padding-bottom: 16px !important; border-bottom: 1px solid var(--border); transition: 0.3s ease; }
   .nav.hidden-nav + .main .filter-bar { top: 0px !important; }
 
-  /* Efek kursor bisa diklik (buat fitur copy & badge filter) */
+  /* Efek kursor bisa diklik */
   .m-card.bal, .ri-amount, .cat-badge { cursor: pointer; transition: 0.2s; }
   .ri-amount:hover, .cat-badge:hover { opacity: 0.7; }
   
@@ -656,19 +1135,19 @@ if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navi
   .inc .m-bar-fill { background: linear-gradient(90deg, #10B981 0%, #34D399 100%); }
   .exp .m-bar-fill { background: linear-gradient(90deg, #F87171 0%, #FCA5A5 100%); }
   
-  /* Animasi Shake Error (Proteksi Jebol) */
+  /* Animasi Shake Error (Proteksi Jebol - Ini cuma buat error) */
   @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
   .shake-error { animation: shake 0.3s ease-in-out; border-color: var(--red2) !important; box-shadow: 0 0 8px rgba(248,113,113,0.3) !important; }
 
-  /* Fitur 1: Super Privacy Mode Blur (Termasuk Mode Nganggur) */
+  /* Super Privacy Mode Blur */
   body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy .usd-pill, body.global-privacy .ri-usd { filter: blur(6px); transition: 0.3s; user-select: none; }
-  body.idle-mode { filter: brightness(0.6) blur(2px); transition: 0.5s ease; pointer-events: none; } /* Blur seluruh layar saat idle */
+  body.idle-mode { filter: brightness(0.6) blur(2px); transition: 0.5s ease; pointer-events: none; } /* Blur Auto-Lock 2 Menit */
 
   /* Badge E-Wallet & Badge Trading */
   .ewallet-badge { background: rgba(59, 130, 246, 0.2); color: #60A5FA; font-size: 8px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 800; border: 1px solid rgba(59, 130, 246, 0.5); }
   .trading-badge { background: rgba(245, 158, 11, 0.2); color: #FBBF24; font-size: 8px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 800; border: 1px solid rgba(245, 158, 11, 0.5); }
 
-  /* Fitur 2: Highlight Transaksi Paus (Big Money Glow) */
+  /* Highlight Transaksi Paus (> Rp 5Juta) */
   .big-money-glow { text-shadow: 0 0 12px rgba(251, 191, 36, 0.8); color: var(--gold) !important; }
 
   /* Scroll to Top Button */
@@ -684,6 +1163,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
     toast: true, position: 'top-end', showConfirmButton: false, timer: 2500, timerProgressBar: true,
     background: 'var(--bg2)', color: 'var(--text)'
   });
+
+  // MATIKAN ANIMASI GRAFIK CHART.JS (ANTI NAIK-TURUN)
+  if(window.Chart) {
+      Chart.defaults.animation = false;
+      Chart.defaults.transitions.active.animation.duration = 0;
+  }
 
   // ---------------------------------------------------------
   // BUG FIX NATIVE DELETE (HAPUS DATA ELEGAN)
@@ -708,7 +1193,53 @@ window.addEventListener('DOMContentLoaded', (event) => {
   };
 
   // ---------------------------------------------------------
-  // KALKULATOR AUTO-MATH & SHAKE ERROR PROTEKSI
+  // BUG FIX NATIVE EDIT (KONFIRMASI EDIT ELEGAN)
+  // ---------------------------------------------------------
+  const originalEditTx = window.editTx;
+  window.editTx = function(id) {
+    if (navigator.vibrate) navigator.vibrate(20);
+    Swal.fire({
+      title: 'Edit Transaksi?',
+      text: "Data akan dimasukkan ke form untuk diubah.",
+      icon: 'question',
+      showCancelButton: true,
+      background: 'var(--bg2)',
+      color: 'var(--text)',
+      confirmButtonColor: 'var(--blue)', 
+      cancelButtonColor: 'var(--bg3)',
+      confirmButtonText: 'Ya, Edit'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        originalEditTx(id);
+      }
+    });
+  };
+
+  // ---------------------------------------------------------
+  // BUG FIX NATIVE KELUAR (KONFIRMASI LOGOUT ELEGAN)
+  // ---------------------------------------------------------
+  const originalDoLogout = window.doLogout;
+  window.doLogout = function() {
+    if (navigator.vibrate) navigator.vibrate(20);
+    Swal.fire({
+      title: 'Keluar Akun?',
+      text: "Lu yakin mau keluar dari aplikasi?",
+      icon: 'warning',
+      showCancelButton: true,
+      background: 'var(--bg2)',
+      color: 'var(--text)',
+      confirmButtonColor: 'var(--red2)', 
+      cancelButtonColor: 'var(--bg3)',
+      confirmButtonText: 'Ya, Keluar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        originalDoLogout();
+      }
+    });
+  };
+
+  // ---------------------------------------------------------
+  // KALKULATOR AUTO-MATH & SHAKE ERROR PROTEKSI (UPDATED: REAL-TIME DOTS)
   // ---------------------------------------------------------
   const amountInput = document.getElementById('f-amount');
   const catInput = document.getElementById('f-cat');
@@ -720,7 +1251,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
         let val = this.value.replace(/[^0-9+\-*/().]/g, ''); 
         try {
             if(val && /[+\-*/]/.test(val)) {
-                let result = eval(val); 
+                // PROTEKSI: Karena sekarang ada titik otomatis pas diketik, 
+                // kita hapus dulu titiknya sebelum masukin ke kalkulator biar eval-nya nggak eror
+                let cleanMath = val.replace(/\./g, '');
+                let result = eval(cleanMath); 
                 this.value = parseInt(result, 10).toLocaleString('id-ID');
                 Toast.fire({ icon: 'info', title: 'Auto-hitung berhasil!' });
             } else if (val) {
@@ -732,7 +1266,16 @@ window.addEventListener('DOMContentLoaded', (event) => {
     });
 
     amountInput.addEventListener('input', function(e) {
-      this.value = this.value.replace(/[^0-9+\-*/().]/g, '');
+      let raw = this.value.replace(/[^0-9+\-*/().]/g, '');
+      
+      // Kalau lu lagi ngetik tanda tambah/kurang/kali/bagi, titik otomatis distop dulu biar rumus lu aman
+      if(/[+\-*/()]/.test(raw)) {
+          this.value = raw;
+      } else {
+          // Kalau lu cuma ngetik angka biasa, langsung tembak pakai titik ribuan otomatis
+          let nums = raw.replace(/\./g, '');
+          this.value = nums ? parseInt(nums, 10).toLocaleString('id-ID') : '';
+      }
     });
 
     const originalAddTx = window.addTx;
@@ -761,7 +1304,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         Toast.fire({ icon: 'success', title: 'Transaksi Berhasil Disimpan!' });
         
         setTimeout(() => {
-          setRealLocalTime();
+          window.setRealLocalTime();
           amountInput.type = 'text';
           amountInput.focus();
         }, 200);
@@ -772,16 +1315,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
     };
   }
 
-  function setRealLocalTime() {
+  // FUNGSI WAKTU GLOBAL BIAR BISA DIPANGGIL TOMBOL "SEKARANG"
+  window.setRealLocalTime = function() {
     const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     const dateInput = document.getElementById('f-date');
     if(dateInput) dateInput.value = now.toISOString().slice(0,16);
-  }
-  setRealLocalTime(); 
+  };
+  window.setRealLocalTime(); 
   
   const originalCancelEdit = window.cancelEdit;
-  window.cancelEdit = function() { originalCancelEdit(); setRealLocalTime(); };
+  window.cancelEdit = function() { originalCancelEdit(); window.setRealLocalTime(); };
 
   function applyBalanceColor() {
     document.querySelectorAll('.m-card.bal').forEach(card => {
@@ -814,7 +1358,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
   });
 
   // ---------------------------------------------------------
-  // MENGHAPUS EFEK AUTO-SCROLL & PROTEKSI PINDAH TAB
+  // PROTEKSI PINDAH TAB (Tanpa Auto-Scroll & Animasi)
   // ---------------------------------------------------------
   const originalSwitchPage = window.switchPage;
   window.switchPage = function(p) {
@@ -829,15 +1373,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
     } else {
         originalSwitchPage(p); 
     }
-    // TIDAK ADA KODE SCROLL DI SINI! (Sesuai instruksi)
   };
 
   // ---------------------------------------------------------
-  // AUTO HIDE NAVBAR & SCROLL TO TOP
+  // SCROLL TO TOP (HANYA BUTTON SAJA)
   // ---------------------------------------------------------
-  let lastScroll = 0;
-  const nav = document.querySelector('.nav');
-  
   const scrollTopBtn = document.createElement('button');
   scrollTopBtn.id = 'scroll-to-top';
   scrollTopBtn.innerHTML = '⬆️';
@@ -847,9 +1387,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
   window.addEventListener('scroll', () => {
       let currentScroll = window.pageYOffset;
-      if (currentScroll > lastScroll && currentScroll > 80) { nav.classList.add('hidden-nav'); } 
-      else { nav.classList.remove('hidden-nav'); }
-      lastScroll = currentScroll;
       if (currentScroll > 400) { scrollTopBtn.style.display = 'flex'; } 
       else { scrollTopBtn.style.display = 'none'; }
   });
@@ -867,7 +1404,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
   });
 
   // ---------------------------------------------------------
-  // DOUBLE-TAP EDIT & FITUR 3: FILTER CERDAS BERBASIS KLIK
+  // DOUBLE-TAP EDIT & FILTER CERDAS BERBASIS KLIK
   // ---------------------------------------------------------
   document.addEventListener('dblclick', function(e) {
       const txCard = e.target.closest('.recent-item');
@@ -879,11 +1416,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
   document.body.addEventListener('click', function(e) {
     if (e.target && e.target.classList.contains('cat-badge')) {
-       // Ambil teks kategori (tanpa emoji)
        const cat = e.target.innerText.replace(/[^a-zA-Z0-9\s]/g, '').trim(); 
        const searchInput = document.getElementById('flt-search');
        if(searchInput) {
-           // Kalau lagi difilter pakai kategori itu, klik lagi buat reset
            if(searchInput.value === cat) {
                searchInput.value = '';
            } else {
@@ -896,7 +1431,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
   });
 
   // ---------------------------------------------------------
-  // FITUR 4: TEKAN-TAHAN UNTUK HAPUS (LONG PRESS)
+  // TEKAN-TAHAN UNTUK HAPUS (LONG PRESS)
   // ---------------------------------------------------------
   let pressTimer;
   document.body.addEventListener('touchstart', function(e) {
@@ -905,14 +1440,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
           pressTimer = window.setTimeout(function() {
               const delBtn = txCard.querySelector('.del-btn-recent');
               if(delBtn) { if (navigator.vibrate) navigator.vibrate([40, 40]); delBtn.click(); }
-          }, 1000); // 1 detik ditahan
+          }, 1000); 
       }
   });
   document.body.addEventListener('touchend', function(e) { clearTimeout(pressTimer); });
   document.body.addEventListener('touchmove', function(e) { clearTimeout(pressTimer); });
 
   // ---------------------------------------------------------
-  // E-WALLET BADGES, TRADING BADGES, FITUR 2 (PAUS), & FITUR 6 (WARNA KATEGORI)
+  // E-WALLET BADGES, TRADING BADGES, WARNA KATEGORI
   // ---------------------------------------------------------
   const uiObserver = new MutationObserver(() => {
       
@@ -927,10 +1462,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
           }
       });
 
-      // Mewarnai kategori secara dinamis (Fitur 6) & Badges Teks
       document.querySelectorAll('.recent-item').forEach(card => {
           
-          // Fitur 2: Cek nominal transaksi "Paus" (> 5.000.000)
           const amountEl = card.querySelector('.ri-amount');
           if(amountEl && !amountEl.dataset.glowChecked) {
               const nominalRaw = amountEl.innerText.replace(/[^0-9]/g, '');
@@ -940,7 +1473,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
               amountEl.dataset.glowChecked = 'true';
           }
 
-          // Cek Kategori
           const badge = card.querySelector('.cat-badge');
           if(badge && !badge.dataset.colored) {
               const catText = badge.innerText.toLowerCase();
@@ -954,7 +1486,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
               badge.dataset.colored = 'true';
           }
 
-          // Smart Badges
           const noteEl = card.querySelector('.ri-note');
           if(noteEl && !noteEl.dataset.badged) {
               const txt = noteEl.innerText.toLowerCase();
@@ -966,7 +1497,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
           }
       });
 
-      // Sapaan Waktu
       const userNameEl = document.getElementById('user-name');
       if(userNameEl && userNameEl.innerText !== 'Memuat...' && !userNameEl.dataset.greeted) {
           const hour = new Date().getHours();
@@ -1017,24 +1547,22 @@ window.addEventListener('DOMContentLoaded', (event) => {
   document.querySelector('.main').appendChild(footer);
 
   // ---------------------------------------------------------
-  // FITUR 1: AUTO-LOCK (IDLE BLUR SCREEN) - Kunci Layar Pasif
+  // AUTO-LOCK (IDLE BLUR SCREEN) - Kunci Layar Pasif
   // ---------------------------------------------------------
   let idleTimeout;
   const resetIdle = () => {
       document.body.classList.remove('idle-mode');
       clearTimeout(idleTimeout);
-      // Set waktu nganggur 2 menit (120000 ms) sebelum layar otomatis nge-blur
       idleTimeout = setTimeout(() => {
           document.body.classList.add('idle-mode');
       }, 120000); 
   };
-  // Dengerin semua aktivitas lu untuk me-reset waktu nganggur
   window.addEventListener('mousemove', resetIdle);
   window.addEventListener('mousedown', resetIdle);
   window.addEventListener('keypress', resetIdle);
   window.addEventListener('touchstart', resetIdle);
   window.addEventListener('scroll', resetIdle, true);
-  resetIdle(); // Jalanin pertama kali pas web diload
+  resetIdle(); 
 
 });
 </script>
