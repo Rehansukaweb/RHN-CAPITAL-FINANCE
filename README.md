@@ -19,7 +19,6 @@
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 :root {
-  /* DARK MODE: ORIGINAL PITCH BLACK */
   --bg: #050505; 
   --bg2: #121215; 
   --bg3: #1A1A1F;
@@ -155,7 +154,6 @@ body {
 .sum-grid { display: grid; gap: 16px; margin-bottom: 24px; }
 
 /* FORMS */
-/* DITAMBAH padding: 32px agar kotak kiri sedikit lebih panjang dan presisi dengan 5 transaksi */
 .card { background: var(--card); border-radius: var(--radius); padding: 32px; border: 1px solid var(--border); margin-bottom: 24px; }
 .card-head { margin-bottom: 16px; }
 .card-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
@@ -253,14 +251,12 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   .user-row { flex-direction: row; justify-content: flex-start; }
   .nav { padding: 0 16px 20px; }
   
-  /* PENGHILANG JARAK SAMPING TOTAL BIAR MENTOK LAYAR */
   .main { padding: 0 0 80px 0 !important; width: 100%; overflow-x: hidden; }
   
-  /* METRICS & SUMMARY: KOTAK BULET MEMANJANG, MENTOK KIRI KANAN */
   .metrics { 
     grid-template-columns: repeat(2, 1fr); 
     gap: 8px; 
-    padding: 0 !important; /* Membunuh padding 16px yang tersembunyi */
+    padding: 0 !important;
     margin: 0 !important;
     background: transparent; border: none; 
   }
@@ -269,21 +265,18 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   .sum-grid { 
     grid-template-columns: repeat(2, 1fr); 
     gap: 8px; 
-    padding: 0 !important; /* Membunuh padding 16px yang tersembunyi */
+    padding: 0 !important;
     margin: 0 0 24px 0 !important; 
     background: transparent; border: none; 
   }
   .sum-grid .m-card { border-radius: 24px !important; border-left: none; border-right: none; }
-  .sum-grid .m-card:nth-child(3) { grid-column: span 2; } /* Saldo bersih bulet memanjang full */
+  .sum-grid .m-card:nth-child(3) { grid-column: span 2; } 
 
-  /* BUNGKUSAN CARD TRANSPARAN (AGAR KONTEN BISA NYENTUH LAYAR) */
   .panel { display: flex; flex-direction: column; gap: 16px; background: transparent; }
   .card { padding: 16px 0 !important; border-radius: 0 !important; border: none !important; background: transparent !important; margin-bottom: 0; }
   
-  /* Elemen form dan teks diberi margin agar tetap aman terbaca (tidak nabrak layar) */
   .card-head, .form-row, .filter-bar, .chart-wrap, .period-bar { padding-left: 16px !important; padding-right: 16px !important; }
   
-  /* Biar filter & search bar berjejer ke bawah di HP */
   .filter-bar { flex-direction: column; } 
   .export-btn { width: 100%; text-align: center; border-radius: 16px; padding: 18px 16px; }
   
@@ -291,14 +284,13 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   .filter-bar select.f-input-dark, .filter-bar input.f-input-dark { width: 100%; border-radius: 16px; }
   .f-input-dark { padding: 18px 16px; font-size: 15px; border-radius: 16px; }
   
-  /* HISTORY ITEM (RIWAYAT TRANSAKSI): BULET MEMANJANG 100% MENTOK LAYAR */
   .list-wrap { padding: 0 !important; margin: 0 !important; width: 100%; }
   .recent-item { 
-      width: 100% !important; /* Paksa memanjang sentuh ujung layar */
+      width: 100% !important;
       margin: 0 0 12px 0 !important; 
       padding: 16px 16px !important; 
-      border-radius: 24px !important; /* Tetap bulet empuk tidak kaku */
-      border-left: none !important; /* Menghilangkan batas kiri kanan biar nyatu ke HP */
+      border-radius: 24px !important;
+      border-left: none !important;
       border-right: none !important;
       background: var(--card); 
       flex-direction: row; 
@@ -317,7 +309,6 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   .metrics { grid-template-columns: repeat(4, 1fr); gap: 24px; }
   .sum-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
   
-  /* Form di kiri (380px), Riwayat di kanan sisa layarnya */
   .panel { 
     display: grid; 
     grid-template-columns: 380px 1fr; 
@@ -325,7 +316,6 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
     align-items: start; 
   }
 
-  /* Rapihin sedikit jarak pinggir biar elegan di layar gede */
   .main, .header-area, .nav, .top-ext-links, .top-title { 
     max-width: 1200px; 
     margin: 0 auto; 
@@ -357,6 +347,7 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
     <div class="form-row"><input type="password" id="auth-pass" class="f-input-dark" placeholder="Sandi" onkeydown="if(event.key==='Enter')doAuth()"></div>
     <div class="form-row" id="field-confirm" style="display:none"><input type="password" id="auth-pass2" class="f-input-dark" placeholder="Ulangi Sandi"></div>
     <button class="auth-btn" id="auth-submit-btn" onclick="doAuth()">MASUK</button>
+    
     <div style="margin-top: 16px; font-size: 11px; font-weight: 700; cursor: pointer; color: var(--text3); text-decoration: underline;" onclick="doResetPassword()">Lupa Sandi?</div>
   </div>
 </div>
@@ -559,7 +550,52 @@ function setSyncStatus(ok){ document.getElementById('sync-dot').style.background
 window.switchTab=function(mode){ authMode=mode; document.getElementById('tab-login').classList.toggle('active',mode==='login'); document.getElementById('tab-register').classList.toggle('active',mode==='register'); document.getElementById('field-confirm').style.display=mode==='register'?'block':'none'; document.getElementById('auth-submit-btn').textContent=mode==='login'?'MASUK':'DAFTAR'; hideErr(); };
 window.doAuth=async function(){ const email=document.getElementById('auth-email').value.trim(), pass=document.getElementById('auth-pass').value; hideErr(); if(!email||!pass)return showErr('Kredensial kosong.'); setLoading(true); try{ if(authMode==='login') await signInWithEmailAndPassword(auth,email,pass); else { if(pass!==document.getElementById('auth-pass2').value)return showErr('Sandi beda.'); await createUserWithEmailAndPassword(auth,email,pass); } } catch(e){ showErr(e.message); setLoading(false); } };
 window.doLogout=async function(){ if(unsubListener){unsubListener();unsubListener=null;} txs=[]; await signOut(auth); };
-window.doResetPassword=async function(){const email=document.getElementById('auth-email').value.trim();hideErr();if(!email)return showErr('Isi email di kolom atas dulu.');setLoading(true);try{await sendPasswordResetEmail(auth,email);Swal.fire({icon:'success',title:'Email Terkirim',text:'Cek kotak masuk atau folder spam untuk reset.',background:'var(--bg2)',color:'var(--text)',confirmButtonColor:'var(--gold)'});setLoading(false);}catch(e){showErr(e.message);setLoading(false);}};
+
+// KODE LUPA SANDI (DENGAN POPUP SWEETALERT)
+window.doResetPassword = async function() {
+  let email = document.getElementById('auth-email').value.trim();
+  hideErr();
+  
+  if(!email) {
+    const { value: inputEmail } = await Swal.fire({
+      title: 'Lupa Sandi?',
+      text: 'Masukkan email lu di bawah buat dikirimin link reset.',
+      input: 'email',
+      inputPlaceholder: 'contoh@email.com',
+      background: 'var(--bg2)',
+      color: 'var(--text)',
+      confirmButtonColor: 'var(--gold)',
+      showCancelButton: true,
+      cancelButtonColor: 'var(--bg3)',
+      cancelButtonText: 'Batal'
+    });
+    if (!inputEmail) return; 
+    email = inputEmail.trim();
+  }
+
+  setLoading(true);
+  try {
+    await sendPasswordResetEmail(auth, email);
+    Swal.fire({
+      icon: 'success', 
+      title: 'Email Terkirim!', 
+      text: 'Cek kotak masuk atau folder spam lu buat bikin sandi baru.', 
+      background: 'var(--bg2)', 
+      color: 'var(--text)', 
+      confirmButtonColor: 'var(--gold)'
+    });
+  } catch(e) {
+    Swal.fire({
+      icon: 'error', 
+      title: 'Gagal Kirim', 
+      text: e.message, 
+      background: 'var(--bg2)', 
+      color: 'var(--text)', 
+      confirmButtonColor: 'var(--red2)'
+    });
+  }
+  setLoading(false);
+};
 
 onAuthStateChanged(auth,user=>{
   if(user){ currentUser=user; document.getElementById('auth-screen').style.display='none'; document.getElementById('app-screen').style.display='block'; setLoading(false); const name=user.displayName||user.email.split('@')[0]; document.getElementById('user-name').textContent=name; document.getElementById('user-avatar').textContent=name.charAt(0).toUpperCase(); listenTransactions(user.uid); }
@@ -797,8 +833,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
         let val = this.value.replace(/[^0-9+\-*/().]/g, ''); 
         try {
             if(val && /[+\-*/]/.test(val)) {
-                // PROTEKSI: Karena sekarang ada titik otomatis pas diketik, 
-                // kita hapus dulu titiknya sebelum masukin ke kalkulator biar eval-nya nggak eror
                 let cleanMath = val.replace(/\./g, '');
                 let result = eval(cleanMath); 
                 this.value = parseInt(result, 10).toLocaleString('id-ID');
@@ -814,11 +848,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
     amountInput.addEventListener('input', function(e) {
       let raw = this.value.replace(/[^0-9+\-*/().]/g, '');
       
-      // Kalau lu lagi ngetik tanda tambah/kurang/kali/bagi, titik otomatis distop dulu biar rumus lu aman
       if(/[+\-*/()]/.test(raw)) {
           this.value = raw;
       } else {
-          // Kalau lu cuma ngetik angka biasa, langsung tembak pakai titik ribuan otomatis
           let nums = raw.replace(/\./g, '');
           this.value = nums ? parseInt(nums, 10).toLocaleString('id-ID') : '';
       }
