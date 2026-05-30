@@ -331,183 +331,6 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
     margin: 0 auto; 
   }
 }
-
-/* ==========================================================================
-   AI ANALISIS — TAMBAHAN BARU (TIDAK MENGUBAH KODE LAMA)
-   ========================================================================== */
-
-/* Container utama halaman AI */
-#page-ai .ai-hero {
-  background: linear-gradient(135deg, rgba(251,191,36,0.08) 0%, rgba(59,130,246,0.06) 100%);
-  border: 1px solid rgba(251,191,36,0.2);
-  border-radius: 20px;
-  padding: 28px;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-#page-ai .ai-hero-icon {
-  width: 56px; height: 56px; border-radius: 16px;
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 26px; flex-shrink: 0;
-  box-shadow: 0 8px 24px rgba(251,191,36,0.3);
-}
-#page-ai .ai-hero-text .ai-hero-title {
-  font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px;
-}
-#page-ai .ai-hero-text .ai-hero-sub {
-  font-size: 12px; color: var(--text3); font-weight: 500; line-height: 1.6;
-}
-
-/* Pilihan topik analisis */
-#page-ai .ai-topics {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-bottom: 24px;
-}
-@media (min-width: 769px) {
-  #page-ai .ai-topics { grid-template-columns: repeat(4, 1fr); }
-}
-#page-ai .ai-topic-btn {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px 12px;
-  cursor: pointer;
-  text-align: center;
-  transition: border-color 0.2s, background 0.2s;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-}
-#page-ai .ai-topic-btn:hover {
-  border-color: var(--gold);
-  background: rgba(251,191,36,0.05);
-}
-#page-ai .ai-topic-btn.selected {
-  border-color: var(--gold);
-  background: rgba(251,191,36,0.08);
-  box-shadow: 0 0 0 1px var(--gold);
-}
-#page-ai .ai-topic-emoji { font-size: 22px; }
-#page-ai .ai-topic-label {
-  font-size: 10px; font-weight: 800; color: var(--text3);
-  text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.3;
-}
-
-/* Tombol analisis */
-#page-ai .ai-run-btn {
-  width: 100%; padding: 18px;
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
-  color: #000; border: none; border-radius: 14px;
-  font-size: 13px; font-weight: 800; cursor: pointer;
-  text-transform: uppercase; letter-spacing: 0.5px;
-  margin-bottom: 24px;
-  box-shadow: 0 4px 20px rgba(251,191,36,0.25);
-  transition: opacity 0.2s, transform 0.1s;
-}
-#page-ai .ai-run-btn:disabled {
-  opacity: 0.5; cursor: not-allowed; transform: none;
-}
-#page-ai .ai-run-btn:not(:disabled):hover { opacity: 0.9; }
-#page-ai .ai-run-btn:not(:disabled):active { transform: scale(0.98); }
-
-/* Area hasil analisis */
-#page-ai .ai-result-box {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 28px;
-  min-height: 200px;
-  display: none;
-}
-#page-ai .ai-result-box.visible { display: block; }
-
-#page-ai .ai-result-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 20px; padding-bottom: 16px;
-  border-bottom: 1px solid var(--border);
-}
-#page-ai .ai-result-title {
-  font-size: 13px; font-weight: 800; color: var(--gold);
-  text-transform: uppercase; letter-spacing: 1px;
-  display: flex; align-items: center; gap: 8px;
-}
-#page-ai .ai-result-badge {
-  font-size: 9px; font-weight: 800; padding: 4px 10px; border-radius: 20px;
-  background: rgba(16,185,129,0.15); color: var(--green2);
-  border: 1px solid rgba(16,185,129,0.3); text-transform: uppercase; letter-spacing: 0.5px;
-}
-
-/* Konten teks hasil AI */
-#page-ai .ai-result-content {
-  font-size: 14px; font-weight: 400; color: var(--text2);
-  line-height: 1.8; white-space: pre-wrap;
-}
-#page-ai .ai-result-content strong {
-  color: var(--text); font-weight: 700;
-}
-
-/* Loading state */
-#page-ai .ai-loading {
-  display: none; align-items: center; justify-content: center;
-  gap: 12px; padding: 40px;
-}
-#page-ai .ai-loading.visible { display: flex; }
-#page-ai .ai-loading-dots { display: flex; gap: 6px; }
-#page-ai .ai-loading-dots span {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--gold); opacity: 0.3;
-  animation: ai-pulse 1.2s infinite ease-in-out;
-}
-#page-ai .ai-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-#page-ai .ai-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes ai-pulse {
-  0%, 100% { opacity: 0.3; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.1); }
-}
-#page-ai .ai-loading-text {
-  font-size: 12px; font-weight: 600; color: var(--text3);
-}
-
-/* Kartu ringkasan data yang dikirim ke AI */
-#page-ai .ai-data-summary {
-  background: var(--bg3);
-  border-radius: 12px; padding: 14px 16px;
-  margin-bottom: 20px;
-  display: flex; gap: 24px; flex-wrap: wrap;
-}
-#page-ai .ai-data-item { display: flex; flex-direction: column; gap: 2px; }
-#page-ai .ai-data-label { font-size: 9px; font-weight: 800; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
-#page-ai .ai-data-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--text); }
-
-/* Tombol salin hasil */
-#page-ai .ai-copy-btn {
-  margin-top: 20px; padding: 10px 20px;
-  background: transparent; border: 1px solid var(--border2);
-  color: var(--text3); border-radius: 10px;
-  font-size: 11px; font-weight: 700; cursor: pointer;
-  text-transform: uppercase; letter-spacing: 0.5px;
-  transition: 0.2s;
-}
-#page-ai .ai-copy-btn:hover { border-color: var(--gold); color: var(--gold); }
-
-/* Error state */
-#page-ai .ai-error {
-  display: none; background: rgba(248,113,113,0.1);
-  border: 1px solid rgba(248,113,113,0.3); border-radius: 12px;
-  padding: 16px; color: var(--red2); font-size: 13px;
-  font-weight: 600; margin-bottom: 16px;
-}
-#page-ai .ai-error.visible { display: block; }
-
-/* Mobile adjustments untuk AI page */
-@media (max-width: 768px) {
-  #page-ai .ai-hero { flex-direction: column; text-align: center; padding: 20px 16px; }
-  #page-ai .ai-result-box { padding: 20px 16px; }
-  #page-ai .ai-data-summary { gap: 16px; }
-}
 </style>
 </head>
 <body>
@@ -534,6 +357,7 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
     <div class="form-row"><input type="password" id="auth-pass" class="f-input-dark" placeholder="Sandi" onkeydown="if(event.key==='Enter')doAuth()"></div>
     <div class="form-row" id="field-confirm" style="display:none"><input type="password" id="auth-pass2" class="f-input-dark" placeholder="Ulangi Sandi"></div>
     <button class="auth-btn" id="auth-submit-btn" onclick="doAuth()">MASUK</button>
+    <div style="margin-top: 16px; font-size: 11px; font-weight: 700; cursor: pointer; color: var(--text3); text-decoration: underline;" onclick="doResetPassword()">Lupa Sandi?</div>
   </div>
 </div>
 
@@ -576,7 +400,6 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   <button class="nav-btn" onclick="switchPage('bulanan')">BULANAN</button>
   <button class="nav-btn" onclick="switchPage('tahunan')">TAHUNAN</button>
   <button class="nav-btn" onclick="switchPage('riwayat')">RIWAYAT</button>
-  <button class="nav-btn" onclick="switchPage('ai')" id="nav-ai-btn">🤖 AI ANALISIS</button>
 </div>
 
 <div class="main">
@@ -593,10 +416,11 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
         <button class="t-btn income active" id="btn-inc" onclick="selType('income')">+ Pemasukan</button>
         <button class="t-btn expense" id="btn-exp" onclick="selType('expense')">- Pengeluaran</button>
       </div>
-      <div class="form-row"><label class="form-label">JUMLAH (RP)</label><input type="number" id="f-amount" class="f-input-dark" placeholder="0"></div>
+      
+      <div class="form-row"><label class="form-label">JUMLAH (RP)</label><input type="text" inputmode="numeric" id="f-amount" class="f-input-dark" placeholder="0"></div>
+      
       <div class="form-row"><label class="form-label">KATEGORI</label><select id="f-cat" class="f-input-dark"></select></div>
       <div class="form-row"><label class="form-label">KETERANGAN</label><textarea id="f-note" class="f-input-dark" placeholder="Catatan transaksi..."></textarea></div>
-      
       <div class="form-row">
         <label class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
           <span>WAKTU</span>
@@ -604,7 +428,6 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
         </label>
         <input type="datetime-local" id="f-date" class="f-input-dark">
       </div>
-      
       <button class="submit-btn" id="cancel-edit-btn" onclick="cancelEdit()" style="display:none; background:var(--bg3); color:var(--text); margin-bottom:8px;">BATAL EDIT</button>
       <button class="submit-btn" id="save-btn" onclick="addTx()">SIMPAN TRANSAKSI</button>
     </div>
@@ -685,113 +508,6 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   </div>
 </div>
 
-<!-- =====================================================================
-     HALAMAN AI ANALISIS — TAMBAHAN BARU (TIDAK MENYENTUH KODE LAMA)
-     ===================================================================== -->
-<div id="page-ai" class="page">
-
-  <!-- Hero Banner -->
-  <div class="ai-hero">
-    <div class="ai-hero-icon">🤖</div>
-    <div class="ai-hero-text">
-      <div class="ai-hero-title">Analisis Keuangan AI</div>
-      <div class="ai-hero-sub">Sistem kecerdasan buatan akan membaca seluruh data transaksi Anda dan memberikan laporan analisis mendalam, rekomendasi strategis, serta peringatan dini terhadap pola keuangan yang berisiko.</div>
-    </div>
-  </div>
-
-  <!-- Pilihan Topik -->
-  <div class="card" style="margin-bottom:20px;">
-    <div class="card-head">
-      <div class="card-title">Pilih Topik Analisis</div>
-      <div class="card-sub">Pilih satu atau lebih topik yang ingin dianalisis oleh AI</div>
-    </div>
-    <div class="ai-topics" id="ai-topics-grid">
-      <button class="ai-topic-btn selected" data-topic="ringkasan">
-        <span class="ai-topic-emoji">📊</span>
-        <span class="ai-topic-label">Ringkasan Umum</span>
-      </button>
-      <button class="ai-topic-btn" data-topic="pengeluaran">
-        <span class="ai-topic-emoji">💸</span>
-        <span class="ai-topic-label">Analisis Pengeluaran</span>
-      </button>
-      <button class="ai-topic-btn" data-topic="tren">
-        <span class="ai-topic-emoji">📈</span>
-        <span class="ai-topic-label">Tren & Pola</span>
-      </button>
-      <button class="ai-topic-btn" data-topic="rekomendasi">
-        <span class="ai-topic-emoji">💡</span>
-        <span class="ai-topic-label">Rekomendasi Strategis</span>
-      </button>
-      <button class="ai-topic-btn" data-topic="risiko">
-        <span class="ai-topic-emoji">⚠️</span>
-        <span class="ai-topic-label">Deteksi Risiko</span>
-      </button>
-      <button class="ai-topic-btn" data-topic="investasi">
-        <span class="ai-topic-emoji">🏦</span>
-        <span class="ai-topic-label">Evaluasi Investasi</span>
-      </button>
-      <button class="ai-topic-btn" data-topic="efisiensi">
-        <span class="ai-topic-emoji">⚡</span>
-        <span class="ai-topic-label">Efisiensi Keuangan</span>
-      </button>
-      <button class="ai-topic-btn" data-topic="proyeksi">
-        <span class="ai-topic-emoji">🔮</span>
-        <span class="ai-topic-label">Proyeksi ke Depan</span>
-      </button>
-    </div>
-
-    <!-- Ringkasan data yang akan dikirim -->
-    <div class="ai-data-summary" id="ai-data-summary">
-      <div class="ai-data-item">
-        <span class="ai-data-label">Total Transaksi</span>
-        <span class="ai-data-val" id="ai-stat-count">0</span>
-      </div>
-      <div class="ai-data-item">
-        <span class="ai-data-label">Total Pemasukan</span>
-        <span class="ai-data-val" id="ai-stat-inc">Rp 0</span>
-      </div>
-      <div class="ai-data-item">
-        <span class="ai-data-label">Total Pengeluaran</span>
-        <span class="ai-data-val" id="ai-stat-exp">Rp 0</span>
-      </div>
-      <div class="ai-data-item">
-        <span class="ai-data-label">Saldo Bersih</span>
-        <span class="ai-data-val" id="ai-stat-bal">Rp 0</span>
-      </div>
-    </div>
-
-    <!-- Error jika ada -->
-    <div class="ai-error" id="ai-error-box"></div>
-
-    <!-- Tombol jalankan analisis -->
-    <button class="ai-run-btn" id="ai-run-btn" onclick="runAIAnalysis()">
-      🤖 JALANKAN ANALISIS AI
-    </button>
-  </div>
-
-  <!-- Loading state -->
-  <div class="ai-loading" id="ai-loading">
-    <div class="ai-loading-dots">
-      <span></span><span></span><span></span>
-    </div>
-    <div class="ai-loading-text">AI sedang menganalisis data keuangan Anda...</div>
-  </div>
-
-  <!-- Hasil Analisis -->
-  <div class="ai-result-box" id="ai-result-box">
-    <div class="ai-result-header">
-      <div class="ai-result-title">
-        🤖 Hasil Analisis AI
-      </div>
-      <span class="ai-result-badge">SELESAI</span>
-    </div>
-    <div class="ai-result-content" id="ai-result-content"></div>
-    <button class="ai-copy-btn" onclick="copyAIResult()">📋 SALIN HASIL ANALISIS</button>
-  </div>
-
-</div>
-<!-- ===== AKHIR HALAMAN AI ANALISIS ===== -->
-
 </div></div>
 
 <script type="module">
@@ -805,7 +521,7 @@ window.toggleTheme = function() {
 if(localStorage.getItem('theme') === 'light') { document.body.classList.add('light-mode'); document.getElementById('theme-toggle').textContent = '☀️'; }
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { initializeFirestore, persistentLocalCache, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = { apiKey: "AIzaSyCx04v3ppq3DxbXDg0PrWBeJYIZjmJF9cg", authDomain: "rhn-capital.firebaseapp.com", projectId: "rhn-capital", storageBucket: "rhn-capital.firebasestorage.app", messagingSenderId: "74905216682", appId: "1:74905216682:web:4687a5b0bd7bcac09292d3" };
@@ -843,6 +559,7 @@ function setSyncStatus(ok){ document.getElementById('sync-dot').style.background
 window.switchTab=function(mode){ authMode=mode; document.getElementById('tab-login').classList.toggle('active',mode==='login'); document.getElementById('tab-register').classList.toggle('active',mode==='register'); document.getElementById('field-confirm').style.display=mode==='register'?'block':'none'; document.getElementById('auth-submit-btn').textContent=mode==='login'?'MASUK':'DAFTAR'; hideErr(); };
 window.doAuth=async function(){ const email=document.getElementById('auth-email').value.trim(), pass=document.getElementById('auth-pass').value; hideErr(); if(!email||!pass)return showErr('Kredensial kosong.'); setLoading(true); try{ if(authMode==='login') await signInWithEmailAndPassword(auth,email,pass); else { if(pass!==document.getElementById('auth-pass2').value)return showErr('Sandi beda.'); await createUserWithEmailAndPassword(auth,email,pass); } } catch(e){ showErr(e.message); setLoading(false); } };
 window.doLogout=async function(){ if(unsubListener){unsubListener();unsubListener=null;} txs=[]; await signOut(auth); };
+window.doResetPassword=async function(){const email=document.getElementById('auth-email').value.trim();hideErr();if(!email)return showErr('Isi email di kolom atas dulu.');setLoading(true);try{await sendPasswordResetEmail(auth,email);Swal.fire({icon:'success',title:'Email Terkirim',text:'Cek kotak masuk atau folder spam untuk reset.',background:'var(--bg2)',color:'var(--text)',confirmButtonColor:'var(--gold)'});setLoading(false);}catch(e){showErr(e.message);setLoading(false);}};
 
 onAuthStateChanged(auth,user=>{
   if(user){ currentUser=user; document.getElementById('auth-screen').style.display='none'; document.getElementById('app-screen').style.display='block'; setLoading(false); const name=user.displayName||user.email.split('@')[0]; document.getElementById('user-name').textContent=name; document.getElementById('user-avatar').textContent=name.charAt(0).toUpperCase(); listenTransactions(user.uid); }
@@ -860,7 +577,7 @@ window.cancelEdit=function(){ editId=null; document.getElementById('f-amount').v
 
 window.selType=function(t){ curType=t; document.getElementById('btn-inc').classList.toggle('active',t==='income'); document.getElementById('btn-exp').classList.toggle('active',t==='expense'); const s=document.getElementById('f-cat'); s.innerHTML='<option value="">Pilih kategori...</option>'; CATS[t].forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;s.appendChild(o)}); };
 
-window.switchPage=function(p){ document.querySelectorAll('.page').forEach(el=>el.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(el=>el.classList.remove('active')); document.getElementById('page-'+p).classList.add('active'); const pages=['dashboard','harian','mingguan','bulanan','tahunan','riwayat','ai']; document.querySelectorAll('.nav-btn')[pages.indexOf(p)].classList.add('active'); activePage=p;refreshAll(); };
+window.switchPage=function(p){ document.querySelectorAll('.page').forEach(el=>el.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(el=>el.classList.remove('active')); document.getElementById('page-'+p).classList.add('active'); const pages=['dashboard','harian','mingguan','bulanan','tahunan','riwayat']; document.querySelectorAll('.nav-btn')[pages.indexOf(p)].classList.add('active'); activePage=p;refreshAll(); };
 
 function calcSum(arr){ const inc=arr.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0), exp=arr.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0); return{inc,exp,bal:inc-exp,count:arr.length}; }
 
@@ -916,183 +633,11 @@ function showYear(k){ const arr=txs.filter(t=>t.date.startsWith(k)).sort((a,b)=>
 window.renderAll=function(){ const tf=document.getElementById('flt-type').value, s=(document.getElementById('flt-search').value||'').toLowerCase(); let arr=[...txs]; if(tf)arr=arr.filter(t=>t.type===tf); if(s)arr=arr.filter(t=>t.note.toLowerCase().includes(s)||t.category.toLowerCase().includes(s)); arr.sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('all-sum'),arr); renderList(document.getElementById('all-body'),arr); };
 
 /* DIUBAH MENJADI 5 AKTIFITAS TERAKHIR */
-function refreshAll(){ renderMetrics(); renderList(document.getElementById('recent-list'), txs.slice(0,5)); if(activePage==='harian')renderDaily(); if(activePage==='mingguan')renderWeekly(); if(activePage==='bulanan')renderMonthly(); if(activePage==='tahunan')renderYearly(); if(activePage==='riwayat')renderAll(); if(activePage==='ai')refreshAIStats(); }
+function refreshAll(){ renderMetrics(); renderList(document.getElementById('recent-list'), txs.slice(0,5)); if(activePage==='harian')renderDaily(); if(activePage==='mingguan')renderWeekly(); if(activePage==='bulanan')renderMonthly(); if(activePage==='tahunan')renderYearly(); if(activePage==='riwayat')renderAll(); }
 
 document.getElementById('pick-daily').value=nowISO().slice(0,10); document.getElementById('f-date').value=nowISO(); selType('income');
 
 window.exportCSV=function(){ if(!txs.length)return Swal.fire('Kosong','Tidak ada data untuk diunduh','info'); let csv="Tanggal,Waktu,Tipe,Kategori,Nominal(Rp),Keterangan\n"; txs.forEach(t=>{ const d=t.date.split('T'); csv+=`${d[0]},${d[1]||'-'},${t.type==='income'?'Pemasukan':'Pengeluaran'},${t.category},${t.amount},"${t.note}"\n`; }); const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download='Laporan_Keuangan_RHN.csv'; link.click(); };
-
-// =========================================================================
-// AI ANALISIS — FUNGSI BARU (TIDAK MENYENTUH FUNGSI LAMA DI ATAS)
-// =========================================================================
-
-// Update statistik ringkasan di halaman AI
-function refreshAIStats() {
-  if (!txs.length) return;
-  const s = calcSum(txs);
-  document.getElementById('ai-stat-count').textContent = txs.length + ' transaksi';
-  document.getElementById('ai-stat-inc').textContent = fmt(s.inc);
-  document.getElementById('ai-stat-exp').textContent = fmt(s.exp);
-  const balEl = document.getElementById('ai-stat-bal');
-  balEl.textContent = fmt(s.bal);
-  balEl.style.color = s.bal >= 0 ? 'var(--green2)' : 'var(--red2)';
-}
-
-// Toggle pilihan topik
-document.getElementById('ai-topics-grid').addEventListener('click', function(e) {
-  const btn = e.target.closest('.ai-topic-btn');
-  if (btn) btn.classList.toggle('selected');
-});
-
-// Fungsi utama jalankan analisis AI
-window.runAIAnalysis = async function() {
-  if (!txs.length) {
-    const errBox = document.getElementById('ai-error-box');
-    errBox.textContent = 'Tidak ada data transaksi. Tambahkan transaksi terlebih dahulu.';
-    errBox.classList.add('visible');
-    return;
-  }
-
-  const selectedTopics = [...document.querySelectorAll('#ai-topics-grid .ai-topic-btn.selected')]
-    .map(btn => btn.dataset.topic);
-
-  if (!selectedTopics.length) {
-    const errBox = document.getElementById('ai-error-box');
-    errBox.textContent = 'Pilih minimal satu topik analisis terlebih dahulu.';
-    errBox.classList.add('visible');
-    return;
-  }
-
-  // Reset UI
-  document.getElementById('ai-error-box').classList.remove('visible');
-  document.getElementById('ai-result-box').classList.remove('visible');
-  document.getElementById('ai-loading').classList.add('visible');
-  document.getElementById('ai-run-btn').disabled = true;
-
-  // Siapkan data ringkasan untuk AI (tidak kirim semua raw data, cukup agregat)
-  const s = calcSum(txs);
-  const now = new Date();
-  const thisMonth = now.toISOString().slice(0, 7);
-  const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString().slice(0, 7);
-
-  const thisMonthTxs = txs.filter(t => t.date.slice(0, 7) === thisMonth);
-  const lastMonthTxs = txs.filter(t => t.date.slice(0, 7) === lastMonth);
-  const thisMonthSum = calcSum(thisMonthTxs);
-  const lastMonthSum = calcSum(lastMonthTxs);
-
-  // Agregat per kategori pengeluaran
-  const catExpMap = {};
-  txs.filter(t => t.type === 'expense').forEach(t => {
-    catExpMap[t.category] = (catExpMap[t.category] || 0) + t.amount;
-  });
-  const topExpCats = Object.entries(catExpMap)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
-    .map(([cat, amt]) => `${cat}: ${fmt(amt)}`)
-    .join(', ');
-
-  // Agregat per kategori pemasukan
-  const catIncMap = {};
-  txs.filter(t => t.type === 'income').forEach(t => {
-    catIncMap[t.category] = (catIncMap[t.category] || 0) + t.amount;
-  });
-  const topIncCats = Object.entries(catIncMap)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
-    .map(([cat, amt]) => `${cat}: ${fmt(amt)}`)
-    .join(', ');
-
-  // Transaksi terbesar
-  const biggestExp = [...txs].filter(t => t.type === 'expense').sort((a, b) => b.amount - a.amount).slice(0, 3).map(t => `${t.note} (${fmt(t.amount)})`).join(', ');
-  const biggestInc = [...txs].filter(t => t.type === 'income').sort((a, b) => b.amount - a.amount).slice(0, 3).map(t => `${t.note} (${fmt(t.amount)})`).join(', ');
-
-  const topicLabels = {
-    ringkasan: 'Ringkasan Umum Keuangan',
-    pengeluaran: 'Analisis Mendalam Pengeluaran',
-    tren: 'Tren dan Pola Keuangan',
-    rekomendasi: 'Rekomendasi Strategis',
-    risiko: 'Deteksi Risiko Keuangan',
-    investasi: 'Evaluasi Portofolio Investasi',
-    efisiensi: 'Efisiensi Penggunaan Dana',
-    proyeksi: 'Proyeksi Keuangan ke Depan'
-  };
-
-  const topicsRequested = selectedTopics.map(t => topicLabels[t]).join(', ');
-
-  const prompt = `Anda adalah analis keuangan profesional dari RHN CAPITAL. Berikan laporan analisis keuangan yang formal, mendalam, dan actionable berdasarkan data berikut.
-
-DATA KEUANGAN PENGGUNA:
-- Total Transaksi: ${txs.length} transaksi
-- Total Pemasukan Keseluruhan: ${fmt(s.inc)}
-- Total Pengeluaran Keseluruhan: ${fmt(s.exp)}
-- Saldo Bersih: ${fmt(s.bal)} (${s.bal >= 0 ? 'SURPLUS' : 'DEFISIT'})
-- Rasio Pengeluaran vs Pemasukan: ${s.inc > 0 ? Math.round((s.exp / s.inc) * 100) : 0}%
-
-BULAN INI (${thisMonth}):
-- Pemasukan: ${fmt(thisMonthSum.inc)} | Pengeluaran: ${fmt(thisMonthSum.exp)} | Saldo: ${fmt(thisMonthSum.bal)}
-
-BULAN LALU (${lastMonth}):
-- Pemasukan: ${fmt(lastMonthSum.inc)} | Pengeluaran: ${fmt(lastMonthSum.exp)} | Saldo: ${fmt(lastMonthSum.bal)}
-
-TOP KATEGORI PENGELUARAN TERBESAR: ${topExpCats || 'Tidak ada data'}
-TOP KATEGORI PEMASUKAN TERBESAR: ${topIncCats || 'Tidak ada data'}
-TRANSAKSI PENGELUARAN TERBESAR: ${biggestExp || 'Tidak ada data'}
-TRANSAKSI PEMASUKAN TERBESAR: ${biggestInc || 'Tidak ada data'}
-KURS USD/IDR SAAT INI: ${kursIndo.format(currentUSDRate)}
-
-TOPIK ANALISIS YANG DIMINTA: ${topicsRequested}
-
-Berikan analisis yang komprehensif, terstruktur dengan heading yang jelas untuk setiap topik yang diminta. Gunakan bahasa Indonesia yang formal dan profesional. Sertakan angka-angka konkret, persentase, dan rekomendasi yang spesifik dan dapat ditindaklanjuti. Jangan gunakan markdown simbol seperti ** atau ##, gunakan huruf kapital dan spasi untuk penekanan.`;
-
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error?.message || 'Terjadi kesalahan pada server AI.');
-    }
-
-    const resultText = data.content
-      .filter(block => block.type === 'text')
-      .map(block => block.text)
-      .join('\n');
-
-    document.getElementById('ai-result-content').textContent = resultText;
-    document.getElementById('ai-result-box').classList.add('visible');
-
-  } catch (err) {
-    const errBox = document.getElementById('ai-error-box');
-    errBox.textContent = 'Gagal menghubungi AI: ' + err.message;
-    errBox.classList.add('visible');
-  } finally {
-    document.getElementById('ai-loading').classList.remove('visible');
-    document.getElementById('ai-run-btn').disabled = false;
-  }
-};
-
-// Salin hasil analisis ke clipboard
-window.copyAIResult = function() {
-  const content = document.getElementById('ai-result-content').textContent;
-  if (!content) return;
-  navigator.clipboard.writeText(content).then(() => {
-    const Toast = Swal.mixin({
-      toast: true, position: 'top-end', showConfirmButton: false, timer: 2000,
-      background: 'var(--bg2)', color: 'var(--text)'
-    });
-    Toast.fire({ icon: 'success', title: 'Hasil analisis berhasil disalin!' });
-  });
-};
-
-// =========================================================================
 
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(e => console.log('SW Error:', e)); }); }
 </script>
@@ -1246,6 +791,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
   
   if (amountInput) {
     amountInput.type = 'text'; 
+    amountInput.inputMode = 'numeric'; // MEMAKSA HP MENGELUARKAN KEYBOARD NUMPAD
     
     amountInput.addEventListener('blur', function() {
         let val = this.value.replace(/[^0-9+\-*/().]/g, ''); 
