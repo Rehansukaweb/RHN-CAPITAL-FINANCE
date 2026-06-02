@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
@@ -16,7 +15,7 @@
 
 <style>
 /* ==========================================================================
-   TEMA ORIGINAL (GELAP PEKAT) + TEKS NOMINAL PUTIH ELEGAN
+   TEMA ORIGINAL & CSS UTAMA APLIKASI
    ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -36,20 +35,10 @@ body.light-mode {
   --blue-title: #0056b3;
 }
 
-body {
-  font-family: 'Outfit', sans-serif;
-  background-color: var(--bg);
-  color: var(--text);
-  font-size: 14px;
-  line-height: 1.5;
-  min-height: 100vh;
-  overflow-x: hidden;
-  transition: background-color 0.4s ease, color 0.4s ease;
-}
-
-/* KUNCI UI (ANTI-GERAK) */
+body { font-family: 'Outfit', sans-serif; background-color: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; min-height: 100vh; overflow-x: hidden; transition: background-color 0.4s ease, color 0.4s ease; }
 html { overflow-y: scroll !important; } 
-.page { animation: none !important; transition: none !important; } 
+.page { animation: none !important; transition: none !important; display: none; } 
+.page.active { display: block; }
 .m-bar-fill { transition: none !important; } 
 
 /* BLUR SAAT LOCK / PRIVACY MODE */
@@ -89,7 +78,6 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
 .nav-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 
 .main { padding: 16px 24px 80px; max-width: 1400px; margin: 0 auto; }
-.page { display: none; } .page.active { display: block; }
 
 /* KARTU METRIK & FORM */
 .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
@@ -120,7 +108,7 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
 .form-row { margin-bottom: 16px; }
 .form-label { font-size: 10px; font-weight: 800; color: var(--text3); margin-bottom: 8px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
 .form-row textarea { height: 100px; resize: none; }
-.submit-btn { width: 100%; padding: 16px; background: var(--text); color: var(--bg); border: none; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-top: 8px; }
+.submit-btn { width: 100%; padding: 16px; background: var(--text); color: var(--bg); border: none; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-top: 8px; transition:0.2s; }
 
 /* DAFTAR TRANSAKSI */
 .list-wrap { padding: 8px 0; }
@@ -210,11 +198,13 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
 }
 
 /* ==========================================================================
-   STYLE KHUSUS PIN LOCK (SUPERIOR Z-INDEX)
+   STYLE KHUSUS PIN LOCK (SUPERIOR Z-INDEX & WAJIB TAMPIL DEFAULT)
    ========================================================================== */
 #rhn-pin-lock {
-  position: fixed; inset: 0; background: var(--bg); z-index: 999999999; /* Z-Index Maksimal */
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  position: fixed; inset: 0; background: var(--bg); 
+  z-index: 999999999; /* Z-Index Maksimal, Menutupi Semuanya */
+  display: flex; /* DIBUAT FLEX SECARA DEFAULT DARI CSS, BUKAN JS */
+  flex-direction: column; align-items: center; justify-content: center;
   font-family: 'Outfit', sans-serif;
 }
 .pin-title { color: var(--gold); font-size: 20px; font-weight: 800; margin-bottom: 8px; letter-spacing: 1px; }
@@ -235,18 +225,19 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
 <body>
 
 <!-- ==========================================================================
-     STRUKTUR PIN LOCK (HARUS BERADA DI PALING ATAS BODY)
+     1. STRUKTUR PIN LOCK 
+     (DITARUH PALING ATAS BODY AGAR DI-RENDER PERTAMA KALI OLEH BROWSER)
      ========================================================================== -->
 <div id="rhn-pin-lock">
   <img src="RHN LOGO.jpg" style="width:60px; border-radius:16px; margin-bottom:16px; border:1px solid var(--gold);">
-  <div class="pin-title" id="pin-title-text">MEMUAT KEAMANAN...</div>
-  <div class="pin-sub" id="pin-sub-text">Harap tunggu sebentar</div>
+  <div class="pin-title" id="pin-title-text">MASUKKAN PIN</div>
+  <div class="pin-sub" id="pin-sub-text">Akses Terkunci</div>
   
-  <div class="pin-dots" id="pin-dots" style="display:none;">
+  <div class="pin-dots" id="pin-dots">
     <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
   </div>
   
-  <div class="pin-pad" id="pin-pad" style="display:none;">
+  <div class="pin-pad" id="pin-pad">
     <button class="pin-btn" onclick="pressPin('1')">1</button>
     <button class="pin-btn" onclick="pressPin('2')">2</button>
     <button class="pin-btn" onclick="pressPin('3')">3</button>
@@ -263,8 +254,7 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
 
   <div id="forgot-pin-btn" style="color:var(--text3); font-size:11px; margin-top:24px; cursor:pointer; font-weight:700; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid var(--border2); display:none;">Lupa PIN?</div>
 
-  <!-- CONTAINER RESET PIN FIREBASE -->
-  <div id="reset-pin-container" style="display:none; flex-direction:column; width:90%; max-width:320px; gap:12px;">
+  <div id="reset-pin-container" style="display:none; flex-direction:column; width:90%; max-width:320px; gap:12px; margin-top:24px;">
     <input type="email" id="reset-email" class="f-input-dark" placeholder="Email Akun">
     <input type="password" id="reset-pass" class="f-input-dark" placeholder="Sandi Akun">
     <button class="submit-btn" id="btn-submit-reset" style="background:var(--gold); color:#000;" onclick="submitPinReset()">VERIFIKASI & RESET PIN</button>
@@ -272,145 +262,127 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
   </div>
 </div>
 
-<!-- ==========================================================================
-     LOGIKA PIN LOCK (BERJALAN SEBELUM KONTEN LAIN DI-LOAD)
-     ========================================================================== -->
+<!-- LOGIKA PIN LANGSUNG DI BAWAH UI PIN -->
 <script>
-  // Inisialisasi variabel global untuk PIN
-  window.pinCode = '';
-  window.savedPin = null;
-  window.pinMode = 'setup';
-  window.tempPin = '';
-  
-  // Baca localStorage dengan aman
-  try { window.savedPin = localStorage.getItem('rhn_vault_pin'); } catch(e) { console.warn("LocalStorage akses terblokir."); }
-  if(window.savedPin) window.pinMode = 'verify';
+  (function() {
+      // Sembunyikan scrollbar agar user tidak bisa scroll ke bawah saat terkunci
+      document.documentElement.style.overflow = 'hidden';
 
-  function initPinLockUI() {
-     document.getElementById('pin-dots').style.display = 'flex';
-     document.getElementById('pin-pad').style.display = 'grid';
-     document.getElementById('reset-pin-container').style.display = 'none';
-     
-     const title = document.getElementById('pin-title-text');
-     const sub = document.getElementById('pin-sub-text');
-     const forgotBtn = document.getElementById('forgot-pin-btn');
-     
-     if(window.pinMode === 'setup') { 
-         title.innerText = 'BUAT PIN BARU'; sub.innerText = 'Amankan akses aplikasi keuangan Anda'; 
-         forgotBtn.style.display = 'none';
-     } else if(window.pinMode === 'verify') { 
-         title.innerText = 'KUNCI VAULT'; sub.innerText = 'Masukkan 4 digit PIN Anda'; 
-         forgotBtn.style.display = 'block';
-     }
-  }
+      window.pinCode = '';
+      window.savedPin = null;
+      try { window.savedPin = localStorage.getItem('rhn_vault_pin'); } catch(e) {}
+      window.pinMode = window.savedPin ? 'verify' : 'setup';
+      window.tempPin = '';
+      
+      const title = document.getElementById('pin-title-text');
+      const sub = document.getElementById('pin-sub-text');
+      const forgotBtn = document.getElementById('forgot-pin-btn');
 
-  // Dipanggil langsung saat skrip ini dibaca browser
-  initPinLockUI();
+      if(window.pinMode === 'setup') {
+          title.innerText = 'BUAT PIN BARU'; sub.innerText = 'Amankan akses aplikasi keuangan Anda';
+      } else {
+          title.innerText = 'KUNCI VAULT'; sub.innerText = 'Masukkan 4 digit PIN Anda';
+          forgotBtn.style.display = 'block';
+      }
 
-  window.pressPin = function(val) {
-     if(val === 'del') { window.pinCode = window.pinCode.slice(0, -1); }
-     else { if(window.pinCode.length < 4) window.pinCode += val; }
-     
-     const dots = document.querySelectorAll('.pin-dot');
-     dots.forEach((d, i) => { d.className = 'pin-dot'; if(i < window.pinCode.length) d.classList.add('filled'); });
-     
-     if(window.pinCode.length === 4) setTimeout(processPinCheck, 100);
-  };
+      window.pressPin = function(val) {
+         if(val === 'del') { window.pinCode = window.pinCode.slice(0, -1); }
+         else { if(window.pinCode.length < 4) window.pinCode += val; }
+         
+         const dots = document.querySelectorAll('.pin-dot');
+         dots.forEach((d, i) => { d.className = 'pin-dot'; if(i < window.pinCode.length) d.classList.add('filled'); });
+         
+         if(window.pinCode.length === 4) setTimeout(processPinCheck, 100);
+      };
 
-  // Fungsi Enkripsi Kuat & Tahan Banting
-  async function hashPin(pin) {
-     try {
-         // Cek apakah browser mendukung fitur crypto (https:// / localhost)
-         if (window.crypto && window.crypto.subtle) {
-             const msgUint8 = new TextEncoder().encode(pin);
-             const hashBuffer = await window.crypto.subtle.digest('SHA-256', msgUint8);
-             const hashArray = Array.from(new Uint8Array(hashBuffer));
-             return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-         } else {
-             // Fallback murni jika dibuka di server non-https (misal custom IP / file://)
-             return btoa(pin + "_RHN_BACKUP_HASH");
+      async function hashPin(pin) {
+         try {
+             if (window.crypto && window.crypto.subtle) {
+                 const msgUint8 = new TextEncoder().encode(pin);
+                 const hashBuffer = await window.crypto.subtle.digest('SHA-256', msgUint8);
+                 const hashArray = Array.from(new Uint8Array(hashBuffer));
+                 return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+             } else { return btoa(pin + "_RHN_BACKUP_HASH"); }
+         } catch(err) { return btoa(pin + "_RHN_BACKUP_HASH"); }
+      }
+
+      async function processPinCheck() {
+         if(window.pinMode === 'setup') {
+            window.tempPin = window.pinCode; 
+            window.pinCode = ''; resetDots();
+            window.pinMode = 'confirm'; 
+            title.innerText = 'KONFIRMASI PIN'; sub.innerText = 'Masukkan kembali PIN yang sama';
+         } else if (window.pinMode === 'confirm') {
+            if(window.pinCode === window.tempPin) {
+               window.savedPin = await hashPin(window.pinCode);
+               try { localStorage.setItem('rhn_vault_pin', window.savedPin); } catch(e){}
+               window.pinMode = 'verify';
+               unlockVaultSuccess();
+               if(window.Swal) Swal.fire({icon:'success', title:'PIN Tersimpan!', toast:true, position:'top-end', showConfirmButton:false, timer:2000, background:'var(--bg2)', color:'var(--text)'});
+            } else {
+               triggerPinError('PIN TIDAK COCOK');
+               setTimeout(() => { 
+                   window.pinMode = 'setup'; title.innerText = 'BUAT PIN BARU'; sub.innerText = 'Amankan akses aplikasi keuangan Anda';
+                   window.pinCode = ''; resetDots(); 
+               }, 1000);
+            }
+         } else if (window.pinMode === 'verify') {
+            const attempt = await hashPin(window.pinCode);
+            if(attempt === window.savedPin) { unlockVaultSuccess(); } 
+            else { triggerPinError('PIN SALAH!'); }
          }
-     } catch(err) {
-         return btoa(pin + "_RHN_BACKUP_HASH");
-     }
-  }
+      }
 
-  async function processPinCheck() {
-     const title = document.getElementById('pin-title-text');
-     const sub = document.getElementById('pin-sub-text');
-     
-     if(window.pinMode === 'setup') {
-        window.tempPin = window.pinCode; 
-        window.pinCode = ''; resetDots();
-        window.pinMode = 'confirm'; 
-        title.innerText = 'KONFIRMASI PIN'; sub.innerText = 'Masukkan kembali PIN yang sama';
-     } else if (window.pinMode === 'confirm') {
-        if(window.pinCode === window.tempPin) {
-           window.savedPin = await hashPin(window.pinCode);
-           try { localStorage.setItem('rhn_vault_pin', window.savedPin); } catch(e){}
-           window.pinMode = 'verify';
-           unlockVaultSuccess();
-           if(window.Swal) Swal.fire({icon:'success', title:'PIN Tersimpan!', toast:true, position:'top-end', showConfirmButton:false, timer:2000, background:'var(--bg2)', color:'var(--text)'});
-        } else {
-           triggerPinError('PIN TIDAK COCOK');
-           setTimeout(() => { window.pinMode = 'setup'; initPinLockUI(); window.pinCode = ''; resetDots(); }, 1000);
-        }
-     } else if (window.pinMode === 'verify') {
-        const attempt = await hashPin(window.pinCode);
-        if(attempt === window.savedPin) {
-           unlockVaultSuccess();
-        } else {
-           triggerPinError('PIN SALAH!');
-        }
-     }
-  }
+      function resetDots() { document.querySelectorAll('.pin-dot').forEach(d => d.className = 'pin-dot'); }
 
-  function resetDots() {
-     document.querySelectorAll('.pin-dot').forEach(d => d.className = 'pin-dot');
-  }
+      function triggerPinError(msg) {
+         const dotsContainer = document.getElementById('pin-dots');
+         dotsContainer.classList.add('shake-pin');
+         document.querySelectorAll('.pin-dot').forEach(d => d.classList.add('error'));
+         sub.innerText = msg; sub.style.color = 'var(--red2)';
+         if(navigator.vibrate) navigator.vibrate([50, 100, 50]); 
+         setTimeout(() => {
+            dotsContainer.classList.remove('shake-pin');
+            window.pinCode = ''; resetDots();
+            sub.innerText = window.pinMode === 'verify' ? 'Masukkan 4 digit PIN Anda' : 'Silakan coba lagi';
+            sub.style.color = 'var(--text3)';
+         }, 800);
+      }
 
-  function triggerPinError(msg) {
-     const dotsContainer = document.getElementById('pin-dots');
-     const sub = document.getElementById('pin-sub-text');
-     dotsContainer.classList.add('shake-pin');
-     document.querySelectorAll('.pin-dot').forEach(d => d.classList.add('error'));
-     sub.innerText = msg; sub.style.color = 'var(--red2)';
-     if(navigator.vibrate) navigator.vibrate([50, 100, 50]); 
-     setTimeout(() => {
-        dotsContainer.classList.remove('shake-pin');
-        window.pinCode = ''; resetDots();
-        sub.innerText = window.pinMode === 'verify' ? 'Masukkan 4 digit PIN Anda' : 'Silakan coba lagi';
-        sub.style.color = 'var(--text3)';
-     }, 800);
-  }
+      function unlockVaultSuccess() {
+         document.body.classList.remove('idle-mode');
+         document.documentElement.style.overflow = 'auto'; // Kembalikan fungsi scroll
+         const lockUI = document.getElementById('rhn-pin-lock');
+         lockUI.style.transition = 'opacity 0.4s ease';
+         lockUI.style.opacity = '0';
+         setTimeout(() => lockUI.style.display = 'none', 400);
+         window.pinCode = ''; resetDots();
+      }
 
-  function unlockVaultSuccess() {
-     document.body.classList.remove('idle-mode');
-     const lockUI = document.getElementById('rhn-pin-lock');
-     lockUI.style.transition = 'opacity 0.4s ease';
-     lockUI.style.opacity = '0';
-     setTimeout(() => lockUI.style.display = 'none', 400);
-     window.pinCode = ''; resetDots();
-  }
+      forgotBtn.onclick = function() {
+         document.getElementById('pin-dots').style.display = 'none';
+         document.getElementById('pin-pad').style.display = 'none';
+         this.style.display = 'none';
+         document.getElementById('reset-pin-container').style.display = 'flex';
+         title.innerText = 'RESET PIN VAULT';
+         sub.innerText = 'Masukkan Email & Sandi akun aplikasi Anda';
+      };
 
-  // FUNGSI LUPA PIN
-  document.getElementById('forgot-pin-btn').onclick = function() {
-     document.getElementById('pin-dots').style.display = 'none';
-     document.getElementById('pin-pad').style.display = 'none';
-     this.style.display = 'none';
-     document.getElementById('reset-pin-container').style.display = 'flex';
-     document.getElementById('pin-title-text').innerText = 'RESET PIN VAULT';
-     document.getElementById('pin-sub-text').innerText = 'Masukkan Email & Sandi akun aplikasi Anda';
-  };
-
-  window.cancelPinReset = function() {
-     window.pinMode = 'verify'; initPinLockUI(); window.pinCode = ''; resetDots();
-     document.getElementById('reset-email').value = '';
-     document.getElementById('reset-pass').value = '';
-  };
+      window.cancelPinReset = function() {
+         document.getElementById('pin-dots').style.display = 'flex';
+         document.getElementById('pin-pad').style.display = 'grid';
+         document.getElementById('reset-pin-container').style.display = 'none';
+         window.pinMode = 'verify'; window.pinCode = ''; resetDots();
+         title.innerText = 'KUNCI VAULT'; sub.innerText = 'Masukkan 4 digit PIN Anda'; forgotBtn.style.display = 'block';
+         document.getElementById('reset-email').value = ''; document.getElementById('reset-pass').value = '';
+      };
+  })();
 </script>
 
-<!-- BANNER OFFLINE TAMBAHAN -->
+<!-- ==========================================================================
+     2. STRUKTUR APLIKASI UTAMA (TIDAK BISA DIAKSES SEBELUM PIN BENAR)
+     ========================================================================== -->
+
 <div id="offline-banner" style="display:none; background:#F87171; color:#000; text-align:center; padding:10px; font-size:12px; font-weight:800; position:fixed; top:0; left:0; width:100%; z-index:100000; text-transform:uppercase; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
   ⚠️ Koneksi Terputus - Mode Offline Aktif
 </div>
@@ -423,9 +395,6 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
   <button class="nav-ext-btn" onclick="window.location.href='data.html'">📈 DATA PRIBADI ↗</button>
 </div>
 
-<!-- ==========================================================================
-     KONTEN APLIKASI ASLI KILIKMU 
-     ========================================================================== -->
 <div id="auth-screen">
   <div class="auth-box">
     <img src="RHN LOGO.jpg" alt="RHN Capital Logo">
@@ -443,7 +412,7 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
   </div>
 </div>
 
-<div id="app-screen">
+<div id="app-screen" style="display:none;">
 <div class="header-area">
   <div class="logo-row">
     <div class="logo-img"><img src="RHN LOGO.jpg" alt="Logo"></div>
@@ -454,22 +423,14 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
   </div>
   
   <div class="status-row">
-    <div class="status-pill">
-      <span class="usd-val" id="usd-rate-val">...</span>
-    </div>
-    <div class="status-pill">
-      <span class="sync-dot" id="sync-dot" style="background:var(--text3);"></span>
-      <span class="sync-text" id="sync-label">MENGHUBUNGKAN...</span>
-    </div>
+    <div class="status-pill"><span class="usd-val" id="usd-rate-val">...</span></div>
+    <div class="status-pill"><span class="sync-dot" id="sync-dot" style="background:var(--text3);"></span><span class="sync-text" id="sync-label">MENGHUBUNGKAN...</span></div>
   </div>
 
   <div class="user-row">
     <button class="theme-btn" onclick="toggleTheme()" id="theme-toggle">🌙</button>
     <div class="user-pill">
-      <div class="user-pill-left">
-        <div class="u-avatar" id="user-avatar">?</div>
-        <div class="u-name" id="user-name">Memuat...</div>
-      </div>
+      <div class="user-pill-left"><div class="u-avatar" id="user-avatar">?</div><div class="u-name" id="user-name">Memuat...</div></div>
       <button class="logout-btn" onclick="doLogout()">KELUAR</button>
     </div>
   </div>
@@ -579,7 +540,7 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
 </div></div>
 
 <!-- ==========================================================================
-     SCRIPTS & FIREBASE
+     LOGIKA FIREBASE & APLIKASI
      ========================================================================== -->
 <script type="module">
 window.toggleTheme = function() {
@@ -587,7 +548,7 @@ window.toggleTheme = function() {
   const isLight = document.body.classList.contains('light-mode');
   document.getElementById('theme-toggle').textContent = isLight ? '☀️' : '🌙';
   localStorage.setItem('theme', isLight ? 'light' : 'dark');
-  refreshAll(); 
+  if(typeof refreshAll === 'function') refreshAll(); 
 };
 if(localStorage.getItem('theme') === 'light') { document.body.classList.add('light-mode'); document.getElementById('theme-toggle').textContent = '☀️'; }
 
@@ -600,7 +561,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app); 
 const db = initializeFirestore(app, { localCache: persistentLocalCache() });
 
-// === Modul Lupa PIN Terintegrasi ===
+// === FUNGSI RESET PIN FIREBASE ===
 window.submitPinReset = async function() {
   const email = document.getElementById('reset-email').value;
   const pass = document.getElementById('reset-pass').value;
@@ -613,14 +574,13 @@ window.submitPinReset = async function() {
       await signInWithEmailAndPassword(auth, email, pass);
       localStorage.removeItem('rhn_vault_pin');
       if(window.Swal) {
-          Swal.fire({ icon: 'success', title: 'PIN Berhasil Dihapus!', text: 'Aplikasi dimuat ulang.', background: 'var(--bg2)', color: 'var(--text)', confirmButtonColor: 'var(--gold)' }).then(() => location.reload());
+          Swal.fire({ icon: 'success', title: 'PIN Dihapus!', text: 'Aplikasi dimuat ulang.', background: 'var(--bg2)', color: 'var(--text)', confirmButtonColor: 'var(--gold)' }).then(() => location.reload());
       } else { location.reload(); }
   } catch(error) {
       if(window.Swal) { Swal.fire({ icon: 'error', title: 'Akses Ditolak', text: 'Email atau Sandi salah!', background: 'var(--bg2)', color: 'var(--text)', confirmButtonColor: 'var(--red2)' }); }
       btn.textContent = 'VERIFIKASI & RESET PIN';
   }
 };
-// ====================================
 
 const CATS = { income: ['Pemberian','Investasi','Ongkos Harian','Bonus','Dividen','Profit','Transfer Masuk','Lainnya'], expense: ['Jajan','Pembelian Aset(Investasi)','Infak','Kas','Utilitas','Transportasi','Makan','Minum','Loss','Lainnya'] };
 let txs=[], curType='income', activePage='dashboard', charts={}, currentUSDRate = 16000, currentUser=null, unsubListener=null, authMode='login';
@@ -674,8 +634,7 @@ window.switchPage=function(p){ document.querySelectorAll('.page').forEach(el=>el
 function calcSum(arr){ const inc=arr.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0), exp=arr.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0); return{inc,exp,bal:inc-exp,count:arr.length}; }
 
 function renderSumGrid(el,arr){ 
-  const s=calcSum(arr); 
-  const pct=s.inc>0?Math.min(100,Math.round((s.exp/s.inc)*100)):0; 
+  const s=calcSum(arr); const pct=s.inc>0?Math.min(100,Math.round((s.exp/s.inc)*100)):0; 
   el.innerHTML=`<div class="m-card inc"><div class="m-label">TOTAL PEMASUKAN</div><div class="m-val">${fmt(s.inc)}</div><div class="usd-pill">${getUSD(s.inc)}</div><div class="m-sub">${s.inc>0?s.count+' transaksi':'-'}</div><div class="m-bar"><div class="m-bar-fill" style="width:100%"></div></div></div><div class="m-card exp"><div class="m-label">TOTAL PENGELUARAN</div><div class="m-val">${fmt(s.exp)}</div><div class="usd-pill">${getUSD(s.exp)}</div><div class="m-sub">${pct}% dari pemasukan</div><div class="m-bar"><div class="m-bar-fill" style="width:${pct}%"></div></div></div><div class="m-card bal"><div class="m-label">SALDO BERSIH</div><div class="m-val">${fmt(s.bal)}</div><div class="usd-pill">${getUSD(s.bal)}</div><div class="m-sub">${s.bal>=0?'Surplus':'Defisit'}</div><div class="m-bar"><div class="m-bar-fill" style="width:${s.inc>0?Math.max(0,Math.min(100,Math.round((s.bal/s.inc)*100))):0}%"></div></div></div>`; 
 }
 
@@ -950,7 +909,18 @@ window.addEventListener('DOMContentLoaded', (event) => {
   const resetIdle = () => {
       document.body.classList.remove('idle-mode');
       clearTimeout(idleTimeout);
-      idleTimeout = setTimeout(() => { document.body.classList.add('idle-mode'); }, 120000); 
+      idleTimeout = setTimeout(() => { 
+         document.body.classList.add('idle-mode');
+         // Auto-lock PIN jika sudah 2 menit idle dan PIN sudah tersetting
+         try { if(localStorage.getItem('rhn_vault_pin')) {
+             document.getElementById('rhn-pin-lock').style.display = 'flex';
+             document.getElementById('rhn-pin-lock').style.opacity = '1';
+             document.documentElement.style.overflow = 'hidden';
+             window.pinMode = 'verify';
+             window.pinCode = ''; 
+             document.querySelectorAll('.pin-dot').forEach(d => d.className = 'pin-dot');
+         }} catch(e){}
+      }, 120000); 
   };
   ['mousemove','mousedown','keypress','touchstart','scroll'].forEach(evt => window.addEventListener(evt, resetIdle, true));
   resetIdle(); 
