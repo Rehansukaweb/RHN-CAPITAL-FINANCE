@@ -1,10 +1,22 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<!-- ==========================================================================
+     BOM PENGHANCUR CACHE (MEMAKSA GITHUB & BROWSER MENGAMBIL VERSI TERBARU)
+     ========================================================================== -->
+<script>
+  (function(){
+    var latestVersion = "rhn-update-final-mutlak-1";
+    if (localStorage.getItem("rhn_force_update") !== latestVersion) {
+      localStorage.setItem("rhn_force_update", latestVersion);
+      window.location.replace(window.location.origin + window.location.pathname + "?nocache=" + new Date().getTime());
+    }
+  })();
+</script>
+
 <meta charset="UTF-8">
 <meta name="color-scheme" content="dark light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<!-- Anti Cache -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -51,16 +63,13 @@ body {
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* KUNCI UI (ANTI-GERAK) */
 html { overflow-y: scroll !important; } 
 .page { animation: none !important; transition: none !important; } 
 .m-bar-fill { transition: none !important; } 
 
-/* BLUR SAAT LOCK / PRIVACY MODE */
 body.idle-mode > *:not(#rhn-pin-lock) { filter: brightness(0.4) blur(4px); transition: 0.5s ease; pointer-events: none; }
 body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy .usd-pill, body.global-privacy .ri-usd { filter: blur(6px); transition: 0.3s; user-select: none; }
 
-/* HEADER & NAVBAR */
 .top-title { color: var(--blue-title); font-size: 22px; font-weight: 800; padding: 16px 24px 8px; letter-spacing: -0.5px; }
 .top-ext-links { display: flex; gap: 16px; padding: 0 24px 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; align-items: center; justify-content: flex-start; }
 .nav-ext-btn { background: transparent; border: none; color: var(--gold); font-weight: 700; font-size: 11px; font-family: 'Outfit', sans-serif; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -95,7 +104,6 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
 .main { padding: 16px 24px 80px; max-width: 1400px; margin: 0 auto; }
 .page { display: none; } .page.active { display: block; }
 
-/* KARTU METRIK & FORM */
 .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
 .m-card { background: var(--card); border-radius: var(--radius); padding: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; }
 .m-label { font-size: 9px; font-weight: 800; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; letter-spacing: 0.5px; }
@@ -126,7 +134,6 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
 .form-row textarea { height: 100px; resize: none; }
 .submit-btn { width: 100%; padding: 16px; background: var(--text); color: var(--bg); border: none; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-top: 8px; }
 
-/* DAFTAR TRANSAKSI */
 .list-wrap { padding: 8px 0; }
 .recent-item { padding: 16px; margin-bottom: 12px; border-radius: 16px; background: var(--bg2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 .ri-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; background: var(--bg3); margin-right: 12px; flex-shrink: 0; }
@@ -144,7 +151,6 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
 .action-btns { display: flex; gap: 8px; margin-top: 4px; align-items: center; justify-content: flex-end; }
 .edit-btn-recent, .del-btn-recent { background: transparent; border: none; font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 4px; color: var(--red2); }
 
-/* EKSTRA UI */
 .export-btn { background: var(--text); color: var(--bg); padding: 16px 24px; border: none; border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; flex-shrink: 0; white-space: nowrap; }
 .chart-wrap { margin-bottom: 24px; }
 .chart-legend { display: flex; gap: 16px; margin-bottom: 16px; justify-content: center; }
@@ -161,11 +167,9 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
 .trading-badge { background: rgba(245, 158, 11, 0.2); color: #FBBF24; font-size: 8px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 800; border: 1px solid rgba(245, 158, 11, 0.5); }
 .big-money-glow { text-shadow: 0 0 12px rgba(251, 191, 36, 0.8); color: var(--gold) !important; }
 
-/* ERROR SHAKE */
 @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
 .shake-error { animation: shake 0.3s ease-in-out; border-color: var(--red2) !important; box-shadow: 0 0 8px rgba(248,113,113,0.3) !important; }
 
-/* LAYAR AUTH FIREBASE */
 #auth-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; }
 .auth-box { background: var(--card); border-radius: 24px; padding: 40px 24px; width: 90%; max-width: 400px; border: 1px solid var(--border); text-align: center; }
 .auth-box img { width: 64px; border-radius: 16px; margin-bottom: 16px; border: 1px solid var(--border2); }
@@ -177,9 +181,6 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
 .auth-field input { width: 100%; padding: 16px; font-size: 14px; font-weight: 500; font-family: 'Outfit', sans-serif; border: 1px solid var(--border); border-radius: 12px; background: var(--bg2); color: var(--text); margin-bottom: 12px; outline: none; }
 .auth-btn { width: 100%; padding: 16px; background: var(--text); color: var(--bg); border: none; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-top: 8px; }
 
-/* ==========================================================================
-   MOBILE & DESKTOP RESPONSIVE
-   ========================================================================== */
 @media (max-width: 768px) {
   .top-ext-links { justify-content: center; padding: 0 16px 16px; }
   .header-area { padding: 16px; }
@@ -214,7 +215,7 @@ body.global-privacy .m-val, body.global-privacy .ri-amount, body.global-privacy 
 }
 
 /* ==========================================================================
-   STYLE PIN (DILETAKKAN DI SINI AGAR TIDAK MENGGANGGU CSS ASLI)
+   STYLE PIN LOCK 
    ========================================================================== */
 .pin-title { color: var(--gold); font-size: 20px; font-weight: 800; margin-bottom: 8px; letter-spacing: 1px; }
 .pin-sub { color: var(--text3); font-size: 12px; margin-bottom: 32px; font-weight: 500; text-align: center; }
