@@ -219,7 +219,7 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
 
 /* CSS EDIT & DOWNLOAD CSV */
 .action-btns { display: flex; gap: 8px; margin-top: 4px; align-items: center; justify-content: flex-end; }
-.edit-btn-recent { background: transparent; border: none; color: var(--red2); font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 4px; }
+.edit-btn-recent { background: transparent; border: none; color: var(--text3); font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 4px; }
 .export-btn { background: var(--text); color: var(--bg); padding: 16px 24px; border: none; border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; flex-shrink: 0; white-space: nowrap; }
 
 /* CHART & FILTERS BAR */
@@ -462,7 +462,7 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
       </div>
       <div class="type-toggle" style="flex-wrap: wrap; gap: 8px;">
         <button class="t-btn income active" id="btn-inc" onclick="selType('income')" style="flex-basis: 31%;">+ Pemasukan</button>
-        <button class="t-btn expense" id="btn-exp" onclick="selType('expense')" style="flex-basis: 31%;">- Pengeluaran</button>
+        <button class="t-btn expense" id="btn-exp" onclick="selType('expense')" style="flex-basis: 31%;"> - Pengeluaran</button>
         <button class="t-btn transfer" id="btn-transfer" onclick="selType('transfer')" style="flex-basis: 31%;">🔄 Transfer</button>
         <button class="t-btn debt" id="btn-debt" onclick="selType('debt')" style="flex-basis: 48%;">💳 Hutang</button>
         <button class="t-btn recv" id="btn-recv" onclick="selType('recv')" style="flex-basis: 48%;">💸 Piutang</button>
@@ -545,7 +545,7 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
     <div class="card-head"><div class="card-title">Laporan Bulanan</div></div>
     <div class="chart-wrap">
       <div class="chart-legend"><div class="leg-item"><div class="leg-dot" style="background:var(--green2)"></div>Pemasukan</div><div class="leg-item"><div class="leg-dot" style="background:var(--red2)"></div>Pengeluaran</div></div>
-      <div class="chart-scroll-x" style="height:200px"><div class="chart-inner-month"><canvas id="chartMonth"></canvas></div></div>
+      <div style="height:200px"><canvas id="chartMonth"></canvas></div>
     </div>
     <div class="list-wrap" id="month-body"></div>
   </div>
@@ -805,6 +805,7 @@ window.addTx=async function(){
   try{ 
     let payload = {type:curType,amount:amt,category:cat,wallet:wallet,note:note||'-',date:dt||nowISO()};
     if(curType === 'transfer') payload.walletTo = walletTo;
+    if(curType === 'debt' || curType === 'recv') payload.isPaid = false;
 
     if(editId){ 
       await updateDoc(doc(db,'users',currentUser.uid,'transactions',editId), payload); 
@@ -900,10 +901,21 @@ window.selType=function(t){
 
 window.switchPage=function(p){ document.querySelectorAll('.page').forEach(el=>el.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(el=>el.classList.remove('active')); document.getElementById('page-'+p).classList.add('active'); const pages=['dashboard','harian','mingguan','bulanan','tahunan','riwayat']; document.querySelectorAll('.nav-btn')[pages.indexOf(p)].classList.add('active'); activePage=p;refreshAll(); };
 
-function calcSum(arr){ 
-  const inc=arr.filter(t=>t.type==='income'||t.type==='recv').reduce((s,t)=>s+t.amount,0);
-  const exp=arr.filter(t=>t.type==='expense'||t.type==='debt').reduce((s,t)=>s+t.amount,0);
-  return{inc,exp,bal:inc-exp,count:arr.length}; 
+function calcSum(arr){
+  let inc = 0, exp = 0;
+  arr.forEach(t => {
+      if (t.type === 'income') inc += t.amount;
+      else if (t.type === 'expense') exp += t.amount;
+      else if (t.type === 'debt') {
+          if (!t.isPaid) inc += t.amount; // Uang masuk pas ngutang
+          else { inc += t.amount; exp += t.amount; } // Kalau udah dibayar, balance seimbang
+      }
+      else if (t.type === 'recv') {
+          if (!t.isPaid) exp += t.amount; // Uang keluar pas minjemin
+          else { exp += t.amount; inc += t.amount; } // Kalau udah dibayar, uang kembali masuk
+      }
+  });
+  return {inc, exp, bal: inc - exp, count: arr.length};
 }
 
 function renderSumGrid(el,arr){ 
@@ -938,10 +950,43 @@ const escapeHTML = (str) => str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<':
 const createTxCard = (t) => {
   let icon = t.type==='income'?'↑':t.type==='expense'?'↓':t.type==='debt'?'💳':t.type==='transfer'?'🔄':'💸';
   let sign = (t.type==='income' || t.type==='recv') ? '+' : (t.type==='transfer' ? '' : '-');
+  if (t.type === 'debt') sign = '-';
+  if (t.type === 'recv') sign = '-';
+
   let walletBadge = t.wallet ? `<span class="wallet-badge">${t.wallet}</span>` : '';
   if(t.type === 'transfer') walletBadge = `<span class="wallet-badge">${t.wallet} ➔ ${t.walletTo}</span>`;
-  
-  return `<div class="recent-item" data-id="${t.id}"><div class="ri-left"><div class="ri-icon ${t.type}">${icon}</div><div><div class="ri-note">${escapeHTML(t.note)} <span class="cat-badge">${t.category}</span>${walletBadge}</div><div class="ri-meta">${fmtDate(t.date)} · ${fmtTime(t.date)}</div></div></div><div class="ri-right-wrap"><div class="ri-amounts-col"><div class="ri-amount ${t.type}">${sign}${fmt(t.amount)}</div><div class="ri-usd">${getUSD(t.amount)}</div></div><div class="action-btns"><button class="edit-btn-recent" onclick="editTx('${t.id}')">EDIT</button><button class="del-btn-recent" onclick="delTx('${t.id}')">HAPUS</button></div></div></div>`;
+
+  let actionBtn = '';
+  if (t.type === 'debt' && !t.isPaid) {
+      actionBtn = `<button class="edit-btn-recent" style="color:var(--gold); border: 1px solid var(--gold); padding: 4px 8px; border-radius: 6px; background: rgba(251, 191, 36, 0.1);" onclick="payDebt('${t.id}')">BAYAR</button>`;
+  } else if (t.type === 'debt' && t.isPaid) {
+      actionBtn = `<span style="color:var(--green2); font-size:10px; font-weight:800; padding: 4px 0;">LUNAS ✅</span>`;
+  } else if (t.type === 'recv' && !t.isPaid) {
+      actionBtn = `<button class="edit-btn-recent" style="color:var(--blue); border: 1px solid var(--blue); padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1);" onclick="payRecv('${t.id}')">SUDAH BAYAR</button>`;
+  } else if (t.type === 'recv' && t.isPaid) {
+      actionBtn = `<span style="color:var(--green2); font-size:10px; font-weight:800; padding: 4px 0;">LUNAS ✅</span>`;
+  }
+
+  return `<div class="recent-item" data-id="${t.id}">
+    <div class="ri-left">
+      <div class="ri-icon ${t.type}">${icon}</div>
+      <div>
+        <div class="ri-note">${escapeHTML(t.note)} <span class="cat-badge">${t.category}</span>${walletBadge}</div>
+        <div class="ri-meta">${fmtDate(t.date)} · ${fmtTime(t.date)}</div>
+      </div>
+    </div>
+    <div class="ri-right-wrap">
+      <div class="ri-amounts-col">
+        <div class="ri-amount ${t.type}">${sign}${fmt(t.amount)}</div>
+        <div class="ri-usd">${getUSD(t.amount)}</div>
+      </div>
+      <div class="action-btns">
+        ${actionBtn}
+        <button class="edit-btn-recent" onclick="editTx('${t.id}')">EDIT</button>
+        <button class="del-btn-recent" onclick="delTx('${t.id}')">HAPUS</button>
+      </div>
+    </div>
+  </div>`;
 };
 
 function renderList(container, arr) { container.innerHTML = arr.length ? arr.map(t => createTxCard(t)).join('') : '<div style="padding:40px;text-align:center;color:#888;font-size:12px;">Kosong</div>'; }
@@ -953,6 +998,9 @@ function renderMetrics(){
 
 function renderWalletBalances() {
   const wallets = { 'Kas Tunai': 0, 'DANA': 0, 'GoPay': 0, 'ShopeePay': 0, 'MT5 Trading': 0, 'Rekening Bank': 0 };
+  let hutangBal = 0;
+  let piutangBal = 0;
+
   txs.forEach(t => {
     let w = t.wallet || 'Kas Tunai';
     let wTo = t.walletTo;
@@ -960,23 +1008,45 @@ function renderWalletBalances() {
     if (!wallets.hasOwnProperty(w)) wallets[w] = 0;
     if (wTo && !wallets.hasOwnProperty(wTo)) wallets[wTo] = 0;
     
-    if (t.type === 'income' || t.type === 'recv') wallets[w] += t.amount;
-    else if (t.type === 'expense' || t.type === 'debt') wallets[w] -= t.amount;
+    if (t.type === 'income') wallets[w] += t.amount;
+    else if (t.type === 'expense') wallets[w] -= t.amount;
     else if (t.type === 'transfer') {
         wallets[w] -= t.amount;
         if (wTo) wallets[wTo] += t.amount;
+    }
+    else if (t.type === 'debt') {
+        wallets[w] += t.amount; // Uang masuk saat ngutang
+        if (!t.isPaid) {
+            hutangBal -= t.amount; // Catatan minus di dompet hutang
+        } else {
+            wallets[w] -= t.amount; // Uang keluar dari dompet saat pelunasan
+        }
+    }
+    else if (t.type === 'recv') {
+        wallets[w] -= t.amount; // Uang keluar saat minjemin teman
+        if (!t.isPaid) {
+            piutangBal -= t.amount; // Catatan minus di dompet piutang
+        } else {
+            wallets[w] += t.amount; // Uang kembali ke dompet saat dibayar
+        }
     }
   });
   
   const container = document.getElementById('wallet-balances');
   if (!container) return;
   
-  container.innerHTML = Object.entries(wallets).map(([name, bal]) => 
-    `<div class="w-card"><div class="w-label">${name}</div><div class="w-val ${bal < 0 ? 'min' : ''}">${fmt(bal)}</div></div>`
+  let html = Object.entries(wallets).map(([name, bal]) => 
+    `<div class="w-card"><div class="w-label">${name}</div><div class="w-val ${bal < 0 ? 'min' : ''}">${fmt(bal)}</div><div style="font-size: 8px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-top: 2px;">${getUSD(bal)}</div></div>`
   ).join('');
+
+  // Dompet virtual untuk Hutang & Piutang agar selalu tercatat minus jika belum dibayar
+  html += `<div class="w-card" style="border-color:rgba(251, 191, 36, 0.5); background:rgba(251, 191, 36, 0.05);"><div class="w-label" style="color:var(--gold);">TOTAL HUTANG</div><div class="w-val min">${fmt(hutangBal)}</div><div style="font-size: 8px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-top: 2px;">${getUSD(hutangBal)}</div></div>`;
+  html += `<div class="w-card" style="border-color:rgba(59, 130, 246, 0.5); background:rgba(59, 130, 246, 0.05);"><div class="w-label" style="color:var(--blue);">TOTAL PIUTANG</div><div class="w-val min">${fmt(piutangBal)}</div><div style="font-size: 8px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-top: 2px;">${getUSD(piutangBal)}</div></div>`;
+
+  container.innerHTML = html;
 }
 
-function mkChart(id,labels,incData,expData){ if(charts[id]) charts[id].destroy(); const c=document.getElementById(id); if(!c)return; const isLight = document.body.classList.contains('light-mode'); charts[id]=new Chart(c,{type:'bar',data:{labels,datasets:[{label:'Pemasukan',data:incData,backgroundColor:isLight?'#10B981':'#10B981',borderRadius:4},{label:'Pengeluaran',data:expData,backgroundColor:isLight?'#F87171':'#F87171',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:isLight?'#888':'#888',font:{size:10,family:"'Outfit'"},autoSkip:false, maxRotation:0},grid:{display:false},border:{display:false}},y:{ticks:{color:isLight?'#888':'#888',font:{size:10},callback:v=>Intl.NumberFormat('id-ID',{notation:'compact'}).format(v)},grid:{color:isLight?'#DEE2E6':'#222228',drawBorder:false},border:{display:false}}}}}); }
+function mkChart(id,labels,incData,expData){ if(charts[id]) charts[id].destroy(); const c=document.getElementById(id); if(!c)return; const isLight = document.body.classList.contains('light-mode'); charts[id]=new Chart(c,{type:'bar',data:{labels,datasets:[{label:'Pemasukan',data:incData,backgroundColor:isLight?'#10B981':'#10B981',borderRadius:4},{label:'Pengeluaran',data:expData,backgroundColor:isLight?'#F87171':'#F87171',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:isLight?'#888':'#888',font:{size:10,family:"'Outfit'"}},grid:{display:false},border:{display:false}},y:{ticks:{color:isLight?'#888':'#888',font:{size:10},callback:v=>Intl.NumberFormat('id-ID',{notation:'compact'}).format(v)},grid:{color:isLight?'#DEE2E6':'#222228',drawBorder:false},border:{display:false}}}}}); }
 
 window.renderDaily=function(){ const pick=document.getElementById('pick-daily').value, target=pick?new Date(pick).toDateString():new Date().toDateString(), arr=txs.filter(t=>new Date(t.date).toDateString()===target).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('daily-sum'),arr); renderList(document.getElementById('daily-body'), arr); };
 function wkKey(d){
@@ -989,13 +1059,13 @@ function wkKey(d){
 }
 function renderWeekly(){ const weeks={};txs.forEach(t=>{const k=wkKey(t.date);(weeks[k]=weeks[k]||[]).push(t)}); const keys=Object.keys(weeks).sort().reverse().slice(0,8); document.getElementById('week-sel').innerHTML=keys.map((k,i)=>{const m=new Date(k),s=new Date(k);s.setDate(s.getDate()+6);return`<button class="p-btn${i===0?' active':''}" onclick="selWeek('${k}',this)">${m.toLocaleDateString('id-ID',{day:'2-digit',month:'short'})} – ${s.toLocaleDateString('id-ID',{day:'2-digit',month:'short'})}</button>`}).join(''); if(keys.length)showWeek(keys[0]); }
 window.selWeek=function(k,btn){document.querySelectorAll('#week-sel .p-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');showWeek(k)};
-function showWeek(k){ const arr=txs.filter(t=>wkKey(t.date)===k).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('week-sum'),arr); renderList(document.getElementById('week-body'),arr); const days=['Sen','Sel','Rab','Kam','Jum','Sab','Min'],inc=new Array(7).fill(0),exp=new Array(7).fill(0); arr.forEach(t=>{const idx=(new Date(t.date).getDay()+6)%7;if(t.type==='income')inc[idx]+=t.amount;else exp[idx]+=t.amount}); mkChart('chartWeek',days,inc,exp); }
+function showWeek(k){ const arr=txs.filter(t=>wkKey(t.date)===k).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('week-sum'),arr); renderList(document.getElementById('week-body'),arr); const days=['Sen','Sel','Rab','Kam','Jum','Sab','Min'],inc=new Array(7).fill(0),exp=new Array(7).fill(0); arr.forEach(t=>{const idx=(new Date(t.date).getDay()+6)%7;if(t.type==='income')inc[idx]+=t.amount;else if(t.type==='expense')exp[idx]+=t.amount;else if(t.type==='debt'){inc[idx]+=t.amount;if(t.isPaid)exp[idx]+=t.amount;}else if(t.type==='recv'){exp[idx]+=t.amount;if(t.isPaid)inc[idx]+=t.amount;}}); mkChart('chartWeek',days,inc,exp); }
 function renderMonthly(){ const months={};txs.forEach(t=>{const k=t.date.slice(0,7);(months[k]=months[k]||[]).push(t)}); const keys=Object.keys(months).sort().reverse().slice(0,12); document.getElementById('month-sel').innerHTML=keys.map((k,i)=>{const[y,m]=k.split('-');const d=new Date(y,m-1);return`<button class="p-btn${i===0?' active':''}" onclick="selMonth('${k}',this)">${d.toLocaleDateString('id-ID',{month:'long',year:'numeric'})}</button>`}).join(''); if(keys.length)showMonth(keys[0]); }
 window.selMonth=function(k,btn){document.querySelectorAll('#month-sel .p-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');showMonth(k)};
-function showMonth(k){ const arr=txs.filter(t=>t.date.slice(0,7)===k).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('month-sum'),arr); renderList(document.getElementById('month-body'),arr); const[y,m]=k.split('-');const dim=new Date(y,m,0).getDate(), labels=[],inc=new Array(dim).fill(0),exp=new Array(dim).fill(0); for(let i=1;i<=dim;i++)labels.push(i+''); arr.forEach(t=>{const d=new Date(t.date).getDate()-1;if(t.type==='income')inc[d]+=t.amount;else exp[d]+=t.amount}); mkChart('chartMonth',labels,inc,exp); }
+function showMonth(k){ const arr=txs.filter(t=>t.date.slice(0,7)===k).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('month-sum'),arr); renderList(document.getElementById('month-body'),arr); const[y,m]=k.split('-');const dim=new Date(y,m,0).getDate(), labels=[],inc=new Array(dim).fill(0),exp=new Array(dim).fill(0); for(let i=1;i<=dim;i++)labels.push(i+''); arr.forEach(t=>{const d=new Date(t.date).getDate()-1;if(t.type==='income')inc[d]+=t.amount;else if(t.type==='expense')exp[d]+=t.amount;else if(t.type==='debt'){inc[d]+=t.amount;if(t.isPaid)exp[d]+=t.amount;}else if(t.type==='recv'){exp[d]+=t.amount;if(t.isPaid)inc[d]+=t.amount;}}); mkChart('chartMonth',labels,inc,exp); }
 function renderYearly(){ const years={};txs.forEach(t=>{const k=t.date.slice(0,4);(years[k]=years[k]||[]).push(t)}); const keys=Object.keys(years).sort().reverse(); document.getElementById('year-sel').innerHTML=keys.map((k,i)=>`<button class="p-btn${i===0?' active':''}" onclick="selYear('${k}',this)">${k}</button>`).join(''); if(keys.length)showYear(keys[0]); }
 window.selYear=function(k,btn){document.querySelectorAll('#year-sel .p-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');showYear(k)};
-function showYear(k){ const arr=txs.filter(t=>t.date.startsWith(k)).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('year-sum'),arr); renderList(document.getElementById('year-body'),arr); const MNTHS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'], inc=new Array(12).fill(0),exp=new Array(12).fill(0); arr.forEach(t=>{const m=new Date(t.date).getMonth();if(t.type==='income')inc[m]+=t.amount;else exp[m]+=t.amount}); mkChart('chartYear',MNTHS,inc,exp); }
+function showYear(k){ const arr=txs.filter(t=>t.date.startsWith(k)).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('year-sum'),arr); renderList(document.getElementById('year-body'),arr); const MNTHS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'], inc=new Array(12).fill(0),exp=new Array(12).fill(0); arr.forEach(t=>{const m=new Date(t.date).getMonth();if(t.type==='income')inc[m]+=t.amount;else if(t.type==='expense')exp[m]+=t.amount;else if(t.type==='debt'){inc[m]+=t.amount;if(t.isPaid)exp[m]+=t.amount;}else if(t.type==='recv'){exp[m]+=t.amount;if(t.isPaid)inc[m]+=t.amount;}}); mkChart('chartYear',MNTHS,inc,exp); }
 window.renderAll=function(){ const tf=document.getElementById('flt-type').value, s=(document.getElementById('flt-search').value||'').toLowerCase(); let arr=[...txs]; if(tf)arr=arr.filter(t=>t.type===tf); if(s)arr=arr.filter(t=>t.note.toLowerCase().includes(s)||t.category.toLowerCase().includes(s)); arr.sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('all-sum'),arr); renderList(document.getElementById('all-body'),arr); };
 
 /* DIUBAH MENJADI 6 AKTIFITAS TERAKHIR BIAR SEJAJAR */
@@ -1004,6 +1074,52 @@ function refreshAll(){ renderMetrics(); renderWalletBalances(); renderList(docum
 document.getElementById('pick-daily').value=nowISO().slice(0,10); document.getElementById('f-date').value=nowISO(); selType('income');
 
 window.exportCSV=function(){ if(!txs.length)return Swal.fire('Kosong','Tidak ada data untuk diunduh','info'); let csv="Tanggal,Waktu,Tipe,Kategori,Nominal(Rp),Keterangan\n"; txs.forEach(t=>{ const d=t.date.split('T'); csv+=`${d[0]},${d[1]||'-'},${t.type==='income'?'Pemasukan':'Pengeluaran'},${t.category},${t.amount},"${t.note}"\n`; }); const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download='Laporan_Keuangan_RHN.csv'; link.click(); };
+
+window.payDebt = async function(id) {
+    if(!currentUser) return;
+    Swal.fire({
+        title: 'Bayar Hutang?',
+        text: "Saldo bersih / dompet lo akan dipotong otomatis untuk bayar hutang ini.",
+        icon: 'question',
+        showCancelButton: true,
+        background: 'var(--card)', color: 'var(--text)',
+        confirmButtonColor: 'var(--gold)', cancelButtonColor: 'var(--bg3)',
+        confirmButtonText: 'Ya, Bayar Lunas',
+        position: 'center', backdrop: 'rgba(0,0,0,0.6)'
+    }).then(async (result) => {
+        if(result.isConfirmed) {
+            try {
+                await updateDoc(doc(db,'users',currentUser.uid,'transactions',id), { isPaid: true });
+                Swal.fire({position: 'center', icon: 'success', title: 'Hutang Lunas!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)'});
+            } catch(e) {
+                Swal.fire('Error', e.message, 'error');
+            }
+        }
+    });
+};
+
+window.payRecv = async function(id) {
+    if(!currentUser) return;
+    Swal.fire({
+        title: 'Piutang Dibayar?',
+        text: "Uang kembali utuh, saldo bersih / dompet lo akan otomatis bertambah.",
+        icon: 'question',
+        showCancelButton: true,
+        background: 'var(--card)', color: 'var(--text)',
+        confirmButtonColor: 'var(--blue)', cancelButtonColor: 'var(--bg3)',
+        confirmButtonText: 'Ya, Sudah Dibayar',
+        position: 'center', backdrop: 'rgba(0,0,0,0.6)'
+    }).then(async (result) => {
+        if(result.isConfirmed) {
+            try {
+                await updateDoc(doc(db,'users',currentUser.uid,'transactions',id), { isPaid: true });
+                Swal.fire({position: 'center', icon: 'success', title: 'Piutang Lunas!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)'});
+            } catch(e) {
+                Swal.fire('Error', e.message, 'error');
+            }
+        }
+    });
+};
 
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(e => console.log('SW Error:', e)); }); }
 </script>
@@ -1060,11 +1176,6 @@ if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navi
 
   /* Highlight Transaksi Paus (> Rp 5Juta) */
   .big-money-glow { text-shadow: 0 0 12px rgba(251, 191, 36, 0.8); color: var(--gold) !important; }
-
-  /* Bikin chart bulan bisa di scroll horizontal rapi */
-  .chart-scroll-x { overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
-  .chart-scroll-x::-webkit-scrollbar { display: none; }
-  .chart-inner-month { min-width: 750px; height: 100%; }
 
   /* Scroll to Top Button */
   #scroll-to-top { position: fixed; bottom: 24px; right: 24px; width: 50px; height: 50px; background: var(--blue-title); color: #fff; border: none; border-radius: 50%; font-size: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer; z-index: 999; display: none; align-items: center; justify-content: center; transition: 0.3s; }
