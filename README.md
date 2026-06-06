@@ -545,7 +545,7 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
     <div class="card-head"><div class="card-title">Laporan Bulanan</div></div>
     <div class="chart-wrap">
       <div class="chart-legend"><div class="leg-item"><div class="leg-dot" style="background:var(--green2)"></div>Pemasukan</div><div class="leg-item"><div class="leg-dot" style="background:var(--red2)"></div>Pengeluaran</div></div>
-      <div style="height:200px"><canvas id="chartMonth"></canvas></div>
+      <div class="chart-scroll-x" style="height:200px"><div class="chart-inner-month"><canvas id="chartMonth"></canvas></div></div>
     </div>
     <div class="list-wrap" id="month-body"></div>
   </div>
@@ -976,7 +976,7 @@ function renderWalletBalances() {
   ).join('');
 }
 
-function mkChart(id,labels,incData,expData){ if(charts[id]) charts[id].destroy(); const c=document.getElementById(id); if(!c)return; const isLight = document.body.classList.contains('light-mode'); charts[id]=new Chart(c,{type:'bar',data:{labels,datasets:[{label:'Pemasukan',data:incData,backgroundColor:isLight?'#10B981':'#10B981',borderRadius:4},{label:'Pengeluaran',data:expData,backgroundColor:isLight?'#F87171':'#F87171',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:isLight?'#888':'#888',font:{size:10,family:"'Outfit'"},autoSkip:false},grid:{display:false},border:{display:false}},y:{ticks:{color:isLight?'#888':'#888',font:{size:10},callback:v=>Intl.NumberFormat('id-ID',{notation:'compact'}).format(v)},grid:{color:isLight?'#DEE2E6':'#222228',drawBorder:false},border:{display:false}}}}}); }
+function mkChart(id,labels,incData,expData){ if(charts[id]) charts[id].destroy(); const c=document.getElementById(id); if(!c)return; const isLight = document.body.classList.contains('light-mode'); charts[id]=new Chart(c,{type:'bar',data:{labels,datasets:[{label:'Pemasukan',data:incData,backgroundColor:isLight?'#10B981':'#10B981',borderRadius:4},{label:'Pengeluaran',data:expData,backgroundColor:isLight?'#F87171':'#F87171',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:isLight?'#888':'#888',font:{size:10,family:"'Outfit'"},autoSkip:false, maxRotation:0},grid:{display:false},border:{display:false}},y:{ticks:{color:isLight?'#888':'#888',font:{size:10},callback:v=>Intl.NumberFormat('id-ID',{notation:'compact'}).format(v)},grid:{color:isLight?'#DEE2E6':'#222228',drawBorder:false},border:{display:false}}}}}); }
 
 window.renderDaily=function(){ const pick=document.getElementById('pick-daily').value, target=pick?new Date(pick).toDateString():new Date().toDateString(), arr=txs.filter(t=>new Date(t.date).toDateString()===target).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('daily-sum'),arr); renderList(document.getElementById('daily-body'), arr); };
 function wkKey(d){
@@ -1060,6 +1060,11 @@ if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navi
 
   /* Highlight Transaksi Paus (> Rp 5Juta) */
   .big-money-glow { text-shadow: 0 0 12px rgba(251, 191, 36, 0.8); color: var(--gold) !important; }
+
+  /* Bikin chart bulan bisa di scroll horizontal rapi */
+  .chart-scroll-x { overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .chart-scroll-x::-webkit-scrollbar { display: none; }
+  .chart-inner-month { min-width: 750px; height: 100%; }
 
   /* Scroll to Top Button */
   #scroll-to-top { position: fixed; bottom: 24px; right: 24px; width: 50px; height: 50px; background: var(--blue-title); color: #fff; border: none; border-radius: 50%; font-size: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer; z-index: 999; display: none; align-items: center; justify-content: center; transition: 0.3s; }
