@@ -231,10 +231,10 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
 .p-btn { padding: 10px 20px; border: 1px solid var(--border); border-radius: 100px; font-size: 11px; font-weight: 700; cursor: pointer; background: var(--bg2); color: var(--text3); white-space: nowrap; }
 .p-btn.active { border-color: var(--text); color: var(--text); background: var(--bg); }
 
-/* FILTER BAR RIWAYAT - DIPERBARUI AGAR BISA WRAP */
-.filter-bar { display: flex; gap: 8px; width: 100%; margin-bottom: 24px; align-items: center; flex-wrap: wrap; }
-.filter-bar select.f-input-dark { flex: 1; min-width: 140px; }
-.filter-bar input.f-input-dark { flex: 1; min-width: 140px; }
+/* FILTER BAR RIWAYAT */
+.filter-bar { display: flex; gap: 16px; width: 100%; margin-bottom: 24px; align-items: center; }
+.filter-bar select.f-input-dark { width: 250px; flex-shrink: 0; }
+.filter-bar input.f-input-dark { flex: 1; }
 
 /* AUTH SCREEN */
 #auth-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; }
@@ -276,6 +276,7 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   
   .card-head, .form-row, .filter-bar, .chart-wrap, .period-bar { padding-left: 16px !important; padding-right: 16px !important; }
   
+  .filter-bar { flex-direction: column; } 
   .export-btn { width: 100%; text-align: center; border-radius: 16px; padding: 18px 16px; }
   
   .type-toggle, .submit-btn { width: calc(100% - 32px) !important; margin-left: 16px !important; margin-right: 16px !important; }
@@ -316,12 +317,41 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
 
 .wallet-badge { background: var(--bg3); color: var(--text2); font-size: 8px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 800; border: 1px solid var(--border2); text-transform: uppercase; }
 
-/* ==========================================================================
-   FITUR BARU: REMINDER & INSIGHT CSS
-   ========================================================================== */
-.reminder-box { background-color: rgba(251, 191, 36, 0.1); color: var(--gold); border-left: 4px solid var(--gold); padding: 12px 16px; margin-bottom: 24px; border-radius: 8px; font-size: 12px; font-weight: 600; display: flex; flex-direction: column; gap: 8px; line-height: 1.4; border-right: 1px solid var(--border); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.hidden { display: none !important; }
-.insight-box { background-color: var(--bg2); padding: 20px; border-radius: 12px; font-size: 12px; margin-bottom: 24px; border: 1px solid var(--border); line-height: 1.6; color: var(--text); }
+/* CSS UNTUK SHORTCUT CATATAN PREMIUM */
+#note-shortcuts {
+  display: flex; gap: 10px; margin-bottom: 16px; margin-top: 4px;
+  overflow-x: auto; scrollbar-width: none; padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+#note-shortcuts::-webkit-scrollbar { display: none; }
+
+.note-chip { 
+  background: rgba(251, 191, 36, 0.08); 
+  border: 1px solid rgba(251, 191, 36, 0.25); 
+  color: var(--text); 
+  padding: 8px 16px; 
+  border-radius: 100px; 
+  font-size: 11px; 
+  font-weight: 600; 
+  cursor: pointer; 
+  transition: all 0.3s ease; 
+  white-space: nowrap; 
+  display: flex; 
+  align-items: center; 
+  letter-spacing: 0.5px;
+}
+.note-chip:hover { 
+  background: rgba(251, 191, 36, 0.15); 
+  color: var(--gold); 
+  border-color: var(--gold); 
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.15);
+}
+.note-chip-icon {
+  color: var(--gold);
+  margin-right: 6px;
+  font-size: 12px;
+}
 </style>
 </head>
 <body>
@@ -415,10 +445,6 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
 <div id="page-dashboard" class="page active">
   <div class="metrics" id="metric-cards"></div>
   <div id="wallet-balances" class="wallet-scroll"></div>
-  
-  <div id="reminderAlert" class="reminder-box hidden"></div>
-  <div id="insightBox" class="insight-box" style="display:none;"></div>
-  
   <div class="panel">
     <div class="card">
       <div class="card-head">
@@ -462,7 +488,14 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
           <option value="Piutang">Piutang (Beri/Tarik)</option>
         </select>
       </div>
-      <div class="form-row"><label class="form-label">KETERANGAN</label><textarea id="f-note" class="f-input-dark" placeholder="Catatan transaksi..."></textarea></div>
+      <div class="form-row">
+        <label class="form-label" style="display:flex; justify-content:space-between;">
+            <span>KETERANGAN</span>
+            <span style="font-size:8px; color:var(--gold); font-weight:700;">SUGGESTION AKTIF ⚡</span>
+        </label>
+        <div id="note-shortcuts" style="display:none;"></div>
+        <textarea id="f-note" class="f-input-dark" placeholder="Catatan transaksi..."></textarea>
+      </div>
       <div class="form-row">
         <label class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
           <span>WAKTU</span>
@@ -518,11 +551,6 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
     </div>
     <div class="list-wrap" id="month-body"></div>
   </div>
-  
-  <div class="card" style="margin-top: 24px;">
-    <div class="card-head"><div class="card-title">Breakdown Pengeluaran</div></div>
-    <div style="height:250px; position:relative;"><canvas id="categoryDonutChart"></canvas></div>
-  </div>
 </div>
 
 <div id="page-tahunan" class="page">
@@ -543,26 +571,12 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
   <div class="card">
     <div class="card-head"><div class="card-title">Semua Riwayat</div></div>
     <div class="filter-bar">
-      <input type="date" id="flt-start" class="f-input-dark" style="flex: 1;" onchange="renderAll()" title="Dari Tanggal">
-      <input type="date" id="flt-end" class="f-input-dark" style="flex: 1;" onchange="renderAll()" title="Sampai Tanggal">
-      
-      <select id="flt-type" class="f-input-dark" style="flex: 1;" onchange="renderAll()">
-        <option value="">Semua Tipe</option>
+      <select id="flt-type" class="f-input-dark" onchange="renderAll()">
+        <option value="">Semua Filter</option>
         <option value="income">Pemasukan Saja</option>
         <option value="expense">Pengeluaran Saja</option>
       </select>
-      
-      <select id="flt-wallet" class="f-input-dark" style="flex: 1;" onchange="renderAll()">
-        <option value="">Semua Dompet</option>
-        <option value="Kas Tunai">Kas Tunai</option>
-        <option value="DANA">DANA</option>
-        <option value="GoPay">GoPay</option>
-        <option value="ShopeePay">ShopeePay</option>
-        <option value="MT5 Trading">MT5 Trading</option>
-        <option value="Rekening Bank">Rekening Bank</option>
-      </select>
-      
-      <input type="text" id="flt-search" class="f-input-dark" style="flex: 1; min-width: 200px;" placeholder="Cari keterangan..." oninput="renderAll()">
+      <input type="text" id="flt-search" class="f-input-dark" placeholder="Cari berdasarkan keterangan atau kategori..." oninput="renderAll()">
       <button class="export-btn" onclick="exportCSV()">UNDUH CSV 📥</button>
     </div>
     <div class="list-wrap" id="all-body"></div>
@@ -939,6 +953,7 @@ const createTxCard = (t) => {
 
   // =====================================================================
   // TOMBOL AKSI: LUNAS (Hutang) dan SUDAH BAYAR (Piutang)
+  // Muncul di samping tombol EDIT dan HAPUS pada setiap kartu transaksi
   // =====================================================================
   let actionBtn = '';
   if (t.type === 'debt' && !t.isPaid) {
@@ -989,6 +1004,7 @@ function renderWalletBalances() {
     let w = t.wallet || 'Kas Tunai';
     let wTo = t.walletTo;
     
+    // MENCEGAH 'Hutang' dan 'Piutang' MEMBUAT KOTAK KARTU BIASA DI ATAS
     if (w !== 'Hutang' && w !== 'Piutang' && !wallets.hasOwnProperty(w)) wallets[w] = 0;
     if (wTo && wTo !== 'Hutang' && wTo !== 'Piutang' && !wallets.hasOwnProperty(wTo)) wallets[wTo] = 0;
     
@@ -999,10 +1015,12 @@ function renderWalletBalances() {
         if (wallets.hasOwnProperty(w)) wallets[w] -= t.amount;
     }
     else if (t.type === 'transfer') {
+        // PENGURANGAN DARI SUMBER ASAL
         if (w === 'Hutang') hutangBal -= t.amount; 
         else if (w === 'Piutang') piutangBal += t.amount; 
         else if (wallets.hasOwnProperty(w)) wallets[w] -= t.amount;
 
+        // PENAMBAHAN KE TUJUAN
         if (wTo === 'Hutang') hutangBal += t.amount; 
         else if (wTo === 'Piutang') piutangBal -= t.amount; 
         else if (wTo && wallets.hasOwnProperty(wTo)) wallets[wTo] += t.amount;
@@ -1056,174 +1074,44 @@ window.selWeek=function(k,btn){document.querySelectorAll('#week-sel .p-btn').for
 function showWeek(k){ const arr=txs.filter(t=>wkKey(t.date)===k).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('week-sum'),arr); renderList(document.getElementById('week-body'),arr); const days=['Sen','Sel','Rab','Kam','Jum','Sab','Min'],inc=new Array(7).fill(0),exp=new Array(7).fill(0); arr.forEach(t=>{const idx=(new Date(t.date).getDay()+6)%7;if(t.type==='income')inc[idx]+=t.amount;else if(t.type==='expense')exp[idx]+=t.amount;else if(t.type==='debt'){inc[idx]+=t.amount;if(t.isPaid)exp[idx]+=t.amount;}else if(t.type==='recv'){exp[idx]+=t.amount;if(t.isPaid)inc[idx]+=t.amount;}}); mkChart('chartWeek',days,inc,exp); }
 function renderMonthly(){ const months={};txs.forEach(t=>{const k=t.date.slice(0,7);(months[k]=months[k]||[]).push(t)}); const keys=Object.keys(months).sort().reverse().slice(0,12); document.getElementById('month-sel').innerHTML=keys.map((k,i)=>{const[y,m]=k.split('-');const d=new Date(y,m-1);return`<button class="p-btn${i===0?' active':''}" onclick="selMonth('${k}',this)">${d.toLocaleDateString('id-ID',{month:'long',year:'numeric'})}</button>`}).join(''); if(keys.length)showMonth(keys[0]); }
 window.selMonth=function(k,btn){document.querySelectorAll('#month-sel .p-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');showMonth(k)};
-function showMonth(k){ const arr=txs.filter(t=>t.date.slice(0,7)===k).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('month-sum'),arr); renderList(document.getElementById('month-body'),arr); const[y,m]=k.split('-');const dim=new Date(y,m,0).getDate(), labels=[],inc=new Array(dim).fill(0),exp=new Array(dim).fill(0); for(let i=1;i<=dim;i++)labels.push(i+''); arr.forEach(t=>{const d=new Date(t.date).getDate()-1;if(t.type==='income')inc[d]+=t.amount;else if(t.type==='expense')exp[d]+=t.amount;else if(t.type==='debt'){inc[d]+=t.amount;if(t.isPaid)exp[d]+=t.amount;}else if(t.type==='recv'){exp[d]+=t.amount;if(t.isPaid)inc[d]+=t.amount;}}); mkChart('chartMonth',labels,inc,exp); renderCategoryChart(arr); }
+function showMonth(k){ const arr=txs.filter(t=>t.date.slice(0,7)===k).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('month-sum'),arr); renderList(document.getElementById('month-body'),arr); const[y,m]=k.split('-');const dim=new Date(y,m,0).getDate(), labels=[],inc=new Array(dim).fill(0),exp=new Array(dim).fill(0); for(let i=1;i<=dim;i++)labels.push(i+''); arr.forEach(t=>{const d=new Date(t.date).getDate()-1;if(t.type==='income')inc[d]+=t.amount;else if(t.type==='expense')exp[d]+=t.amount;else if(t.type==='debt'){inc[d]+=t.amount;if(t.isPaid)exp[d]+=t.amount;}else if(t.type==='recv'){exp[d]+=t.amount;if(t.isPaid)inc[d]+=t.amount;}}); mkChart('chartMonth',labels,inc,exp); }
 function renderYearly(){ const years={};txs.forEach(t=>{const k=t.date.slice(0,4);(years[k]=years[k]||[]).push(t)}); const keys=Object.keys(years).sort().reverse(); document.getElementById('year-sel').innerHTML=keys.map((k,i)=>`<button class="p-btn${i===0?' active':''}" onclick="selYear('${k}',this)">${k}</button>`).join(''); if(keys.length)showYear(keys[0]); }
 window.selYear=function(k,btn){document.querySelectorAll('#year-sel .p-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');showYear(k)};
 function showYear(k){ const arr=txs.filter(t=>t.date.startsWith(k)).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('year-sum'),arr); renderList(document.getElementById('year-body'),arr); const MNTHS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'], inc=new Array(12).fill(0),exp=new Array(12).fill(0); arr.forEach(t=>{const m=new Date(t.date).getMonth();if(t.type==='income')inc[m]+=t.amount;else if(t.type==='expense')exp[m]+=t.amount;else if(t.type==='debt'){inc[m]+=t.amount;if(t.isPaid)exp[m]+=t.amount;}else if(t.type==='recv'){exp[m]+=t.amount;if(t.isPaid)inc[m]+=t.amount;}}); mkChart('chartYear',MNTHS,inc,exp); }
-window.renderAll=function(){ 
-  const tf = document.getElementById('flt-type').value;
-  const tw = document.getElementById('flt-wallet') ? document.getElementById('flt-wallet').value : '';
-  const s = (document.getElementById('flt-search').value || '').toLowerCase();
-  
-  const startDate = document.getElementById('flt-start') ? document.getElementById('flt-start').value : '';
-  const endDate = document.getElementById('flt-end') ? document.getElementById('flt-end').value : '';
+window.renderAll=function(){ const tf=document.getElementById('flt-type').value, s=(document.getElementById('flt-search').value||'').toLowerCase(); let arr=[...txs]; if(tf)arr=arr.filter(t=>t.type===tf); if(s)arr=arr.filter(t=>t.note.toLowerCase().includes(s)||t.category.toLowerCase().includes(s)); arr.sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('all-sum'),arr); renderList(document.getElementById('all-body'),arr); };
 
-  let arr = [...txs]; 
+// FITUR SHORTCUT CATATAN OTOMATIS (VERSI PREMIUM & PINTAR)
+window.renderNoteShortcuts = function() {
+  const container = document.getElementById('note-shortcuts');
+  if(!container) return;
+  const counts = {};
   
-  if(tf) arr = arr.filter(t => t.type === tf); 
-  if(tw) arr = arr.filter(t => (t.wallet === tw || t.walletTo === tw)); 
-  if(s) arr = arr.filter(t => t.note.toLowerCase().includes(s) || t.category.toLowerCase().includes(s)); 
-  
-  if(startDate) arr = arr.filter(t => t.date.slice(0, 10) >= startDate);
-  if(endDate) arr = arr.filter(t => t.date.slice(0, 10) <= endDate);
+  // Fungsi untuk bikin teks rapi jadi "Title Case" (contoh: "Parkir") biar nggak dobel
+  const toTitleCase = str => str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 
-  arr.sort((a, b) => new Date(b.date) - new Date(a.date)); 
-  renderSumGrid(document.getElementById('all-sum'), arr); 
-  renderList(document.getElementById('all-body'), arr); 
+  txs.forEach(t => {
+    let n = t.note.trim();
+    if(n && n !== '-' && n.toLowerCase() !== 'transfer antar dompet') {
+      let normalized = toTitleCase(n); // Gabungkan "parkir", "PARKIR", jadi "Parkir"
+      counts[normalized] = (counts[normalized] || 0) + 1;
+    }
+  });
+  
+  // Ambil 5 catatan paling sering
+  const topNotes = Object.entries(counts).sort((a,b) => b[1] - a[1]).slice(0, 5).map(x => x[0]);
+  
+  if(topNotes.length > 0) {
+    container.innerHTML = topNotes.map(n => {
+      const safeStr = n.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      return `<button type="button" class="note-chip" onclick="document.getElementById('f-note').value='${safeStr}'; document.getElementById('f-note').focus(); if(navigator.vibrate) navigator.vibrate(15);"><span class="note-chip-icon">⚡</span>${escapeHTML(n)}</button>`;
+    }).join('');
+    container.style.display = 'flex';
+  } else {
+    container.style.display = 'none';
+  }
 };
 
-// =====================================================================
-// LOGIKA JAVASCRIPT: REMINDER HUTANG & INSIGHT CERDAS
-// =====================================================================
-
-function checkReminders(arr) {
-    const alertBox = document.getElementById('reminderAlert');
-    if(!alertBox) return;
-    let alerts = [];
-    const now = new Date();
-
-    arr.forEach(t => {
-        if (t.type === 'debt' && !t.isPaid) {
-            const txDate = new Date(t.date);
-            const diffTime = Math.abs(now - txDate);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            
-            if (diffDays >= 7) {
-                alerts.push(`⚠️ Hutang "<b>${escapeHTML(t.note)}</b>" (${fmt(t.amount)}) belum lunas selama <b>${diffDays} hari</b>!`);
-            }
-        }
-    });
-
-    if (alerts.length > 0) {
-        alertBox.innerHTML = '<div style="font-size:14px; font-weight:800; color:var(--text);">PENGINGAT HUTANG</div>' + alerts.map(a => `<div>${a}</div>`).join('');
-        alertBox.classList.remove('hidden');
-    } else {
-        alertBox.classList.add('hidden');
-    }
-}
-
-// UPGRADE INSIGHT OTOMATIS: LEBIH DETAIL DAN CERDAS!
-function generateInsights(arr) {
-    const insightBox = document.getElementById('insightBox');
-    if(!insightBox) return;
-    const now = new Date();
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
-    let lastMonth = currentMonth - 1;
-    let lastMonthYear = currentYear;
-    if (lastMonth < 0) { lastMonth = 11; lastMonthYear = currentYear - 1; }
-
-    let curInc = 0, lastInc = 0;
-    let curExp = 0, lastExp = 0;
-    let catTotals = {};
-
-    arr.forEach(t => {
-        const dt = new Date(t.date);
-        const isCur = dt.getMonth() === currentMonth && dt.getFullYear() === currentYear;
-        const isLast = dt.getMonth() === lastMonth && dt.getFullYear() === lastMonthYear;
-
-        if (t.type === 'income') {
-            if (isCur) curInc += t.amount;
-            else if (isLast) lastInc += t.amount;
-        } else if (t.type === 'expense') {
-            if (isCur) {
-                curExp += t.amount;
-                catTotals[t.category] = (catTotals[t.category] || 0) + t.amount;
-            }
-            else if (isLast) lastExp += t.amount;
-        }
-    });
-
-    let insights = [];
-    
-    // 1. Status Cashflow (Surplus/Defisit)
-    let curBal = curInc - curExp;
-    if (curInc > 0) {
-        let saveRate = Math.round((curBal / curInc) * 100);
-        if (curBal > 0) {
-            insights.push(`💎 <b style="color:var(--green2)">CASHFLOW POSITIF:</b> Lu berhasil surplus <b>${fmt(curBal)}</b> bulan ini (Bisa nabung ${saveRate}% dari total pemasukan!).`);
-        } else if (curBal < 0) {
-            insights.push(`🚨 <b style="color:var(--red2)">DEFISIT:</b> Pengeluaran lu lebih besar <b>${fmt(Math.abs(curBal))}</b> dari pemasukan. Rem pengeluaran sekarang, Bro!`);
-        } else {
-            insights.push(`⚖️ <b style="color:var(--gold)">SEIMBANG:</b> Pemasukan dan pengeluaran lu seri bulan ini. (0% tabungan).`);
-        }
-    } else if (curExp > 0) {
-        insights.push(`⚠️ <b>MINUS:</b> Bulan ini belum ada pemasukan, tapi lu udah ngeluarin <b>${fmt(curExp)}</b>.`);
-    }
-
-    // 2. Perbandingan Pemasukan
-    if (lastInc > 0) {
-        const diff = curInc - lastInc;
-        const pct = Math.round((Math.abs(diff) / lastInc) * 100);
-        if (diff > 0) insights.push(`📈 <b>PEMASUKAN NAIK:</b> Pemasukan lu naik <b>${pct}%</b> (+${fmt(diff)}) dibanding bulan lalu. Mantap!`);
-        else if (diff < 0) insights.push(`📉 <b>PEMASUKAN TURUN:</b> Pemasukan lu turun <b>${pct}%</b> (-${fmt(Math.abs(diff))}) dari bulan lalu. Ayo cari cuan lagi!`);
-    }
-
-    // 3. Perbandingan Pengeluaran
-    if (lastExp > 0) {
-        const diff = curExp - lastExp;
-        const pct = Math.round((Math.abs(diff) / lastExp) * 100);
-        if (diff > 0) insights.push(`💸 <b>PENGELUARAN NAIK:</b> Lu lebih boros <b>${pct}%</b> (+${fmt(diff)}) dibanding bulan lalu.`);
-        else if (diff < 0) insights.push(`🛡️ <b>PENGELUARAN TURUN:</b> Lu berhasil menghemat <b>${pct}%</b> (-${fmt(Math.abs(diff))}) dari bulan lalu. Keren!`);
-    }
-
-    // 4. Kategori Boncos
-    let topCat = ''; let topAmt = 0;
-    for(let c in catTotals) { if(catTotals[c] > topAmt) { topAmt = catTotals[c]; topCat = c; } }
-    if(topCat) insights.push(`🔥 <b>PALING BONCOS:</b> Kategori pengeluaran terbesar lu saat ini jatuh pada <b>${topCat}</b> (${fmt(topAmt)}).`);
-
-    if(insights.length > 0) {
-        insightBox.innerHTML = '<div style="font-size:14px; font-weight:800; margin-bottom:12px; color:var(--text); letter-spacing: 0.5px;">💡 INSIGHT KEUANGAN BULAN INI</div>' + insights.map(i => `<div style="margin-bottom:8px; border-left: 3px solid var(--gold); padding-left: 10px; font-size: 13px;">${i}</div>`).join('');
-        insightBox.style.display = 'block';
-    } else {
-        insightBox.style.display = 'none';
-    }
-}
-
-// Render Grafik Kategori (Donut)
-let categoryChartInstance = null;
-function renderCategoryChart(arr) {
-    const ctxEl = document.getElementById('categoryDonutChart');
-    if(!ctxEl) return;
-    const ctx = ctxEl.getContext('2d');
-    const expenses = arr.filter(t => t.type === 'expense');
-    const catTotals = expenses.reduce((acc, curr) => { acc[curr.category] = (acc[curr.category] || 0) + curr.amount; return acc; }, {});
-    
-    if(categoryChartInstance) categoryChartInstance.destroy();
-    if(Object.keys(catTotals).length === 0) return;
-
-    const isLight = document.body.classList.contains('light-mode');
-    categoryChartInstance = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: Object.keys(catTotals),
-            datasets: [{
-                data: Object.values(catTotals),
-                backgroundColor: ['#F87171', '#FBBF24', '#34D399', '#60A5FA', '#A78BFA', '#F472B6', '#FCD34D', '#9CA3AF'],
-                borderWidth: 2, borderColor: isLight ? '#FFF' : '#121215'
-            }]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'right', labels: { color: isLight ? '#444' : '#CCC', font: { size: 11, family: "'Outfit'" } } },
-                tooltip: { callbacks: { label: function(context) { return ' Rp ' + context.raw.toLocaleString('id-ID'); } } }
-            }
-        }
-    });
-}
-
-function refreshAll(){ renderMetrics(); renderWalletBalances(); renderList(document.getElementById('recent-list'), txs.slice(0,6)); if(activePage==='harian')renderDaily(); if(activePage==='mingguan')renderWeekly(); if(activePage==='bulanan')renderMonthly(); if(activePage==='tahunan')renderYearly(); if(activePage==='riwayat')renderAll(); checkReminders(txs); generateInsights(txs); }
+function refreshAll(){ renderMetrics(); renderWalletBalances(); renderList(document.getElementById('recent-list'), txs.slice(0,6)); if(activePage==='harian')renderDaily(); if(activePage==='mingguan')renderWeekly(); if(activePage==='bulanan')renderMonthly(); if(activePage==='tahunan')renderYearly(); if(activePage==='riwayat')renderAll(); if(window.renderNoteShortcuts) renderNoteShortcuts(); }
 
 document.getElementById('pick-daily').value=nowISO().slice(0,10); document.getElementById('f-date').value=nowISO(); selType('income');
 
@@ -1233,7 +1121,7 @@ window.payDebt = async function(id) {
     if(!currentUser) return;
     Swal.fire({
         title: 'Bayar Hutang?',
-        text: "Saldo bersih / dompet lu akan dipotong otomatis untuk bayar hutang ini.",
+        text: "Saldo bersih / dompet lo akan dipotong otomatis untuk bayar hutang ini.",
         icon: 'question',
         showCancelButton: true,
         background: 'var(--card)', color: 'var(--text)',
@@ -1256,7 +1144,7 @@ window.payRecv = async function(id) {
     if(!currentUser) return;
     Swal.fire({
         title: 'Piutang Dibayar?',
-        text: "Uang kembali utuh, saldo bersih / dompet lu akan otomatis bertambah.",
+        text: "Uang kembali utuh, saldo bersih / dompet lo akan otomatis bertambah.",
         icon: 'question',
         showCancelButton: true,
         background: 'var(--card)', color: 'var(--text)',
@@ -1692,237 +1580,5 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 });
 </script>
-
-<!-- ==========================================================================
-   FITUR BARU PERFECT: KALKULATOR INVESTASI RHN CAPITAL
-   ========================================================================== -->
-<style>
-  .fab-invest {
-    position: fixed;
-    bottom: 24px;
-    left: 24px;
-    background: var(--blue-title);
-    color: #fff;
-    border: none;
-    border-radius: 50px;
-    padding: 14px 20px;
-    font-weight: 800;
-    font-family: 'Outfit', sans-serif;
-    font-size: 11px;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(0, 123, 255, 0.4);
-    z-index: 998;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .fab-invest:hover {
-    transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
-  }
-  
-  #invest-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 10000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(6px);
-    padding: 20px;
-  }
-  
-  .invest-box {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 32px;
-    width: 100%;
-    max-width: 450px;
-    position: relative;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    animation: slideUpInvest 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-  @keyframes slideUpInvest {
-    from { transform: translateY(50px) scale(0.9); opacity: 0; }
-    to { transform: translateY(0) scale(1); opacity: 1; }
-  }
-  
-  .inv-close {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: var(--bg3);
-    border: none;
-    color: var(--text3);
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-  .inv-close:hover { background: var(--red2); color: #fff; }
-  
-  .inv-title {
-    font-size: 18px;
-    font-weight: 800;
-    color: var(--blue);
-    margin-bottom: 4px;
-    text-align: center;
-    letter-spacing: 1px;
-  }
-  .inv-sub {
-    font-size: 11px;
-    color: var(--text3);
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: 500;
-  }
-  
-  .inv-result-box {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .inv-result-lbl {
-    font-size: 10px;
-    color: var(--text3);
-    font-weight: 800;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-    letter-spacing: 0.5px;
-  }
-  .inv-result-val {
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--green2);
-    font-family: 'JetBrains Mono', monospace;
-  }
-  
-  .inv-btn {
-    width: 100%;
-    background: var(--blue);
-    color: #fff;
-    border: none;
-    padding: 14px;
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 800;
-    margin-top: 16px;
-    cursor: pointer;
-    transition: 0.2s;
-    text-transform: uppercase;
-  }
-  .inv-btn:hover { background: var(--blue-title); }
-</style>
-
-<button class="fab-invest" id="fab-invest-btn" onclick="openInvestModal()" style="display:none;">📈 Kalkulator Investasi</button>
-
-<div id="invest-modal">
-  <div class="invest-box">
-    <button class="inv-close" onclick="closeInvestModal()">✕</button>
-    <div class="inv-title">KALKULATOR INVESTASI</div>
-    <div class="inv-sub">Proyeksi Bunga Majemuk (Compounding) RHN Capital</div>
-    
-    <div class="inv-result-box">
-      <div class="inv-result-lbl">ESTIMASI SALDO AKHIR</div>
-      <div class="inv-result-val" id="inv-final-result">Rp 0</div>
-      <div style="font-size: 11px; color: var(--text3); margin-top: 8px; font-weight: 500;" id="inv-detail-result">Total Modal: Rp 0 | Keuntungan: Rp 0</div>
-    </div>
-
-    <div class="form-row">
-      <label class="form-label">MODAL AWAL (Rp)</label>
-      <input type="text" inputmode="numeric" id="inv-awal" class="f-input-dark" placeholder="Contoh: 1000000" oninput="formatInvInput(this)">
-    </div>
-    
-    <div class="form-row">
-      <label class="form-label">TAMBAHAN PER BULAN (Rp)</label>
-      <input type="text" inputmode="numeric" id="inv-bulanan" class="f-input-dark" placeholder="Contoh: 500000" oninput="formatInvInput(this)">
-    </div>
-    
-    <div style="display:flex; gap:12px;">
-      <div class="form-row" style="flex:1;">
-        <label class="form-label">BUNGA PER TAHUN (%)</label>
-        <input type="number" id="inv-bunga" class="f-input-dark" placeholder="Contoh: 10">
-      </div>
-      <div class="form-row" style="flex:1;">
-        <label class="form-label">LAMA (TAHUN)</label>
-        <input type="number" id="inv-tahun" class="f-input-dark" placeholder="Contoh: 5">
-      </div>
-    </div>
-    
-    <button class="inv-btn" onclick="calculateInvestment()">HITUNG PROYEKSI</button>
-  </div>
-</div>
-
-<script>
-  function openInvestModal() {
-      if(navigator.vibrate) navigator.vibrate(20);
-      document.getElementById('invest-modal').style.display = 'flex';
-  }
-  
-  function closeInvestModal() {
-      if(navigator.vibrate) navigator.vibrate(10);
-      document.getElementById('invest-modal').style.display = 'none';
-  }
-  
-  function formatInvInput(el) {
-      let raw = el.value.replace(/[^0-9]/g, '');
-      el.value = raw ? parseInt(raw, 10).toLocaleString('id-ID') : '';
-  }
-  
-  function calculateInvestment() {
-      let p = parseInt(document.getElementById('inv-awal').value.replace(/\./g,'')) || 0;
-      let pmt = parseInt(document.getElementById('inv-bulanan').value.replace(/\./g,'')) || 0;
-      let r = parseFloat(document.getElementById('inv-bunga').value) || 0;
-      let t = parseInt(document.getElementById('inv-tahun').value) || 0;
-
-      if(t === 0 || r === 0) return;
-      
-      let ratePerMonth = (r / 100) / 12;
-      let months = t * 12;
-      let futureValue = p;
-      let totalInvested = p + (pmt * months);
-
-      for(let i=0; i < months; i++){
-          futureValue += pmt;
-          futureValue += futureValue * ratePerMonth;
-      }
-
-      let profit = futureValue - totalInvested;
-
-      // Animasi Angka
-      document.getElementById('inv-final-result').innerText = 'Rp ' + Math.round(futureValue).toLocaleString('id-ID');
-      document.getElementById('inv-detail-result').innerText = `Total Modal: Rp ${Math.round(totalInvested).toLocaleString('id-ID')} | Keuntungan: Rp ${Math.round(profit).toLocaleString('id-ID')}`;
-      
-      if(navigator.vibrate) navigator.vibrate([20, 40]);
-  }
-  
-  // Tutup modal jika klik luar box
-  document.getElementById('invest-modal').addEventListener('click', function(e) {
-      if(e.target === this) closeInvestModal();
-  });
-
-  // Tampilkan tombol FAB hanya saat layar app terbuka
-  const invObserver = new MutationObserver(() => {
-      const appScreen = document.getElementById('app-screen');
-      const fabBtn = document.getElementById('fab-invest-btn');
-      if (appScreen && appScreen.style.display !== 'none') {
-          fabBtn.style.display = 'flex';
-      } else {
-          fabBtn.style.display = 'none';
-      }
-  });
-  invObserver.observe(document.body, { childList: true, subtree: true, attributes: true });
-</script>
-
 </body>
 </html>
