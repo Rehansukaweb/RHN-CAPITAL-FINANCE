@@ -150,7 +150,7 @@ body {
 .inc .m-bar-fill { background: var(--green2); } .exp .m-bar-fill { background: var(--red2); }
 .bal .m-bar-fill { background: var(--border2); } .cnt .m-bar-fill { background: var(--blue); }
 
-/* WALLET BALANCES SCROLL (INFO SALDO KECIL) - 3x2 COMPACT */
+/* WALLET BALANCES SCROLL */
 .wallet-scroll { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 24px; }
 .wallet-scroll::-webkit-scrollbar { display: none; }
 .w-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 8px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
@@ -318,70 +318,114 @@ select.f-input-dark option { background: var(--card); color: var(--text); }
 .wallet-badge { background: var(--bg3); color: var(--text2); font-size: 8px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 800; border: 1px solid var(--border2); text-transform: uppercase; }
 
 /* ==========================================================================
-   SPLASH SCREEN ANIMATION (RHN CAPITAL)
+   SPLASH SCREEN V3: ULTIMATE MASTERPIECE (RHN CAPITAL)
    ========================================================================== */
 #splash-screen {
-  position: fixed;
-  inset: 0;
-  background-color: var(--bg);
-  z-index: 999999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s ease;
+  position: fixed; inset: 0; 
+  background: radial-gradient(circle at center, #121215 0%, #050505 100%);
+  z-index: 999999; display: flex; align-items: center; justify-content: center; overflow: hidden;
 }
 
-#splash-screen.hidden {
-  opacity: 0;
-  visibility: hidden;
+/* Transisi keluar Dive-in */
+#splash-screen.splash-exit {
+  animation: diveIn 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
 }
 
-.splash-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: splashPop 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+@keyframes diveIn {
+  0% { transform: scale(1); opacity: 1; filter: blur(0); }
+  100% { transform: scale(1.5); opacity: 0; filter: blur(10px); visibility: hidden; }
 }
 
-.splash-content img {
-  width: 90px;
-  height: 90px;
-  border-radius: 20px;
-  border: 2px solid var(--gold2);
-  padding: 4px;
-  box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
-  margin-bottom: 20px;
+/* Partikel Bintang/Emas */
+.splash-particles { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.particle {
+  position: absolute; background: var(--gold); border-radius: 50%;
+  box-shadow: 0 0 10px var(--gold); opacity: 0; 
+  animation: floatParticle 3s infinite ease-in-out;
 }
 
+@keyframes floatParticle {
+  0% { transform: translateY(0) scale(0); opacity: 0; }
+  50% { opacity: 0.6; }
+  100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
+}
+
+.splash-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; }
+
+/* Box Logo & Cincin Putar */
+.splash-logo-box { 
+  position: relative; width: 110px; height: 110px; margin-bottom: 20px; 
+  display: flex; align-items: center; justify-content: center; 
+}
+
+.splash-ring {
+  position: absolute; inset: -5px; 
+  border: 2px dashed rgba(245, 158, 11, 0.5); border-radius: 24px;
+  animation: spinRing 10s linear infinite, popIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.splash-img {
+  width: 90px; height: 90px; border-radius: 18px; border: 2px solid var(--gold); padding: 3px;
+  box-shadow: 0 0 35px rgba(245, 158, 11, 0.5); opacity: 0;
+  animation: logoZoomFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.2s;
+}
+
+/* Kilauan Kaca di Logo */
+.splash-img-shine {
+  position: absolute; width: 90px; height: 90px; border-radius: 18px; overflow: hidden; pointer-events: none;
+}
+.splash-img-shine::after {
+  content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent);
+  transform: rotate(45deg) translateX(-100%);
+  animation: flashShine 2.5s infinite cubic-bezier(0.4, 0, 0.2, 1) 1s;
+}
+
+/* Masking Reveal Text */
+.splash-title-wrap { overflow: hidden; padding-bottom: 5px; }
 .splash-title {
-  color: var(--text);
-  font-family: 'Outfit', sans-serif;
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: 3px;
-  opacity: 0;
-  animation: splashTextFade 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.4s;
+  color: var(--text); font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800;
+  text-shadow: 0 4px 20px rgba(245, 158, 11, 0.6); 
+  transform: translateY(100%); opacity: 0;
+  animation: revealText 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.6s;
 }
 
-@keyframes splashPop {
-  0% { transform: scale(0.85); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+.splash-sub {
+  color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 4px; margin-top: 4px; opacity: 0;
+  animation: fadeSub 1s ease forwards 1.2s;
 }
 
-@keyframes splashTextFade {
-  0% { transform: translateY(15px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+/* KEYFRAMES ULTIMATE */
+@keyframes spinRing { 100% { transform: rotate(360deg); } }
+@keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes logoZoomFade { 0% { transform: scale(0.5); opacity: 0; filter: blur(5px); } 100% { transform: scale(1); opacity: 1; filter: blur(0); } }
+@keyframes flashShine { 0% { transform: rotate(45deg) translateX(-100%); } 100% { transform: rotate(45deg) translateX(100%); } }
+@keyframes revealText { 
+  0% { transform: translateY(100%); opacity: 0; letter-spacing: 12px; } 
+  100% { transform: translateY(0); opacity: 1; letter-spacing: 3px; } 
 }
+@keyframes fadeSub { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 
+<!-- SPLASH SCREEN START -->
 <div id="splash-screen">
+  <div class="splash-particles" id="splash-particles"></div>
   <div class="splash-content">
-    <img src="RHN LOGO.jpg" alt="RHN Capital Logo">
-    <div class="splash-title">RHN CAPITAL</div>
+    <div class="splash-logo-box">
+      <div class="splash-ring"></div>
+      <img src="RHN LOGO.jpg" alt="RHN Capital Logo" class="splash-img">
+      <div class="splash-img-shine"></div>
+    </div>
+    <div class="splash-title-wrap">
+      <div class="splash-title">RHN CAPITAL</div>
+    </div>
+    <div class="splash-sub">ARUS KEUANGAN</div>
   </div>
 </div>
+<!-- SPLASH SCREEN END -->
+
 <div id="offline-banner" style="display:none; background:#F87171; color:#000; text-align:center; padding:10px; font-size:12px; font-weight:800; position:fixed; top:0; left:0; width:100%; z-index:100000; text-transform:uppercase; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
   ⚠️ Koneksi Terputus - Mode Offline Aktif
 </div>
@@ -970,10 +1014,6 @@ const createTxCard = (t) => {
   let walletBadge = t.wallet ? `<span class="wallet-badge">${t.wallet}</span>` : '';
   if(t.type === 'transfer') walletBadge = `<span class="wallet-badge">${t.wallet} ➔ ${t.walletTo}</span>`;
 
-  // =====================================================================
-  // TOMBOL AKSI: LUNAS (Hutang) dan SUDAH BAYAR (Piutang)
-  // Muncul di samping tombol EDIT dan HAPUS pada setiap kartu transaksi
-  // =====================================================================
   let actionBtn = '';
   if (t.type === 'debt' && !t.isPaid) {
       actionBtn = `<button class="edit-btn-recent" style="color:var(--gold); border: 1px solid var(--gold); padding: 4px 8px; border-radius: 6px; background: rgba(251, 191, 36, 0.1);" onclick="payDebt('${t.id}')">LUNAS</button>`;
@@ -1023,7 +1063,6 @@ function renderWalletBalances() {
     let w = t.wallet || 'Kas Tunai';
     let wTo = t.walletTo;
     
-    // MENCEGAH 'Hutang' dan 'Piutang' MEMBUAT KOTAK KARTU BIASA DI ATAS
     if (w !== 'Hutang' && w !== 'Piutang' && !wallets.hasOwnProperty(w)) wallets[w] = 0;
     if (wTo && wTo !== 'Hutang' && wTo !== 'Piutang' && !wallets.hasOwnProperty(wTo)) wallets[wTo] = 0;
     
@@ -1034,12 +1073,10 @@ function renderWalletBalances() {
         if (wallets.hasOwnProperty(w)) wallets[w] -= t.amount;
     }
     else if (t.type === 'transfer') {
-        // PENGURANGAN DARI SUMBER ASAL
         if (w === 'Hutang') hutangBal -= t.amount; 
         else if (w === 'Piutang') piutangBal += t.amount; 
         else if (wallets.hasOwnProperty(w)) wallets[w] -= t.amount;
 
-        // PENAMBAHAN KE TUJUAN
         if (wTo === 'Hutang') hutangBal += t.amount; 
         else if (wTo === 'Piutang') piutangBal -= t.amount; 
         else if (wTo && wallets.hasOwnProperty(wTo)) wallets[wTo] += t.amount;
@@ -1198,6 +1235,85 @@ if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navi
 
   #scroll-to-top { position: fixed; bottom: 24px; right: 24px; width: 50px; height: 50px; background: var(--blue-title); color: #fff; border: none; border-radius: 50%; font-size: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer; z-index: 999; display: none; align-items: center; justify-content: center; transition: 0.3s; }
   #scroll-to-top:hover { background: var(--blue); transform: scale(1.05); }
+
+  /* ==========================================================================
+     SPLASH SCREEN V3: ULTIMATE MASTERPIECE (RHN CAPITAL)
+     ========================================================================== */
+  #splash-screen {
+    position: fixed; inset: 0; 
+    background: radial-gradient(circle at center, #121215 0%, #050505 100%);
+    z-index: 999999; display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+
+  #splash-screen.splash-exit {
+    animation: diveIn 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+  }
+
+  @keyframes diveIn {
+    0% { transform: scale(1); opacity: 1; filter: blur(0); }
+    100% { transform: scale(1.5); opacity: 0; filter: blur(10px); visibility: hidden; }
+  }
+
+  .splash-particles { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+  .particle {
+    position: absolute; background: var(--gold); border-radius: 50%;
+    box-shadow: 0 0 10px var(--gold); opacity: 0; 
+    animation: floatParticle 3s infinite ease-in-out;
+  }
+
+  @keyframes floatParticle {
+    0% { transform: translateY(0) scale(0); opacity: 0; }
+    50% { opacity: 0.6; }
+    100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
+  }
+
+  .splash-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; }
+
+  .splash-logo-box { 
+    position: relative; width: 100px; height: 100px; margin-bottom: 24px; 
+    display: flex; align-items: center; justify-content: center; 
+  }
+
+  .splash-ring {
+    position: absolute; inset: -10px; 
+    border: 2px dashed rgba(245, 158, 11, 0.5); border-radius: 24px;
+    animation: spinRing 8s linear infinite, popIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  .splash-img {
+    width: 85px; height: 85px; border-radius: 18px; border: 2px solid var(--gold); padding: 3px;
+    box-shadow: 0 0 30px rgba(245, 158, 11, 0.4); opacity: 0;
+    animation: logoZoomFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.2s;
+  }
+
+  .splash-img-shine {
+    position: absolute; inset: 0; border-radius: 18px; overflow: hidden; pointer-events: none;
+  }
+  .splash-img-shine::after {
+    content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent);
+    transform: rotate(45deg) translateX(-100%);
+    animation: flashShine 2.5s infinite cubic-bezier(0.4, 0, 0.2, 1) 0.8s;
+  }
+
+  .splash-title-wrap { overflow: hidden; padding-bottom: 5px; }
+  .splash-title {
+    color: var(--text); font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800;
+    text-shadow: 0 4px 20px rgba(245, 158, 11, 0.6); transform: translateY(100%); opacity: 0;
+    animation: revealText 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.6s;
+  }
+
+  .splash-sub {
+    color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 4px; margin-top: 8px; opacity: 0;
+    animation: fadeSub 1s ease forwards 1s;
+  }
+
+  @keyframes spinRing { 100% { transform: rotate(360deg); } }
+  @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes logoZoomFade { 0% { transform: scale(0.5); opacity: 0; filter: blur(5px); } 100% { transform: scale(1); opacity: 1; filter: blur(0); } }
+  @keyframes flashShine { 0% { transform: rotate(45deg) translateX(-100%); } 100% { transform: rotate(45deg) translateX(100%); } }
+  @keyframes revealText { 0% { transform: translateY(100%); opacity: 0; letter-spacing: 12px; } 100% { transform: translateY(0); opacity: 1; letter-spacing: 3px; } }
+  @keyframes fadeSub { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
 </style>
 
 <script>
@@ -1568,14 +1684,33 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 });
 
-// SCRIPT SPLASH SCREEN
+// SCRIPT SPLASH SCREEN V3 (ULTIMATE)
 window.addEventListener('load', () => {
+  // Buat partikel debu emas berterbangan acak
+  const pContainer = document.getElementById('splash-particles');
+  if (pContainer) {
+    for (let i = 0; i < 15; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.top = Math.random() * 100 + '%';
+      p.style.width = Math.random() * 4 + 2 + 'px';
+      p.style.height = p.style.width;
+      p.style.animationDelay = Math.random() * 2 + 's';
+      p.style.animationDuration = Math.random() * 2 + 2 + 's';
+      pContainer.appendChild(p);
+    }
+  }
+
+  // Durasi sebelum transisi 'Dive-In' (zoom maju) dimulai
   setTimeout(() => {
     const splash = document.getElementById('splash-screen');
     if (splash) {
-      splash.classList.add('hidden');
+      splash.classList.add('splash-exit');
+      // Hapus div splash dari web setelah animasi selesai biar gak numpuk
+      setTimeout(() => splash.remove(), 800);
     }
-  }, 2200); 
+  }, 3000); 
 });
 </script>
 </body>
