@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
@@ -6,6 +7,10 @@
 <title>Arus Keuangan | RHN CAPITAL</title>
 
 <link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RHN CAPITAL">
 <meta name="theme-color" content="#050505">
 <link rel="apple-touch-icon" href="RHN LOGO.jpg">
 
@@ -128,12 +133,12 @@ body {
   flex: 1; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
   padding: 4px 12px 4px 4px; display: flex; align-items: center; justify-content: space-between;
 }
-.user-pill-left { display: flex; align-items: center; gap: 10px; }
+.user-pill-left { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; overflow: hidden; }
 .u-avatar {
   width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--gold);
-  display: flex; align-items: center; justify-content: center; color: var(--gold); font-weight: 700; font-size: 12px;
+  display: flex; align-items: center; justify-content: center; color: var(--gold); font-weight: 700; font-size: 12px; flex-shrink: 0;
 }
-.u-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.u-name { font-size: 12px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 4px; flex-wrap: nowrap; overflow: hidden; white-space: nowrap; max-width: 140px;}
 
 .user-action-wrap { display: flex; gap: 6px; padding-right: 4px; align-items: center; }
 .setting-btn { background: transparent; border: 1px solid var(--border2); color: var(--text3); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; padding: 0; }
@@ -209,6 +214,16 @@ body {
 .f-input-dark:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15); }
 .f-input-dark::placeholder { color: var(--text3); }
 
+/* Menghilangkan panah (spinner) pada input number di seluruh browser */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 select.f-input-dark {
   background-image: url('data:image/svg+xml;utf8,<svg fill="%23888899" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
   background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; cursor: pointer;
@@ -232,7 +247,7 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
   font-size: 18px; font-weight: 800; background: var(--bg3); margin-right: 12px; flex-shrink: 0;
 }
 .ri-icon.inc { color: var(--green2); } .ri-icon.exp { color: var(--red2); }
-.ri-left { display: flex; align-items: center; flex: 1; }
+.ri-left { display: flex; align-items: center; flex: 1; min-width: 0; }
 
 .ri-note { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; line-height: 1.4; }
 .ri-meta { font-size: 11px; font-weight: 500; color: var(--text3); }
@@ -249,7 +264,7 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
 .del-btn-recent:hover { background: var(--red2); color: #fff; box-shadow: 0 4px 12px rgba(248, 113, 113, 0.4); }
 
 .export-btn { background: var(--text); color: var(--bg); padding: 16px 24px; border: none; border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; flex-shrink: 0; white-space: nowrap; }
-.action-btns { display: flex; gap: 8px; margin-top: 4px; align-items: center; justify-content: flex-end; }
+.action-btns { display: flex; gap: 8px; margin-top: 4px; align-items: center; justify-content: flex-end; flex-wrap: wrap;}
 
 /* KALKULATOR MATA UANG */
 .calc-curr-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; cursor: pointer; border-radius: 12px; transition: 0.2s; margin-bottom: 4px; border: 1px solid transparent; }
@@ -302,7 +317,7 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
 .period-bar { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: 20px; padding-bottom: 8px; }
 .p-btn { padding: 10px 20px; border: 1px solid var(--border); border-radius: 100px; font-size: 11px; font-weight: 700; cursor: pointer; background: var(--bg2); color: var(--text3); white-space: nowrap; }
 .p-btn.active { border-color: var(--text); color: var(--text); background: var(--bg); }
-.filter-bar { display: flex; gap: 16px; width: 100%; margin-bottom: 24px; align-items: center; }
+.filter-bar { display: flex; gap: 16px; width: 100%; margin-bottom: 24px; align-items: center; flex-wrap: wrap; }
 .filter-bar select.f-input-dark { width: 250px; flex-shrink: 0; }
 .filter-bar input.f-input-dark { flex: 1; }
 
@@ -347,17 +362,21 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
   .card-head, .form-row, .filter-bar, .chart-wrap, .period-bar { padding-left: 16px !important; padding-right: 16px !important; }
   
   .filter-bar { flex-direction: column; } 
-  .export-btn { width: 100%; text-align: center; border-radius: 16px; padding: 18px 16px; }
+  .export-btn { width: 100%; text-align: center; border-radius: 16px; padding: 18px 16px; margin-left: 0 !important; margin-top: 8px;}
   
   .type-toggle, .submit-btn { width: calc(100% - 32px) !important; margin-left: 16px !important; margin-right: 16px !important; }
   .filter-bar select.f-input-dark, .filter-bar input.f-input-dark { width: 100%; border-radius: 16px; }
   .f-input-dark { padding: 18px 16px; font-size: 15px; border-radius: 16px; }
   
   .list-wrap { padding: 0 !important; margin: 0 !important; width: 100%; }
-  .recent-item { width: 100% !important; margin: 0 0 12px 0 !important; padding: 16px 16px !important; border-radius: 24px !important; border-left: none !important; border-right: none !important; background: var(--card); flex-direction: row; justify-content: space-between; align-items: center; }
-  .ri-right-wrap { margin-left: 0; align-items: flex-end; }
-  .del-btn-recent, .edit-btn-recent { margin-top: 0px; }
-  .cat-badge { display: inline-block !important; }
+  .recent-item { width: 100% !important; margin: 0 0 12px 0 !important; padding: 12px 16px !important; border-radius: 24px !important; border-left: none !important; border-right: none !important; background: var(--card); flex-direction: row; justify-content: space-between; align-items: center; }
+  .ri-right-wrap { margin-left: 8px !important; align-items: flex-end; flex-shrink: 0; max-width: 55%; }
+  .action-btns { flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; justify-content: flex-end; width: 100%; }
+  .action-btns::-webkit-scrollbar { display: none; }
+  .del-btn-recent, .edit-btn-recent { margin-top: 0px !important; padding: 4px 8px !important; font-size: 8px !important; flex-shrink: 0; }
+  .cat-badge, .wallet-badge { font-size: 7px; padding: 2px 4px; display: inline-block !important; }
+  .u-name { max-width: 90px; }
+  .user-pill { padding: 4px; }
 
   .set-group { border-radius: 0; border-left: none; border-right: none; padding: 20px 16px; }
   .logout-btn { padding: 0 8px; font-size: 9px; height: 28px; }
@@ -375,7 +394,6 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
   .panel { display: grid; grid-template-columns: 380px 1fr; gap: 24px; align-items: start; }
   .main, .header-area, .nav { max-width: 1200px; margin: 0 auto; }
   
-  /* PERBAIKAN: Rata Tengah Khusus Laptop untuk Info USD, XAU, & Tersinkron */
   .status-row { 
       justify-content: center; 
       align-items: center; 
@@ -401,114 +419,119 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
 body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, body.hide-usd .usd-status-pill { display: none !important; }
 
 /* ==========================================================================
-   SPLASH SCREEN V4: ULTRA PREMIUM MASTERPIECE (ANTI-STUCK)
+   🌟 SPLASH SCREEN V6
    ========================================================================== */
 #splash-screen {
-  position: fixed; inset: 0;
-  background: radial-gradient(circle at center, #1a1a24 0%, #050505 100%);
-  z-index: 999999; display: flex; align-items: center; justify-content: center; overflow: hidden;
+  position: fixed; inset: 0; background: #050505; z-index: 999999;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
 }
 
-#splash-screen::before {
-  content: ""; position: absolute; inset: 0;
-  background: radial-gradient(circle at center, rgba(251, 191, 36, 0.05) 0%, transparent 70%);
-  animation: pulseBg 3s ease-in-out infinite alternate;
+.splash-bg-grid {
+  position: absolute; inset: 0;
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(251, 191, 36, 0.03) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(251, 191, 36, 0.03) 1px, transparent 1px);
+  animation: gridMove 10s linear infinite;
 }
-@keyframes pulseBg { 0% { opacity: 0.5; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
-
-#splash-screen.splash-exit { animation: cinematicExit 1s cubic-bezier(0.8, 0, 0.2, 1) forwards; }
-@keyframes cinematicExit {
-  0% { transform: scale(1); opacity: 1; filter: blur(0) brightness(1); }
-  40% { transform: scale(0.95); opacity: 1; filter: blur(2px) brightness(1.2); }
-  100% { transform: scale(1.5); opacity: 0; filter: blur(15px) brightness(0); visibility: hidden; }
+@keyframes gridMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(40px); }
 }
 
-.splash-particles { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
-.particle {
-  position: absolute; background: var(--gold); border-radius: 50%;
-  box-shadow: 0 0 15px var(--gold), 0 0 30px var(--gold); opacity: 0;
-  animation: floatParticlePremium 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+#splash-screen.splash-exit {
+  animation: exitSplash 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-@keyframes floatParticlePremium {
-  0% { transform: translateY(20px) scale(0); opacity: 0; }
-  50% { opacity: 0.8; transform: translateY(-30px) scale(1.2); }
-  100% { transform: translateY(-80px) scale(0); opacity: 0; }
+@keyframes exitSplash {
+  0% { opacity: 1; transform: scale(1); filter: blur(0); }
+  100% { opacity: 0; transform: scale(1.05); filter: blur(10px); visibility: hidden; }
 }
 
-.splash-content {
-  position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center;
-  padding: 40px; border-radius: 32px; backdrop-filter: blur(10px);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.03);
-  background: rgba(18, 18, 21, 0.4);
+.splash-glass-panel {
+  position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 40px 60px; background: rgba(18, 18, 21, 0.6);
+  border: 1px solid rgba(251, 191, 36, 0.1); border-radius: 32px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px); text-align: center;
+  transform: translateY(20px); opacity: 0;
+  animation: panelUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
+}
+@keyframes panelUp {
+  to { transform: translateY(0); opacity: 1; }
 }
 
-.splash-logo-box { position: relative; width: 120px; height: 120px; margin-bottom: 24px; display: flex; align-items: center; justify-content: center; }
-
-.splash-ring {
-  position: absolute; inset: -8px; border: 2px solid transparent;
-  border-top-color: var(--gold); border-bottom-color: var(--gold);
-  border-radius: 50%;
-  animation: spinRingSmooth 4s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+.splash-logo-container { position: relative; margin-bottom: 24px; }
+.splash-img-new {
+  width: 80px; height: 80px; border-radius: 20px;
+  border: 2px solid rgba(251, 191, 36, 0.8); padding: 4px;
+  opacity: 0; transform: scale(0.8);
+  animation: logoFlipSimple 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.5s;
 }
-.splash-ring-inner {
-  position: absolute; inset: -2px; border: 1px dashed rgba(245, 158, 11, 0.4); border-radius: 50%;
-  animation: spinRingReverse 6s linear infinite;
+@keyframes logoFlipSimple {
+  to { opacity: 1; transform: scale(1); }
 }
 
-.splash-img {
-  width: 96px; height: 96px; border-radius: 24px; border: 2px solid var(--gold); padding: 4px;
-  box-shadow: 0 0 40px rgba(245, 158, 11, 0.3), inset 0 0 20px rgba(245, 158, 11, 0.2);
-  opacity: 0; transform: translateY(20px) scale(0.8);
-  animation: elegantLogoReveal 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.3s;
+.splash-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 100px; height: 100px; background: rgba(251, 191, 36, 0.4);
+  border-radius: 50%; filter: blur(20px); opacity: 0; z-index: -1;
+  animation: pulseGlowNew 2s infinite alternate 1s;
+}
+@keyframes pulseGlowNew {
+  from { opacity: 0.3; transform: translate(-50%, -50%) scale(0.8); }
+  to { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
 }
 
-.splash-img-shine { position: absolute; inset: 0; border-radius: 24px; overflow: hidden; pointer-events: none; z-index: 5; }
-.splash-img-shine::after {
-  content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-  background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
-  transform: rotate(45deg) translateX(-100%);
-  animation: flashShinePremium 3s infinite cubic-bezier(0.4, 0, 0.2, 1) 1.5s;
+.splash-text-mask { display: flex; justify-content: center; width: 100%; padding-bottom: 4px; margin-bottom: 8px; }
+.splash-title-new {
+  font-size: 32px; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;
+  letter-spacing: 4px; text-align: center;
+  background: linear-gradient(90deg, #fff 0%, var(--gold) 50%, #fff 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  opacity: 0; transform: scale(0.9);
+  animation: titleFadeScale 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.8s;
+}
+@keyframes titleFadeScale { to { opacity: 1; transform: scale(1); } }
+
+.splash-subtitle-new {
+  font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 6px;
+  opacity: 0; text-transform: uppercase; text-align: center; width: 100%;
+  animation: fadeSub 0.8s ease forwards 1.2s;
+}
+@keyframes fadeSub { to { opacity: 1; } }
+
+.splash-loader {
+  width: 100%; height: 3px; background: rgba(255,255,255,0.1);
+  border-radius: 4px; margin-top: 30px; overflow: hidden; position: relative;
+}
+.splash-loader-bar {
+  position: absolute; top: 0; left: 0; height: 100%; background: var(--gold);
+  width: 0%; border-radius: 4px;
+  animation: loadBar 2s cubic-bezier(0.7, 0, 0.3, 1) forwards 0.5s;
+}
+@keyframes loadBar {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
 }
 
-.splash-title-wrap { overflow: hidden; padding-bottom: 5px; position: relative; }
-.splash-title {
-  color: var(--text); font-family: 'Outfit', sans-serif; font-size: 32px; font-weight: 800;
-  text-shadow: 0 4px 30px rgba(245, 158, 11, 0.8); background: linear-gradient(to right, #fff, #FBBF24, #fff);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto;
-  transform: translateY(100%); opacity: 0;
-  animation: revealTextPremium 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.8s, shimmerText 3s linear infinite 2s;
-}
-
-.splash-sub {
-  color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: 6px; margin-top: 8px; opacity: 0;
-  text-transform: uppercase;
-  animation: fadeSubPremium 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 1.4s;
-}
-
-@keyframes spinRingSmooth { 0% { transform: rotate(0deg) scale(0.8); opacity: 0; } 20% { opacity: 1; transform: rotate(72deg) scale(1.05); } 80% { transform: rotate(288deg) scale(0.95); } 100% { transform: rotate(360deg) scale(1); opacity: 0; } }
-@keyframes spinRingReverse { 100% { transform: rotate(-360deg); } }
-@keyframes elegantLogoReveal { 0% { transform: translateY(30px) scale(0.8); opacity: 0; filter: blur(10px); } 100% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); } }
-@keyframes flashShinePremium { 0% { transform: rotate(45deg) translateX(-100%); opacity: 0; } 20% { opacity: 1; } 80% { transform: rotate(45deg) translateX(100%); opacity: 0; } 100% { opacity: 0; } }
-@keyframes revealTextPremium { 0% { transform: translateY(100%); opacity: 0; letter-spacing: 20px; filter: blur(5px); } 100% { transform: translateY(0); opacity: 1; letter-spacing: 4px; filter: blur(0); } }
-@keyframes shimmerText { to { background-position: 200% center; } }
-@keyframes fadeSubPremium { 0% { opacity: 0; transform: translateY(15px); letter-spacing: 12px; } 100% { opacity: 1; transform: translateY(0); letter-spacing: 6px; } }
 </style>
 </head>
 <body>
 
 <div id="splash-screen">
-  <div class="splash-particles" id="splash-particles"></div>
-  <div class="splash-content">
-    <div class="splash-logo-box">
-      <div class="splash-ring"></div>
-      <div class="splash-ring-inner"></div>
-      <img src="RHN LOGO.jpg" alt="RHN Capital Logo" class="splash-img">
-      <div class="splash-img-shine"></div>
+  <div class="splash-bg-grid"></div>
+  <div class="splash-glass-panel">
+    <div class="splash-logo-container">
+      <img src="RHN LOGO.jpg" alt="RHN Capital Logo" class="splash-img-new">
+      <div class="splash-glow"></div>
     </div>
-    <div class="splash-title-wrap">
-      <div class="splash-title">RHN CAPITAL</div>
+    <div class="splash-text-mask">
+      <div class="splash-title-new">RHN CAPITAL</div>
     </div>
-    <div class="splash-sub">ARUS KEUANGAN</div>
+    <div class="splash-subtitle-new">ARUS KEUANGAN</div>
+    <div class="splash-loader">
+      <div class="splash-loader-bar"></div>
+    </div>
   </div>
 </div>
 
@@ -601,7 +624,10 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
     <div class="user-pill">
       <div class="user-pill-left">
         <div class="u-avatar" id="user-avatar">?</div>
-        <div class="u-name" id="user-name">Memuat...</div>
+        <div class="u-name">
+          <span id="user-name">Memuat...</span>
+          <span id="user-transfer-info" style="font-size: 8px; font-weight: 800; color: var(--bg); background: var(--gold); padding: 2px 4px; border-radius: 4px; margin-left: 4px; flex-shrink: 0; display: none; letter-spacing: 0.5px;">Memuat...</span>
+        </div>
       </div>
       <div class="user-action-wrap">
         <button class="setting-btn" onclick="switchPage('pengaturan')" title="Pengaturan">
@@ -776,6 +802,7 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
       </select>
       <input type="text" id="flt-search" class="f-input-dark" placeholder="Cari berdasarkan keterangan atau kategori..." oninput="renderAll()">
       <button class="export-btn" onclick="exportCSV()">UNDUH CSV 📥</button>
+      <button class="export-btn" onclick="window.promptTransferAll()" style="background:var(--blue); color:#fff; margin-left:8px;">TRANSFER SEMUA 🚀</button>
     </div>
     <div class="chart-wrap" style="margin-top: 16px;">
       <div class="chart-legend">
@@ -1050,7 +1077,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app); 
 const db = initializeFirestore(app, { localCache: persistentLocalCache() });
 
-// KATEGORI DIPERBANYAK
+// KATEGORI
 const CATS = { 
   income: ['Gaji', 'Hasil Trading', 'Bonus / THR', 'Penjualan', 'Pendapatan Lainnya', 'Pemberian', 'Investasi', 'Ongkos Harian', 'Dividen', 'Profit', 'Transfer Masuk', 'Lainnya'], 
   expense: ['Makan & Minum', 'Transportasi', 'Tagihan', 'Belanja Bulanan', 'Cicilan', 'Hiburan / Nongkrong', 'Sedekah / Donasi', 'Jajan', 'Pembelian Aset(Investasi)', 'Infak', 'Kas', 'Utilitas', 'Loss', 'Pengeluaran Lainnya', 'Lainnya'],
@@ -1068,11 +1095,123 @@ let extraPrefs = {
     ext_hidezero: 'off', ext_walletpct: 'off', ext_debtbadge: 'off', ext_antiintip: 'off'
 };
 
-// FORMAT MILYARAN (TIDAK BOCOR, PRESISI 3 DESIMAL)
-const fmtFull = n => {
-    if (Math.abs(n) >= 1000000000) {
-        return 'Rp ' + (n / 1000000000).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 3 }) + ' M';
+// ==============================================================
+// INISIALISASI FUNGSI TRANSFER (VERSI 3 ANGKA MURNI)
+// ==============================================================
+window.initTransferAccount = async function() {
+    if (!currentUser) return;
+    const infoEl = document.getElementById('user-transfer-info');
+    
+    try {
+        const trRef = doc(db, 'users', currentUser.uid, 'settings', 'transfer');
+        const trSnap = await getDoc(trRef);
+        let tCode;
+
+        if (!trSnap.exists() || !trSnap.data().transferCode || trSnap.data().transferCode.length !== 3) {
+            tCode = Math.floor(100 + Math.random() * 900).toString();
+            if (infoEl) {
+                infoEl.textContent = tCode;
+                infoEl.style.display = 'inline-block';
+            }
+            await setDoc(trRef, { transferCode: tCode }, { merge: true });
+            await setDoc(doc(db, 'transfer_registry', tCode), { uid: currentUser.uid }); 
+        } else {
+            tCode = trSnap.data().transferCode;
+            if (infoEl) {
+                infoEl.textContent = tCode;
+                infoEl.style.display = 'inline-block';
+            }
+        }
+    } catch (err) {
+        if (infoEl) {
+            infoEl.textContent = `⚠️ GAGAL MEMUAT KODE`;
+            infoEl.style.background = 'var(--red2)';
+            infoEl.style.color = '#fff';
+            infoEl.style.display = 'inline-block';
+        }
     }
+};
+
+window.promptTransfer = async function(txId) {
+    if (!currentUser) return;
+    const t = txs.find(x => x.id === txId);
+    if (!t) return;
+
+    const { value: targetCode } = await Swal.fire({
+        title: 'Transfer 1 Transaksi',
+        html: '<input id="swal-tcode" class="swal2-input" placeholder="Masukkan 3 Angka" maxlength="3" type="number" style="text-align:center; font-family:Outfit; font-weight:800; font-size:18px; letter-spacing:2px; max-width:100%; width:80%; margin:0 auto; display:block; box-sizing:border-box;">',
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'TRANSFER SEKARANG',
+        cancelButtonText: 'Batal',
+        background: 'var(--card)',
+        color: 'var(--text)',
+        confirmButtonColor: 'var(--blue)',
+        cancelButtonColor: 'var(--bg3)',
+        preConfirm: () => { return document.getElementById('swal-tcode').value }
+    });
+
+    if (targetCode) {
+        if (targetCode.length !== 3) return Swal.fire({icon:'error', title:'Harus 3 Angka!', background:'var(--card)', color:'var(--text)'});
+        window.executeTransfer([t], targetCode, true);
+    }
+};
+
+window.promptTransferAll = async function() {
+    if (!currentUser) return;
+    if (txs.length === 0) return Swal.fire({icon:'info', title:'Data Kosong!', background:'var(--card)', color:'var(--text)'});
+
+    const { value: targetCode } = await Swal.fire({
+        title: 'Transfer Semua Riwayat',
+        html: '<p style="font-size:12px; color:var(--text3); margin-bottom:16px;">Semua data akan dipindah ke akun tujuan dan dihapus dari akun ini.</p>' +
+              '<input id="swal-tcode-all" class="swal2-input" placeholder="Masukkan 3 Angka" maxlength="3" type="number" style="text-align:center; font-family:Outfit; font-weight:800; font-size:18px; letter-spacing:2px; max-width:100%; width:80%; margin:0 auto; display:block; box-sizing:border-box;">',
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'TRANSFER SEMUA',
+        cancelButtonText: 'Batal',
+        background: 'var(--card)',
+        color: 'var(--text)',
+        confirmButtonColor: 'var(--blue)',
+        cancelButtonColor: 'var(--bg3)',
+        preConfirm: () => { return document.getElementById('swal-tcode-all').value }
+    });
+
+    if (targetCode) {
+        if (targetCode.length !== 3) return Swal.fire({icon:'error', title:'Harus 3 Angka!', background:'var(--card)', color:'var(--text)'});
+        window.executeTransfer(txs, targetCode, false);
+    }
+};
+
+window.executeTransfer = async function(txList, targetCode, isSingle) {
+    Swal.fire({title: 'Memproses Transfer...', background:'var(--card)', color:'var(--text)', didOpen: () => {Swal.showLoading()}});
+
+    try {
+        const registryRef = doc(db, 'transfer_registry', targetCode);
+        const registrySnap = await getDoc(registryRef);
+
+        if (!registrySnap.exists()) {
+            return Swal.fire({icon:'error', title:'Transfer Gagal', text:'Kode 3 Angka tidak ditemukan! Pastikan akun tujuan buka aplikasinya.', background:'var(--card)', color:'var(--text)'});
+        }
+        const targetUid = registrySnap.data().uid;
+        if (targetUid === currentUser.uid) {
+            return Swal.fire({icon:'warning', title:'Gagal', text:'Nggak bisa transfer ke akun lu sendiri bro!', background:'var(--card)', color:'var(--text)'});
+        }
+        for (let t of txList) {
+            let payload = { ...t };
+            delete payload.id; 
+            payload.createdAt = serverTimestamp(); 
+            await addDoc(collection(db, 'users', targetUid, 'transactions'), payload);
+            await deleteDoc(doc(db, 'users', currentUser.uid, 'transactions', t.id));
+        }
+        Swal.fire({icon:'success', title:'Transfer Berhasil!', text: isSingle ? '1 transaksi dipindahkan.' : `${txList.length} transaksi dipindahkan.`, background:'var(--card)', color:'var(--text)'});
+    } catch(e) {
+        Swal.fire({icon:'error', title:'Error Sistem', text: "Gagal (Cek Rules Firebase): " + e.message, background:'var(--card)', color:'var(--text)'});
+    }
+};
+// ==============================================================
+
+const fmtFull = n => {
+    if (Math.abs(n) >= 1000000000) return 'Rp ' + (n / 1000000000).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 3 }) + ' M';
     return 'Rp ' + Math.round(n).toLocaleString('id-ID');
 };
 
@@ -1091,22 +1230,18 @@ const nowISO = () => new Date().toISOString().slice(0,16);
 const kursIndo = new Intl.NumberFormat('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const getUSD = n => '$' + (n / currentUSDRate).toFixed(2);
 
-// LIVE BINANCE
 function initLiveCurrencies() {
   const socket = new WebSocket('wss://stream.binance.com:9443/stream?streams=usdtidr@ticker/eurusdt@ticker/gbpusdt@ticker/audusdt@ticker/brlusdt@ticker/tryusdt@ticker');
   socket.addEventListener('message', e => { 
       const msg = JSON.parse(e.data); 
       const stream = msg.stream; 
       const price = parseFloat(msg.data.c); 
-      
       if (!price) return;
-      
       if (stream === 'usdtidr@ticker') { 
           if (price !== currentUSDRate) { 
               currentUSDRate = price; 
               const usdEl = document.getElementById('usd-rate-val'); 
               if (usdEl) usdEl.textContent = kursIndo.format(currentUSDRate); 
-              
               if (calcRates) { 
                   calcRates['IDR'] = currentUSDRate; 
                   Object.keys(calcRates).forEach(code => { 
@@ -1118,17 +1253,11 @@ function initLiveCurrencies() {
               } 
               refreshAll(); 
           }
-      } else if (stream === 'eurusdt@ticker') { 
-          if (calcRates) calcRates['EUR'] = 1 / price; window.renderCalcDisplay();
-      } else if (stream === 'gbpusdt@ticker') { 
-          if (calcRates) calcRates['GBP'] = 1 / price; window.renderCalcDisplay();
-      } else if (stream === 'audusdt@ticker') { 
-          if (calcRates) calcRates['AUD'] = 1 / price; window.renderCalcDisplay();
-      } else if (stream === 'brlusdt@ticker') { 
-          if (calcRates) calcRates['BRL'] = 1 / price; window.renderCalcDisplay();
-      } else if (stream === 'tryusdt@ticker') { 
-          if (calcRates) calcRates['TRY'] = 1 / price; window.renderCalcDisplay(); 
-      }
+      } else if (stream === 'eurusdt@ticker') { if (calcRates) calcRates['EUR'] = 1 / price; window.renderCalcDisplay();
+      } else if (stream === 'gbpusdt@ticker') { if (calcRates) calcRates['GBP'] = 1 / price; window.renderCalcDisplay();
+      } else if (stream === 'audusdt@ticker') { if (calcRates) calcRates['AUD'] = 1 / price; window.renderCalcDisplay();
+      } else if (stream === 'brlusdt@ticker') { if (calcRates) calcRates['BRL'] = 1 / price; window.renderCalcDisplay();
+      } else if (stream === 'tryusdt@ticker') { if (calcRates) calcRates['TRY'] = 1 / price; window.renderCalcDisplay(); }
   });
   socket.addEventListener('close', () => setTimeout(initLiveCurrencies, 3000));
 }
@@ -1139,9 +1268,7 @@ async function fetchUSDRate() {
       currentUSDRate = (await res.json()).rates.IDR; 
       document.getElementById('usd-rate-val').textContent = kursIndo.format(currentUSDRate); 
       refreshAll(); 
-  } catch (e) { 
-      document.getElementById('usd-rate-val').textContent = "Offline"; 
-  } 
+  } catch (e) { document.getElementById('usd-rate-val').textContent = "Offline"; } 
 }
 fetchUSDRate().then(initLiveCurrencies); 
 setInterval(fetchUSDRate, 300000); 
@@ -1153,7 +1280,6 @@ function initLiveXAU() {
       if (newPrice) { 
           const xauRate = document.getElementById('xau-rate-val'); 
           if (xauRate) xauRate.textContent = '$' + newPrice.toFixed(2); 
-          
           if (currentUSDRate > 0) { 
               const idrPriceOz = newPrice * currentUSDRate; 
               const idrPriceGram = idrPriceOz / 31.1034768; 
@@ -1168,11 +1294,7 @@ function initLiveXAU() {
 }
 initLiveXAU();
 
-let calcRates = null; 
-let calcFromCode = 'USD'; 
-let calcToCode = 'IDR'; 
-let calcActiveRow = 'from'; 
-let calcInputVal = '100';
+let calcRates = null, calcFromCode = 'USD', calcToCode = 'IDR', calcActiveRow = 'from', calcInputVal = '100';
 
 const calcCurrencies = [ 
   { code: 'IDR', name: 'Rupiah Indonesia', flag: '🇮🇩' }, { code: 'USD', name: 'Dolar Amerika', flag: '🇺🇸' }, 
@@ -1196,22 +1318,17 @@ async function initCalc() {
       const now = new Date(); 
       document.getElementById('calc-last-update').textContent = `${now.toLocaleDateString('id-ID', { year:'numeric', month:'2-digit', day:'2-digit' }).replace(/\//g, '-')} ${now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' })}`; 
       window.renderCalcDisplay(); 
-  } catch (e) { 
-      document.getElementById('calc-last-update').textContent = "Offline / Gagal Memuat"; 
-  } 
+  } catch (e) { document.getElementById('calc-last-update').textContent = "Offline / Gagal Memuat"; } 
 }
 
 window.setCalcActiveRow = function(row) { 
   if (calcActiveRow === row) return; 
   if (navigator.vibrate) navigator.vibrate(15); 
-  
   let currentNum = parseFloat(calcInputVal || '0'); 
   let baseInUSD = currentNum / (calcActiveRow === 'from' ? calcRates[calcFromCode] : calcRates[calcToCode]); 
   let targetVal = baseInUSD * (row === 'from' ? calcRates[calcFromCode] : calcRates[calcToCode]); 
   let newValStr = targetVal.toString(); 
-  
   if(newValStr.includes('.')) newValStr = targetVal.toFixed(2).replace(/\.?0+$/, ''); 
-  
   calcInputVal = newValStr; 
   calcActiveRow = row; 
   window.renderCalcDisplay(); 
@@ -1225,1179 +1342,194 @@ window.changeCalcCurr = function(row, newCode) {
 
 window.swapCalcCurr = function() { 
   if (navigator.vibrate) navigator.vibrate(15); 
-  let tempCode = calcFromCode; 
-  calcFromCode = calcToCode; 
-  calcToCode = tempCode; 
+  let tempCode = calcFromCode; calcFromCode = calcToCode; calcToCode = tempCode; 
   calcActiveRow = calcActiveRow === 'from' ? 'to' : 'from'; 
   window.renderCalcDisplay(); 
 }
 
 window.openCurrencySelector = function(rId) { 
   let html = '<div style="display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto; padding-bottom:12px; scrollbar-width:none;">'; 
-  
   calcCurrencies.forEach(c => { 
       let isActive = (rId === 'from' && calcFromCode === c.code) || (rId === 'to' && calcToCode === c.code); 
       html += `<button onclick="changeCalcCurr('${rId}', '${c.code}'); Swal.close();" style="background:${isActive?'var(--bg3)':'var(--bg2)'}; color:var(--text); border:1px solid ${isActive?'var(--gold)':'var(--border)'}; padding:14px; border-radius:12px; font-family:'Outfit'; text-align:left; font-size:14px; font-weight:600; display:flex; align-items:center; gap:12px;"><span style="font-size:20px;">${c.flag}</span> ${c.code} - ${c.name}</button>`; 
   }); 
-  
   html += '</div>'; 
-  
-  Swal.fire({ 
-      title: '<div style="font-size:18px; text-align:left; font-weight:800; border-bottom:1px dashed var(--border); padding-bottom:12px; margin-bottom:8px;">Pilih Mata Uang</div>', 
-      html: html, 
-      showConfirmButton: false, 
-      background: 'var(--card)', 
-      color: 'var(--text)', 
-      position: 'center', 
-      padding: '24px 16px', 
-      margin:0, 
-      width: window.innerWidth <= 768 ? '90%' : '400px', 
-      customClass: { popup: 'centered-modal' } 
-  }); 
+  Swal.fire({ title: '<div style="font-size:18px; text-align:left; font-weight:800; border-bottom:1px dashed var(--border); padding-bottom:12px; margin-bottom:8px;">Pilih Mata Uang</div>', html: html, showConfirmButton: false, background: 'var(--card)', color: 'var(--text)', position: 'center', padding: '24px 16px', margin:0, width: window.innerWidth <= 768 ? '90%' : '400px', customClass: { popup: 'centered-modal' } }); 
 }
 
 window.calcPress = function(key) { 
   if (navigator.vibrate) navigator.vibrate(20); 
-  
-  if (key === 'AC') { 
-      calcInputVal = '0'; 
-  } else if (key === 'DEL') { 
-      calcInputVal = calcInputVal.slice(0, -1); 
-      if (calcInputVal === '') calcInputVal = '0'; 
-  } else if (key === '.') { 
-      if (!calcInputVal.includes('.')) calcInputVal += '.'; 
-  } else { 
-      if (calcInputVal === '0' && key !== '00') { 
-          calcInputVal = key; 
-      } else if (calcInputVal === '0' && key === '00') { 
-          // do nothing
-      } else { 
-          if(calcInputVal.replace('.', '').length < 15) { 
-              calcInputVal += key; 
-          } 
-      } 
-  } 
+  if (key === 'AC') { calcInputVal = '0'; } else if (key === 'DEL') { calcInputVal = calcInputVal.slice(0, -1); if (calcInputVal === '') calcInputVal = '0'; } else if (key === '.') { if (!calcInputVal.includes('.')) calcInputVal += '.'; } else { if (calcInputVal === '0' && key !== '00') { calcInputVal = key; } else if (calcInputVal === '0' && key === '00') { /* do nothing */ } else { if(calcInputVal.replace('.', '').length < 15) { calcInputVal += key; } } } 
   window.renderCalcDisplay(); 
 }
 
 function renderRow(rId, code, isAct, displayVal) { 
   let currObj = calcCurrencies.find(c => c.code === code) || {name:'', flag:''}; 
   let countryCode = code.slice(0, 2).toLowerCase(); 
-  
-  if (code === 'EUR') countryCode = 'eu'; 
-  if (code === 'GBP') countryCode = 'gb'; 
-  
+  if (code === 'EUR') countryCode = 'eu'; if (code === 'GBP') countryCode = 'gb'; 
   let flagImgHtml = `<img src="https://flagcdn.com/w40/${countryCode}.png" style="width:32px; height:22px; object-fit:cover; border-radius:4px; display:block; border:1px solid rgba(255,255,255,0.15);" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23888899\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9\'></path></svg>';">`; 
-  
   return `
   <div class="calc-curr-item ${isAct ? 'active' : ''}" onclick="setCalcActiveRow('${rId}')">
     <div class="calc-left">
       <div class="calc-flag" style="width:40px; justify-content:center;">${flagImgHtml}</div>
       <div class="calc-code-wrap">
-        <div class="calc-select" onclick="event.stopPropagation(); openCurrencySelector('${rId}')" style="display:flex; align-items:center; gap:8px;">
-          ${currObj.code} <span style="font-size:10px; color:var(--text3);">▼</span>
-        </div>
+        <div class="calc-select" onclick="event.stopPropagation(); openCurrencySelector('${rId}')" style="display:flex; align-items:center; gap:8px;">${currObj.code} <span style="font-size:10px; color:var(--text3);">▼</span></div>
         <div class="calc-name">${currObj.name}</div>
       </div>
     </div>
-    <div class="calc-right">
-      <div class="calc-amount">${displayVal}</div>
-    </div>
+    <div class="calc-right"><div class="calc-amount">${displayVal}</div></div>
   </div>`; 
 }
 
 window.renderCalcDisplay = function() { 
   const container = document.getElementById('calc-display'); 
   if (!container) return; 
-  
   let currentNum = parseFloat(calcInputVal || '0'); 
   let baseInUSD = 0; 
-  
-  if (calcRates) { 
-      calcRates['IDR'] = currentUSDRate; 
-      let activeCode = calcActiveRow === 'from' ? calcFromCode : calcToCode; 
-      if (calcRates[activeCode]) { 
-          baseInUSD = currentNum / calcRates[activeCode]; 
-      } 
-  } 
-  
+  if (calcRates) { calcRates['IDR'] = currentUSDRate; let activeCode = calcActiveRow === 'from' ? calcFromCode : calcToCode; if (calcRates[activeCode]) { baseInUSD = currentNum / calcRates[activeCode]; } } 
   let fromValStr = '0'; 
-  if (calcActiveRow === 'from') { 
-      let parts = calcInputVal.split('.'); 
-      let intPart = parts[0] ? parseInt(parts[0], 10).toLocaleString('id-ID') : '0'; 
-      fromValStr = parts.length > 1 ? `${intPart},${parts[1]}` : intPart; 
-  } else { 
-      if (calcRates && calcRates[calcFromCode]) { 
-          let val = baseInUSD * calcRates[calcFromCode]; 
-          fromValStr = val === 0 ? '0' : val.toLocaleString('id-ID', {minimumFractionDigits: 0, maximumFractionDigits: 4}); 
-      } else {
-          fromValStr = '...'; 
-      }
-  } 
-  
+  if (calcActiveRow === 'from') { let parts = calcInputVal.split('.'); let intPart = parts[0] ? parseInt(parts[0], 10).toLocaleString('id-ID') : '0'; fromValStr = parts.length > 1 ? `${intPart},${parts[1]}` : intPart; } else { if (calcRates && calcRates[calcFromCode]) { let val = baseInUSD * calcRates[calcFromCode]; fromValStr = val === 0 ? '0' : val.toLocaleString('id-ID', {minimumFractionDigits: 0, maximumFractionDigits: 4}); } else { fromValStr = '...'; } } 
   let toValStr = '0'; 
-  if (calcActiveRow === 'to') { 
-      let parts = calcInputVal.split('.'); 
-      let intPart = parts[0] ? parseInt(parts[0], 10).toLocaleString('id-ID') : '0'; 
-      toValStr = parts.length > 1 ? `${intPart},${parts[1]}` : intPart; 
-  } else { 
-      if (calcRates && calcRates[calcToCode]) { 
-          let val = baseInUSD * calcRates[calcToCode]; 
-          toValStr = val === 0 ? '0' : val.toLocaleString('id-ID', {minimumFractionDigits: 0, maximumFractionDigits: 4}); 
-      } else {
-          toValStr = '...'; 
-      }
-  } 
-  
+  if (calcActiveRow === 'to') { let parts = calcInputVal.split('.'); let intPart = parts[0] ? parseInt(parts[0], 10).toLocaleString('id-ID') : '0'; toValStr = parts.length > 1 ? `${intPart},${parts[1]}` : intPart; } else { if (calcRates && calcRates[calcToCode]) { let val = baseInUSD * calcRates[calcToCode]; toValStr = val === 0 ? '0' : val.toLocaleString('id-ID', {minimumFractionDigits: 0, maximumFractionDigits: 4}); } else { toValStr = '...'; } } 
   const cacheKey = `${calcFromCode}_${calcToCode}_${calcActiveRow}`; 
   if (container.dataset.cacheKey !== cacheKey || !container.innerHTML.trim()) { 
-      container.innerHTML = 
-          renderRow('from', calcFromCode, calcActiveRow === 'from', fromValStr) + 
-          `<div style="display:flex; justify-content:center; margin: -16px 0; position: relative; z-index: 10;">
-             <button class="swap-btn" onclick="event.stopPropagation(); swapCalcCurr()" title="Tukar Mata Uang">⇅</button>
-           </div>` + 
-          renderRow('to', calcToCode, calcActiveRow === 'to', toValStr); 
+      container.innerHTML = renderRow('from', calcFromCode, calcActiveRow === 'from', fromValStr) + `<div style="display:flex; justify-content:center; margin: -16px 0; position: relative; z-index: 10;"><button class="swap-btn" onclick="event.stopPropagation(); swapCalcCurr()" title="Tukar Mata Uang">⇅</button></div>` + renderRow('to', calcToCode, calcActiveRow === 'to', toValStr); 
       container.dataset.cacheKey = cacheKey; 
   } else { 
-      const fromAmtEl = container.querySelector('.calc-curr-item:first-child .calc-amount'); 
-      const toAmtEl = container.querySelector('.calc-curr-item:last-child .calc-amount'); 
-      if (fromAmtEl) fromAmtEl.textContent = fromValStr; 
-      if (toAmtEl) toAmtEl.textContent = toValStr; 
+      const fromAmtEl = container.querySelector('.calc-curr-item:first-child .calc-amount'); const toAmtEl = container.querySelector('.calc-curr-item:last-child .calc-amount'); 
+      if (fromAmtEl) fromAmtEl.textContent = fromValStr; if (toAmtEl) toAmtEl.textContent = toValStr; 
   } 
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     initCalc();
-    
-    const syncSelectUI = (sel, ui) => { 
-        let text = sel.options[sel.selectedIndex]?.text; 
-        if(!text && sel.options.length > 0) text = sel.options[0].text; 
-        ui.querySelector('.sel-text').innerHTML = text || 'Pilih...'; 
-    };
-    
+    const syncSelectUI = (sel, ui) => { let text = sel.options[sel.selectedIndex]?.text; if(!text && sel.options.length > 0) text = sel.options[0].text; ui.querySelector('.sel-text').innerHTML = text || 'Pilih...'; };
     document.querySelectorAll('select.f-input-dark, select.set-select').forEach(sel => { 
-        sel.style.display = 'none'; 
-        let ui = document.createElement('div'); 
-        ui.className = sel.className; 
-        ui.style.display = 'flex'; 
-        ui.style.justifyContent = 'space-between'; 
-        ui.style.alignItems = 'center'; 
-        ui.style.cursor = 'pointer'; 
-        ui.innerHTML = `<span class="sel-text" style="pointer-events:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:90%;"></span><span style="font-size:10px; color:var(--text3); pointer-events:none;">▼</span>`; 
-        sel.parentNode.insertBefore(ui, sel); 
-        
-        syncSelectUI(sel, ui); 
-        sel.addEventListener('change', () => syncSelectUI(sel, ui)); 
-        
-        const observer = new MutationObserver(() => syncSelectUI(sel, ui)); 
-        observer.observe(sel, { childList: true, subtree: true }); 
-        
-        ui.addEventListener('click', (e) => { 
-            e.stopPropagation(); 
-            if (navigator.vibrate) navigator.vibrate(10); 
-            
-            let html = '<div style="display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto; padding-bottom:12px; scrollbar-width:none;">'; 
-            Array.from(sel.options).forEach((opt, idx) => { 
-                if(!opt.value && opt.text.toLowerCase().includes('pilih')) return; 
-                let isSel = sel.value === opt.value; 
-                html += `<button onclick="window.selectCustomOpt('${sel.id}', ${idx})" style="background:${isSel?'var(--bg3)':'var(--bg2)'}; color:var(--text); border:1px solid ${isSel?'var(--gold)':'var(--border)'}; padding:16px; border-radius:12px; font-family:'Outfit'; text-align:left; font-size:14px; font-weight:600; cursor:pointer; transition:0.2s;">${opt.innerHTML || opt.text}</button>`; 
-            }); 
-            html += '</div>'; 
-            
-            Swal.fire({ 
-                title: '<div style="font-size:16px; text-align:left; font-weight:800; color:var(--text); border-bottom: 1px dashed var(--border); padding-bottom: 12px; margin-bottom: 8px;">Pilih Opsi</div>', 
-                html: html, 
-                showConfirmButton: false, 
-                background: 'var(--card)', 
-                color: 'var(--text)', 
-                position: 'center', 
-                padding: '24px 16px 16px 16px', 
-                margin:0, 
-                width: window.innerWidth <= 768 ? '90%' : '400px', 
-                customClass: { popup: 'centered-modal' } 
-            }); 
-        }); 
+        sel.style.display = 'none'; let ui = document.createElement('div'); ui.className = sel.className; ui.style.display = 'flex'; ui.style.justifyContent = 'space-between'; ui.style.alignItems = 'center'; ui.style.cursor = 'pointer'; ui.innerHTML = `<span class="sel-text" style="pointer-events:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:90%;"></span><span style="font-size:10px; color:var(--text3); pointer-events:none;">▼</span>`; sel.parentNode.insertBefore(ui, sel); syncSelectUI(sel, ui); sel.addEventListener('change', () => syncSelectUI(sel, ui)); const observer = new MutationObserver(() => syncSelectUI(sel, ui)); observer.observe(sel, { childList: true, subtree: true }); ui.addEventListener('click', (e) => { e.stopPropagation(); if (navigator.vibrate) navigator.vibrate(10); let html = '<div style="display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto; padding-bottom:12px; scrollbar-width:none;">'; Array.from(sel.options).forEach((opt, idx) => { if(!opt.value && opt.text.toLowerCase().includes('pilih')) return; let isSel = sel.value === opt.value; html += `<button onclick="window.selectCustomOpt('${sel.id}', ${idx})" style="background:${isSel?'var(--bg3)':'var(--bg2)'}; color:var(--text); border:1px solid ${isSel?'var(--gold)':'var(--border)'}; padding:16px; border-radius:12px; font-family:'Outfit'; text-align:left; font-size:14px; font-weight:600; cursor:pointer; transition:0.2s;">${opt.innerHTML || opt.text}</button>`; }); html += '</div>'; Swal.fire({ title: '<div style="font-size:16px; text-align:left; font-weight:800; color:var(--text); border-bottom: 1px dashed var(--border); padding-bottom: 12px; margin-bottom: 8px;">Pilih Opsi</div>', html: html, showConfirmButton: false, background: 'var(--card)', color: 'var(--text)', position: 'center', padding: '24px 16px 16px 16px', margin:0, width: window.innerWidth <= 768 ? '90%' : '400px', customClass: { popup: 'centered-modal' } }); }); 
     });
-    
-    window.selectCustomOpt = function(selId, optIdx) { 
-        let sel = document.getElementById(selId); 
-        if (sel) { 
-            sel.selectedIndex = optIdx; 
-            sel.dispatchEvent(new Event('change')); 
-            if(sel.onchange) sel.onchange(); 
-        } 
-        Swal.close(); 
-    };
+    window.selectCustomOpt = function(selId, optIdx) { let sel = document.getElementById(selId); if (sel) { sel.selectedIndex = optIdx; sel.dispatchEvent(new Event('change')); if(sel.onchange) sel.onchange(); } Swal.close(); };
 });
 
-function showErr(msg) { 
-    const el = document.getElementById('auth-err'); 
-    el.textContent = msg; 
-    el.style.display = 'block'; 
-}
+function showErr(msg) { const el = document.getElementById('auth-err'); el.textContent = msg; el.style.display = 'block'; }
+function hideErr() { document.getElementById('auth-err').style.display = 'none'; }
+function setLoading(on) { document.getElementById('auth-submit-btn').disabled = on; document.getElementById('auth-submit-btn').textContent = on ? 'Memproses...' : (authMode === 'login' ? 'MASUK' : 'DAFTAR'); }
+function setSyncStatus(ok) { document.getElementById('sync-dot').style.background = ok ? 'var(--green2)' : 'var(--red2)'; document.getElementById('sync-label').textContent = ok ? 'TERSINKRON' : 'OFFLINE'; document.getElementById('sync-dot').style.boxShadow = ok ? '0 0 8px var(--green2)' : 'none'; }
 
-function hideErr() { 
-    document.getElementById('auth-err').style.display = 'none'; 
-}
+window.switchTab = function(mode) { authMode = mode; document.getElementById('tab-login').classList.toggle('active', mode === 'login'); document.getElementById('tab-register').classList.toggle('active', mode === 'register'); document.getElementById('field-confirm').style.display = mode === 'register' ? 'block' : 'none'; document.getElementById('auth-submit-btn').textContent = mode === 'login' ? 'MASUK' : 'DAFTAR'; hideErr(); };
+window.doGoogleAuth = async function() { const provider = new GoogleAuthProvider(); hideErr(); setLoading(true); try { await signInWithPopup(auth, provider); } catch(e) { showErr(e.message); setLoading(false); } };
+window.doAuth = async function() { const email = document.getElementById('auth-email').value.trim(); const pass = document.getElementById('auth-pass').value; hideErr(); if (!email || !pass) return showErr('Kredensial kosong.'); setLoading(true); try { if (authMode === 'login') { await signInWithEmailAndPassword(auth, email, pass); } else { if (pass !== document.getElementById('auth-pass2').value) return showErr('Sandi beda.'); await createUserWithEmailAndPassword(auth, email, pass); } } catch(e) { showErr(e.message); setLoading(false); } };
+window.doResetPassword = async function() { const email = document.getElementById('auth-email').value.trim(); hideErr(); if (!email) { return showErr('Masukkan email kamu dulu di kolom atas untuk reset sandi.'); } setLoading(true); document.getElementById('auth-submit-btn').textContent = 'MENGIRIM...'; try { await sendPasswordResetEmail(auth, email); Swal.fire({ position: 'center', icon: 'success', title: 'Email Terkirim!', html: 'Cek <b>Inbox</b> atau folder <b>SPAM</b> email kamu.', showConfirmButton: true, background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' }); } catch(e) { showErr(e.message); } setLoading(false); document.getElementById('auth-submit-btn').textContent = authMode === 'login' ? 'MASUK' : 'DAFTAR'; };
+window.reqResetPasswordViaSettings = async function() { if (!currentUser) return; try { await sendPasswordResetEmail(auth, currentUser.email); Swal.fire({ position: 'center', icon: 'success', title: 'Terkirim!', html: `Link reset sandi telah dikirim ke <b>${currentUser.email}</b>`, showConfirmButton: true, background: 'var(--card)', color: 'var(--text)' }); } catch(e) { Swal.fire('Gagal', e.message, 'error'); } };
+window.clearLocalCache = function() { Swal.fire({ title: 'Bersihkan Cache?', text: "Data inti di cloud aman, hanya mereset preferensi hp ini.", icon: 'warning', showCancelButton: true, confirmButtonColor: 'var(--red2)', background: 'var(--card)', color: 'var(--text)' }).then((res) => { if (res.isConfirmed) { let tempLastUid = localStorage.getItem('last_uid_rhn'); localStorage.clear(); if (tempLastUid) localStorage.setItem('last_uid_rhn', tempLastUid); Swal.fire({ position: 'center', icon: 'success', title: 'Bersih!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)' }); setTimeout(() => location.reload(), 1500); } }); };
+window.deleteAllData = async function() { if (!currentUser) return; Swal.fire({ title: 'Verifikasi PIN Keamanan', text: 'Masukkan 6 digit PIN untuk format total akun:', input: 'password', inputAttributes: { inputmode: 'numeric', maxlength: 6, autofocus: true, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;' }, icon: 'warning', showCancelButton: true, confirmButtonColor: 'var(--red2)', cancelButtonColor: 'var(--bg3)', confirmButtonText: 'HAPUS SEMUA', background: 'var(--card)', color: 'var(--text)' }).then(async (res) => { if (res.isConfirmed) { if (res.value !== window.userCloudPin) return Swal.fire({icon: 'error', title: 'PIN Salah!', background:'var(--card)', color:'var(--text)'}); Swal.fire({title: 'Menghapus...', background:'var(--card)', color:'var(--text)', didOpen: () => {Swal.showLoading()}}); try { for (let t of txs) { await deleteDoc(doc(db, 'users', currentUser.uid, 'transactions', t.id)); } Swal.fire({icon: 'success', title: 'Data Diformat!', background:'var(--card)', color:'var(--text)'}); } catch(e) { Swal.fire('Error', e.message, 'error'); } } }); };
 
-function setLoading(on) { 
-    document.getElementById('auth-submit-btn').disabled = on; 
-    document.getElementById('auth-submit-btn').textContent = on ? 'Memproses...' : (authMode === 'login' ? 'MASUK' : 'DAFTAR'); 
-}
+window.updatePrefCategories = function(resetCat = true) { const selType = document.getElementById('pref-type').value; const catDrop = document.getElementById('pref-cat'); if (!catDrop) return; catDrop.innerHTML = ''; if (CATS[selType]) { CATS[selType].forEach(c => { let opt = document.createElement('option'); opt.value = c; opt.textContent = c; catDrop.appendChild(opt); }); } if (!resetCat && appPrefs.category) { setTimeout(() => { catDrop.value = appPrefs.category; catDrop.dispatchEvent(new Event('change')); }, 50); } if (!resetCat) { document.getElementById('pref-type').value = appPrefs.type || 'income'; document.getElementById('pref-type').dispatchEvent(new Event('change')); document.getElementById('pref-wallet').value = appPrefs.wallet || 'Kas Tunai'; document.getElementById('pref-wallet').dispatchEvent(new Event('change')); } };
+window.savePreferences = async function() { if (!currentUser) return; appPrefs = { type: document.getElementById('pref-type').value, category: document.getElementById('pref-cat').value, wallet: document.getElementById('pref-wallet').value }; localStorage.setItem('rhn_prefs_' + currentUser.uid, JSON.stringify(appPrefs)); try { await setDoc(doc(db, 'users', currentUser.uid, 'settings', 'preferences'), { appPrefs: appPrefs }, { merge: true }); Swal.fire({position: 'center', icon: 'success', title: 'Tersimpan ke Cloud!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)'}); } catch(e) { console.error("Gagal nyimpan preferensi ke cloud", e); } selType(appPrefs.type); setTimeout(() => { if(document.getElementById('f-cat') && appPrefs.category) { document.getElementById('f-cat').value = appPrefs.category; document.getElementById('f-cat').dispatchEvent(new Event('change')); } if(document.getElementById('f-wallet') && appPrefs.wallet) { document.getElementById('f-wallet').value = appPrefs.wallet; document.getElementById('f-wallet').dispatchEvent(new Event('change')); } }, 50); };
+window.saveExtraPrefs = async function() { if (!currentUser || window.isAppLoading) return; extraPrefs = { ext_autolock: document.getElementById('ext_autolock').value, ext_warnbalance: document.getElementById('ext_warnbalance').value, ext_shortnum: document.getElementById('ext_shortnum').value, ext_budget: document.getElementById('ext_budget').value, ext_hidezero: document.getElementById('ext_hidezero').value, ext_walletpct: document.getElementById('ext_walletpct').value, ext_debtbadge: document.getElementById('ext_debtbadge').value, ext_antiintip: document.getElementById('ext_antiintip').value }; localStorage.setItem('rhn_extra_prefs_v2_' + currentUser.uid, JSON.stringify(extraPrefs)); try { await setDoc(doc(db, 'users', currentUser.uid, 'settings', 'preferences'), { extraPrefs: extraPrefs }, { merge: true }); } catch(e) { console.error("Gagal nyimpan 7 fitur pengaturan ke cloud", e); } if (extraPrefs.ext_antiintip === 'on') { document.body.classList.add('global-privacy'); } else { document.body.classList.remove('global-privacy'); } if (window.resetIdle) window.resetIdle(); refreshAll(); };
 
-function setSyncStatus(ok) { 
-    document.getElementById('sync-dot').style.background = ok ? 'var(--green2)' : 'var(--red2)'; 
-    document.getElementById('sync-label').textContent = ok ? 'TERSINKRON' : 'OFFLINE'; 
-    document.getElementById('sync-dot').style.boxShadow = ok ? '0 0 8px var(--green2)' : 'none'; 
-}
-
-window.switchTab = function(mode) { 
-    authMode = mode; 
-    document.getElementById('tab-login').classList.toggle('active', mode === 'login'); 
-    document.getElementById('tab-register').classList.toggle('active', mode === 'register'); 
-    document.getElementById('field-confirm').style.display = mode === 'register' ? 'block' : 'none'; 
-    document.getElementById('auth-submit-btn').textContent = mode === 'login' ? 'MASUK' : 'DAFTAR'; 
-    hideErr(); 
-};
-
-window.doGoogleAuth = async function() {
-    const provider = new GoogleAuthProvider();
-    hideErr(); 
-    setLoading(true);
-    try { 
-        await signInWithPopup(auth, provider); 
-    } catch(e) { 
-        showErr(e.message); 
-        setLoading(false); 
-    }
-};
-
-window.doAuth = async function() { 
-    const email = document.getElementById('auth-email').value.trim();
-    const pass = document.getElementById('auth-pass').value; 
-    
-    hideErr(); 
-    if (!email || !pass) return showErr('Kredensial kosong.'); 
-    
-    setLoading(true); 
-    try { 
-        if (authMode === 'login') {
-            await signInWithEmailAndPassword(auth, email, pass); 
-        } else { 
-            if (pass !== document.getElementById('auth-pass2').value) return showErr('Sandi beda.'); 
-            await createUserWithEmailAndPassword(auth, email, pass); 
-        } 
-    } catch(e) { 
-        showErr(e.message); 
-        setLoading(false); 
-    } 
-};
-
-window.doResetPassword = async function() { 
-    const email = document.getElementById('auth-email').value.trim(); 
-    hideErr(); 
-    
-    if (!email) { 
-        return showErr('Masukkan email kamu dulu di kolom atas untuk reset sandi.'); 
-    } 
-    
-    setLoading(true); 
-    document.getElementById('auth-submit-btn').textContent = 'MENGIRIM...'; 
-    
-    try { 
-        await sendPasswordResetEmail(auth, email); 
-        Swal.fire({ 
-            position: 'center', 
-            icon: 'success', 
-            title: 'Email Terkirim!', 
-            html: 'Cek <b>Inbox</b> atau folder <b>SPAM</b> email kamu.', 
-            showConfirmButton: true, 
-            background: 'var(--card)', 
-            color: 'var(--text)', 
-            backdrop: 'rgba(0,0,0,0.6)' 
-        }); 
-    } catch(e) { 
-        showErr(e.message); 
-    } 
-    
-    setLoading(false); 
-    document.getElementById('auth-submit-btn').textContent = authMode === 'login' ? 'MASUK' : 'DAFTAR'; 
-};
-
-window.reqResetPasswordViaSettings = async function() { 
-    if (!currentUser) return; 
-    try { 
-        await sendPasswordResetEmail(auth, currentUser.email); 
-        Swal.fire({ 
-            position: 'center', 
-            icon: 'success', 
-            title: 'Terkirim!', 
-            html: `Link reset sandi telah dikirim ke <b>${currentUser.email}</b>`, 
-            showConfirmButton: true, 
-            background: 'var(--card)', 
-            color: 'var(--text)'
-        }); 
-    } catch(e) { 
-        Swal.fire('Gagal', e.message, 'error'); 
-    } 
-};
-
-window.clearLocalCache = function() { 
-    Swal.fire({ 
-        title: 'Bersihkan Cache?', 
-        text: "Data inti di cloud aman, hanya mereset preferensi hp ini.", 
-        icon: 'warning', 
-        showCancelButton: true, 
-        confirmButtonColor: 'var(--red2)', 
-        background: 'var(--card)', 
-        color: 'var(--text)' 
-    }).then((res) => { 
-        if (res.isConfirmed) { 
-            let tempLastUid = localStorage.getItem('last_uid_rhn'); 
-            localStorage.clear(); 
-            if (tempLastUid) localStorage.setItem('last_uid_rhn', tempLastUid); 
-            
-            Swal.fire({
-                position: 'center', 
-                icon: 'success', 
-                title: 'Bersih!', 
-                showConfirmButton: false, 
-                timer: 1500, 
-                background: 'var(--card)', 
-                color: 'var(--text)'
-            }); 
-            
-            setTimeout(() => location.reload(), 1500); 
-        } 
-    }); 
-};
-
-window.deleteAllData = async function() { 
-    if (!currentUser) return; 
-    
-    Swal.fire({ 
-        title: 'Verifikasi PIN Keamanan', 
-        text: 'Masukkan 6 digit PIN untuk format total akun:', 
-        input: 'password', 
-        inputAttributes: { inputmode: 'numeric', maxlength: 6, autofocus: true, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;' }, 
-        icon: 'warning', 
-        showCancelButton: true, 
-        confirmButtonColor: 'var(--red2)', 
-        cancelButtonColor: 'var(--bg3)', 
-        confirmButtonText: 'HAPUS SEMUA', 
-        background: 'var(--card)', 
-        color: 'var(--text)' 
-    }).then(async (res) => { 
-        if (res.isConfirmed) { 
-            if (res.value !== window.userCloudPin) return Swal.fire({icon: 'error', title: 'PIN Salah!', background:'var(--card)', color:'var(--text)'}); 
-            Swal.fire({title: 'Menghapus...', background:'var(--card)', color:'var(--text)', didOpen: () => {Swal.showLoading()}}); 
-            
-            try { 
-                for (let t of txs) {
-                    await deleteDoc(doc(db, 'users', currentUser.uid, 'transactions', t.id)); 
-                }
-                Swal.fire({icon: 'success', title: 'Data Diformat!', background:'var(--card)', color:'var(--text)'}); 
-            } catch(e) { 
-                Swal.fire('Error', e.message, 'error'); 
-            } 
-        } 
-    }); 
-};
-
-window.updatePrefCategories = function(resetCat = true) { 
-    const selType = document.getElementById('pref-type').value; 
-    const catDrop = document.getElementById('pref-cat'); 
-    
-    if (!catDrop) return; 
-    catDrop.innerHTML = ''; 
-    
-    if (CATS[selType]) { 
-        CATS[selType].forEach(c => { 
-            let opt = document.createElement('option'); 
-            opt.value = c; 
-            opt.textContent = c; 
-            catDrop.appendChild(opt); 
-        }); 
-    } 
-    
-    if (!resetCat && appPrefs.category) { 
-        setTimeout(() => {
-            catDrop.value = appPrefs.category; 
-            catDrop.dispatchEvent(new Event('change'));
-        }, 50); 
-    } 
-    
-    if (!resetCat) { 
-        document.getElementById('pref-type').value = appPrefs.type || 'income'; 
-        document.getElementById('pref-type').dispatchEvent(new Event('change')); 
-        document.getElementById('pref-wallet').value = appPrefs.wallet || 'Kas Tunai'; 
-        document.getElementById('pref-wallet').dispatchEvent(new Event('change')); 
-    } 
-};
-
-window.savePreferences = async function() {
-    if (!currentUser) return;
-    
-    appPrefs = { 
-        type: document.getElementById('pref-type').value, 
-        category: document.getElementById('pref-cat').value, 
-        wallet: document.getElementById('pref-wallet').value 
-    };
-    
-    localStorage.setItem('rhn_prefs_' + currentUser.uid, JSON.stringify(appPrefs));
-    
-    try {
-        await setDoc(doc(db, 'users', currentUser.uid, 'settings', 'preferences'), { appPrefs: appPrefs }, { merge: true });
-        Swal.fire({position: 'center', icon: 'success', title: 'Tersimpan ke Cloud!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)'});
-    } catch(e) {
-        console.error("Gagal nyimpan preferensi ke cloud", e);
-    }
-    
-    selType(appPrefs.type);
-    setTimeout(() => {
-        if(document.getElementById('f-cat') && appPrefs.category) { 
-            document.getElementById('f-cat').value = appPrefs.category; 
-            document.getElementById('f-cat').dispatchEvent(new Event('change')); 
-        }
-        if(document.getElementById('f-wallet') && appPrefs.wallet) { 
-            document.getElementById('f-wallet').value = appPrefs.wallet; 
-            document.getElementById('f-wallet').dispatchEvent(new Event('change')); 
-        }
-    }, 50);
-};
-
-window.saveExtraPrefs = async function() {
-    if (!currentUser || window.isAppLoading) return;
-    
-    extraPrefs = { 
-        ext_autolock: document.getElementById('ext_autolock').value, 
-        ext_warnbalance: document.getElementById('ext_warnbalance').value, 
-        ext_shortnum: document.getElementById('ext_shortnum').value, 
-        ext_budget: document.getElementById('ext_budget').value, 
-        ext_hidezero: document.getElementById('ext_hidezero').value, 
-        ext_walletpct: document.getElementById('ext_walletpct').value, 
-        ext_debtbadge: document.getElementById('ext_debtbadge').value, 
-        ext_antiintip: document.getElementById('ext_antiintip').value
-    };
-    
-    localStorage.setItem('rhn_extra_prefs_v2_' + currentUser.uid, JSON.stringify(extraPrefs));
-    
-    try {
-        await setDoc(doc(db, 'users', currentUser.uid, 'settings', 'preferences'), { extraPrefs: extraPrefs }, { merge: true });
-    } catch(e) {
-        console.error("Gagal nyimpan 7 fitur pengaturan ke cloud", e);
-    }
-
-    if (extraPrefs.ext_antiintip === 'on') { 
-        document.body.classList.add('global-privacy'); 
-    } else { 
-        document.body.classList.remove('global-privacy'); 
-    }
-    
-    if (window.resetIdle) window.resetIdle();
-    refreshAll();
-};
-
-window.changePinInApp = async function() { 
-    if (!currentUser) return; 
-    
-    const { value: choice } = await Swal.fire({ 
-        title: 'Pengaturan PIN', 
-        text: 'Pilih aksi yang mau lu lakuin:', 
-        icon: 'question', 
-        showCancelButton: true, 
-        showDenyButton: true, 
-        confirmButtonText: 'Lupa PIN (Buat Baru)', 
-        denyButtonText: 'Ingat PIN (Ganti PIN)', 
-        cancelButtonText: 'Batal', 
-        background: 'var(--card)', 
-        color: 'var(--text)', 
-        confirmButtonColor: 'var(--red2)', 
-        denyButtonColor: 'var(--gold)', 
-        cancelButtonColor: 'var(--bg3)' 
-    }); 
-    
-    const promptNewPin = async () => { 
-        const { value: newPin } = await Swal.fire({ 
-            title: 'Buat PIN Baru', 
-            text: 'Masukkan 6 angka PIN baru kamu', 
-            input: 'password', 
-            inputAttributes: { inputmode: 'numeric', maxlength: 6, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;', autofocus: true }, 
-            background: 'var(--card)', 
-            color: 'var(--text)', 
-            confirmButtonColor: 'var(--gold)', 
-            confirmButtonText: 'SIMPAN PIN BARU' 
-        }); 
-        
-        if (newPin && newPin.length === 6) { 
-            try { 
-                await setDoc(doc(db, 'users', currentUser.uid, 'settings', 'security'), { pin: newPin }, { merge: true }); 
-                window.userCloudPin = newPin; 
-                Swal.fire({icon:'success', title:'PIN Berhasil Disimpan!', background:'var(--card)', color:'var(--text)', timer: 1500, showConfirmButton: false}); 
-            } catch(e) { 
-                Swal.fire({icon:'error', title:'Gagal mengubah PIN', text: e.message, background:'var(--card)', color:'var(--text)'}); 
-            } 
-        } else if (newPin) { 
-            Swal.fire({icon:'warning', title:'Gagal, harus 6 digit!', background:'var(--card)', color:'var(--text)'}); 
-        } 
-    }; 
-    
-    if (choice === true) { 
-        promptNewPin(); 
-    } else if (choice === false) { 
-        const { value: oldPin } = await Swal.fire({ 
-            title: 'Masukkan PIN Lama', 
-            input: 'password', 
-            inputAttributes: { inputmode: 'numeric', maxlength: 6, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;', autofocus: true }, 
-            background: 'var(--card)', 
-            color: 'var(--text)', 
-            confirmButtonColor: 'var(--border2)' 
-        }); 
-        
-        if (!oldPin) return; 
-        
-        if (oldPin !== window.userCloudPin) {
-            return Swal.fire({icon:'error', title:'PIN Lama Salah!', background:'var(--card)', color:'var(--text)'}); 
-        }
-        
-        promptNewPin(); 
-    } 
-};
-
-window.doLogout = async function() { 
-    if (unsubListener) { 
-        unsubListener(); 
-        unsubListener = null; 
-    } 
-    txs = []; 
-    localStorage.removeItem('last_uid_rhn'); 
-    await signOut(auth); 
-};
+window.changePinInApp = async function() { if (!currentUser) return; const { value: choice } = await Swal.fire({ title: 'Pengaturan PIN', text: 'Pilih aksi yang mau lu lakuin:', icon: 'question', showCancelButton: true, showDenyButton: true, confirmButtonText: 'Lupa PIN (Buat Baru)', denyButtonText: 'Ingat PIN (Ganti PIN)', cancelButtonText: 'Batal', background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--red2)', denyButtonColor: 'var(--gold)', cancelButtonColor: 'var(--bg3)' }); const promptNewPin = async () => { const { value: newPin } = await Swal.fire({ title: 'Buat PIN Baru', text: 'Masukkan 6 angka PIN baru kamu', input: 'password', inputAttributes: { inputmode: 'numeric', maxlength: 6, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;', autofocus: true }, background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--gold)', confirmButtonText: 'SIMPAN PIN BARU' }); if (newPin && newPin.length === 6) { try { await setDoc(doc(db, 'users', currentUser.uid, 'settings', 'security'), { pin: newPin }, { merge: true }); window.userCloudPin = newPin; Swal.fire({icon:'success', title:'PIN Berhasil Disimpan!', background:'var(--card)', color:'var(--text)', timer: 1500, showConfirmButton: false}); } catch(e) { Swal.fire({icon:'error', title:'Gagal mengubah PIN', text: e.message, background:'var(--card)', color:'var(--text)'}); } } else if (newPin) { Swal.fire({icon:'warning', title:'Gagal, harus 6 digit!', background:'var(--card)', color:'var(--text)'}); } }; if (choice === true) { promptNewPin(); } else if (choice === false) { const { value: oldPin } = await Swal.fire({ title: 'Masukkan PIN Lama', input: 'password', inputAttributes: { inputmode: 'numeric', maxlength: 6, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;', autofocus: true }, background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--border2)' }); if (!oldPin) return; if (oldPin !== window.userCloudPin) { return Swal.fire({icon:'error', title:'PIN Lama Salah!', background:'var(--card)', color:'var(--text)'}); } promptNewPin(); } };
+window.doLogout = async function() { if (unsubListener) { unsubListener(); unsubListener = null; } txs = []; localStorage.removeItem('last_uid_rhn'); await signOut(auth); };
 
 onAuthStateChanged(auth, async user => {
   if (user) {
-    currentUser = user;
-    localStorage.setItem('last_uid_rhn', user.uid);
-    document.getElementById('auth-screen').style.display = 'none';
-    
+    currentUser = user; localStorage.setItem('last_uid_rhn', user.uid); document.getElementById('auth-screen').style.display = 'none';
     try {
-        const prefRef = doc(db, 'users', user.uid, 'settings', 'preferences');
-        const prefSnap = await getDoc(prefRef);
-        
-        if (prefSnap.exists()) {
-            const data = prefSnap.data();
-            if (data.appPrefs) { 
-                appPrefs = data.appPrefs; 
-                localStorage.setItem('rhn_prefs_' + user.uid, JSON.stringify(appPrefs)); 
-            }
-            if (data.extraPrefs) { 
-                extraPrefs = data.extraPrefs; 
-                localStorage.setItem('rhn_extra_prefs_v2_' + user.uid, JSON.stringify(extraPrefs)); 
-            }
-        } else {
-            const savedPrefs = localStorage.getItem('rhn_prefs_' + user.uid);
-            if(savedPrefs) appPrefs = JSON.parse(savedPrefs);
-            
-            const savedExtraPrefs = localStorage.getItem('rhn_extra_prefs_v2_' + user.uid);
-            if(savedExtraPrefs) extraPrefs = JSON.parse(savedExtraPrefs);
-        }
-    } catch(err) {
-        console.error("Gagal sinkron data pengaturan", err);
-    }
-
+        const prefRef = doc(db, 'users', user.uid, 'settings', 'preferences'); const prefSnap = await getDoc(prefRef);
+        if (prefSnap.exists()) { const data = prefSnap.data(); if (data.appPrefs) { appPrefs = data.appPrefs; localStorage.setItem('rhn_prefs_' + user.uid, JSON.stringify(appPrefs)); } if (data.extraPrefs) { extraPrefs = data.extraPrefs; localStorage.setItem('rhn_extra_prefs_v2_' + user.uid, JSON.stringify(extraPrefs)); } } else { const savedPrefs = localStorage.getItem('rhn_prefs_' + user.uid); if(savedPrefs) appPrefs = JSON.parse(savedPrefs); const savedExtraPrefs = localStorage.getItem('rhn_extra_prefs_v2_' + user.uid); if(savedExtraPrefs) extraPrefs = JSON.parse(savedExtraPrefs); }
+    } catch(err) { console.error("Gagal sinkron data pengaturan", err); }
     window.isAppLoading = true;
-
-    ['ext_autolock', 'ext_warnbalance', 'ext_shortnum', 'ext_budget', 'ext_hidezero', 'ext_walletpct', 'ext_debtbadge', 'ext_antiintip'].forEach(id => {
-        if (document.getElementById(id) && extraPrefs[id]) {
-            document.getElementById(id).value = extraPrefs[id];
-            document.getElementById(id).dispatchEvent(new Event('change'));
-        }
-    });
-    
-    if (extraPrefs.ext_antiintip === 'on') { 
-        document.body.classList.add('global-privacy'); 
-    } else { 
-        document.body.classList.remove('global-privacy'); 
-    }
-    
-    setTimeout(() => {
-        window.updatePrefCategories(false); 
-        if (window.selType && appPrefs && appPrefs.type) { 
-            selType(appPrefs.type); 
-        } else { 
-            selType('income'); 
-        }
-    }, 200);
-
-    setTimeout(() => { 
-        window.isAppLoading = false; 
-    }, 1000); 
-
+    ['ext_autolock', 'ext_warnbalance', 'ext_shortnum', 'ext_budget', 'ext_hidezero', 'ext_walletpct', 'ext_debtbadge', 'ext_antiintip'].forEach(id => { if (document.getElementById(id) && extraPrefs[id]) { document.getElementById(id).value = extraPrefs[id]; document.getElementById(id).dispatchEvent(new Event('change')); } });
+    if (extraPrefs.ext_antiintip === 'on') { document.body.classList.add('global-privacy'); } else { document.body.classList.remove('global-privacy'); }
+    setTimeout(() => { window.updatePrefCategories(false); if (window.selType && appPrefs && appPrefs.type) { selType(appPrefs.type); } else { selType('income'); } }, 200);
+    setTimeout(() => { window.isAppLoading = false; }, 1000); 
     const secRef = doc(db, 'users', user.uid, 'settings', 'security');
     try {
-        const secSnap = await getDoc(secRef);
-        document.getElementById('app-pin').style.display = 'block';
-        
-        if (!secSnap.exists() || !secSnap.data().pin) {
-          document.getElementById('app-screen').style.display = 'none'; 
-          document.getElementById('pin-screen').style.display = 'flex';
-          document.getElementById('pin-title').textContent = 'Buat PIN Baru'; 
-          document.getElementById('pin-sub').textContent = 'Buat 6 digit PIN untuk akses cepat';
-          document.getElementById('pin-submit-btn').textContent = 'SIMPAN PIN'; 
-          window.pinMode = 'setup'; 
-          window.userCloudPin = null;
-        } else {
-          document.getElementById('app-screen').style.display = 'none'; 
-          document.getElementById('pin-screen').style.display = 'flex';
-          document.getElementById('pin-title').textContent = 'Masukkan PIN'; 
-          document.getElementById('pin-sub').textContent = 'Keamanan aktif';
-          document.getElementById('pin-submit-btn').textContent = 'BUKA APLIKASI'; 
-          window.pinMode = 'verify'; 
-          window.userCloudPin = secSnap.data().pin;
-          
-          if (window.pendingUnlock) { 
-              window.pendingUnlock = false; 
-              unlockApp(); 
-          }
-        }
-    } catch(err) {
-        console.error(err);
-    }
-    
+        const secSnap = await getDoc(secRef); document.getElementById('app-pin').style.display = 'block';
+        if (!secSnap.exists() || !secSnap.data().pin) { document.getElementById('app-screen').style.display = 'none'; document.getElementById('pin-screen').style.display = 'flex'; document.getElementById('pin-title').textContent = 'Buat PIN Baru'; document.getElementById('pin-sub').textContent = 'Buat 6 digit PIN untuk akses cepat'; document.getElementById('pin-submit-btn').textContent = 'SIMPAN PIN'; window.pinMode = 'setup'; window.userCloudPin = null; } else { document.getElementById('app-screen').style.display = 'none'; document.getElementById('pin-screen').style.display = 'flex'; document.getElementById('pin-title').textContent = 'Masukkan PIN'; document.getElementById('pin-sub').textContent = 'Keamanan aktif'; document.getElementById('pin-submit-btn').textContent = 'BUKA APLIKASI'; window.pinMode = 'verify'; window.userCloudPin = secSnap.data().pin; if (window.pendingUnlock) { window.pendingUnlock = false; unlockApp(); } }
+    } catch(err) { console.error(err); }
     if(window.resetIdle) window.resetIdle();
-    
   } else {
-    currentUser = null; 
-    localStorage.removeItem('last_uid_rhn');
-    document.getElementById('auth-screen').style.display = 'flex'; 
-    document.getElementById('app-screen').style.display = 'none'; 
-    document.getElementById('pin-screen').style.display = 'none';
-    
-    if (unsubListener) { 
-        unsubListener(); 
-        unsubListener = null; 
-    } 
-    txs = [];
+    currentUser = null; localStorage.removeItem('last_uid_rhn'); document.getElementById('auth-screen').style.display = 'flex'; document.getElementById('app-screen').style.display = 'none'; document.getElementById('pin-screen').style.display = 'none';
+    if (unsubListener) { unsubListener(); unsubListener = null; } txs = [];
   }
 });
 
-window.verifyPin = async function() { 
-    const pinInput = document.getElementById('app-pin').value; 
-    const errEl = document.getElementById('pin-err'); 
-    
-    if (pinInput.length < 6) { 
-        errEl.textContent = 'PIN harus 6 digit.'; 
-        errEl.style.display = 'block'; 
-        return; 
-    } 
-    
-    errEl.style.display = 'none'; 
-    
-    if (window.pinMode === 'setup') { 
-        document.getElementById('pin-submit-btn').textContent = 'MENYIMPAN...'; 
-        try { 
-            await setDoc(doc(db, 'users', currentUser.uid, 'settings', 'security'), { pin: pinInput }, { merge: true }); 
-            window.userCloudPin = pinInput; 
-            Swal.fire({position: 'center', icon: 'success', title: 'PIN Berhasil Dibuat!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)'}); 
-            unlockApp(); 
-        } catch(e) { 
-            errEl.textContent = 'Gagal menyimpan PIN ke server.'; 
-            errEl.style.display = 'block'; 
-            document.getElementById('pin-submit-btn').textContent = 'SIMPAN PIN'; 
-        } 
-    } else { 
-        const uid = currentUser ? currentUser.uid : localStorage.getItem('last_uid_rhn'); 
-        if (!uid) return; 
-        
-        if (pinInput === window.userCloudPin) { 
-            if (currentUser) { 
-                unlockApp(); 
-            } else { 
-                document.getElementById('pin-title').textContent = 'Memuat Data...'; 
-                document.getElementById('pin-sub').textContent = 'Tunggu sebentar...'; 
-                document.getElementById('app-pin').blur(); 
-                window.pendingUnlock = true; 
-            } 
-        } else { 
-            errEl.textContent = 'PIN Salah!'; 
-            errEl.style.display = 'block'; 
-            document.getElementById('app-pin').value = ''; 
-            document.getElementById('app-pin').classList.add('shake-error'); 
-            
-            setTimeout(() => document.getElementById('app-pin').classList.remove('shake-error'), 400); 
-            
-            if (navigator.vibrate) navigator.vibrate([30, 50, 30]); 
-        } 
-    } 
-};
+window.verifyPin = async function() { const pinInput = document.getElementById('app-pin').value; const errEl = document.getElementById('pin-err'); if (pinInput.length < 6) { errEl.textContent = 'PIN harus 6 digit.'; errEl.style.display = 'block'; return; } errEl.style.display = 'none'; if (window.pinMode === 'setup') { document.getElementById('pin-submit-btn').textContent = 'MENYIMPAN...'; try { await setDoc(doc(db, 'users', currentUser.uid, 'settings', 'security'), { pin: pinInput }, { merge: true }); window.userCloudPin = pinInput; Swal.fire({position: 'center', icon: 'success', title: 'PIN Berhasil Dibuat!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)'}); unlockApp(); } catch(e) { errEl.textContent = 'Gagal menyimpan PIN ke server.'; errEl.style.display = 'block'; document.getElementById('pin-submit-btn').textContent = 'SIMPAN PIN'; } } else { const uid = currentUser ? currentUser.uid : localStorage.getItem('last_uid_rhn'); if (!uid) return; if (pinInput === window.userCloudPin) { if (currentUser) { unlockApp(); } else { document.getElementById('pin-title').textContent = 'Memuat Data...'; document.getElementById('pin-sub').textContent = 'Tunggu sebentar...'; document.getElementById('app-pin').blur(); window.pendingUnlock = true; } } else { errEl.textContent = 'PIN Salah!'; errEl.style.display = 'block'; document.getElementById('app-pin').value = ''; document.getElementById('app-pin').classList.add('shake-error'); setTimeout(() => document.getElementById('app-pin').classList.remove('shake-error'), 400); if (navigator.vibrate) navigator.vibrate([30, 50, 30]); } } };
 
-function unlockApp() { 
-    document.getElementById('pin-screen').style.display = 'none'; 
-    document.getElementById('app-screen').style.display = 'block'; 
-    setLoading(false); 
-    
-    const name = currentUser.displayName || currentUser.email.split('@')[0]; 
-    document.getElementById('user-name').textContent = name; 
-    document.getElementById('user-avatar').textContent = name.charAt(0).toUpperCase(); 
-    
-    listenTransactions(currentUser.uid); 
-    document.getElementById('app-pin').value = ''; 
-    
-    if (window.resetIdle) window.resetIdle(); 
-}
+function unlockApp() { document.getElementById('pin-screen').style.display = 'none'; document.getElementById('app-screen').style.display = 'block'; setLoading(false); const name = currentUser.displayName || currentUser.email.split('@')[0]; document.getElementById('user-name').textContent = name; if (typeof window.initTransferAccount === 'function') { window.initTransferAccount(); } listenTransactions(currentUser.uid); document.getElementById('app-pin').value = ''; if (window.resetIdle) window.resetIdle(); }
+window.resetAccount = function() { Swal.fire({ title: 'Ganti Akun?', text: "Lu harus login Email lagi.", icon: 'warning', showCancelButton: true, background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--red2)', cancelButtonColor: 'var(--bg3)', confirmButtonText: 'Ya, Ganti' }).then((result) => { if (result.isConfirmed) { localStorage.removeItem('last_uid_rhn'); document.getElementById('app-pin').value = ''; doLogout(); } }); };
+window.resetPinFromLogin = async function() { const uid = currentUser ? currentUser.uid : localStorage.getItem('last_uid_rhn'); if (!uid) { return Swal.fire({icon: 'error', title: 'Belum Login', text: 'Tunggu proses ke server sebentar', background: 'var(--card)', color: 'var(--text)'}); } const { value: choice } = await Swal.fire({ title: 'Opsi Keamanan', text: 'Pilih tindakan untuk PIN lu:', icon: 'question', showCancelButton: true, showDenyButton: true, confirmButtonText: 'Lupa PIN (Buat Baru)', denyButtonText: 'Ingat PIN (Ganti PIN)', cancelButtonText: 'Batal', background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--red2)', denyButtonColor: 'var(--gold)', cancelButtonColor: 'var(--bg3)' }); const promptNewPin = async () => { const { value: newPin } = await Swal.fire({ title: 'Buat PIN Baru', text: 'Masukkan 6 angka PIN baru kamu', input: 'password', inputAttributes: { inputmode: 'numeric', maxlength: 6, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;', autofocus: true }, background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--gold)', confirmButtonText: 'SIMPAN PIN BARU' }); if (newPin && newPin.length === 6) { try { await setDoc(doc(db, 'users', uid, 'settings', 'security'), { pin: newPin }, { merge: true }); window.userCloudPin = newPin; Swal.fire({icon:'success', title:'PIN Berhasil Disimpan!', background:'var(--card)', color:'var(--text)', timer: 1500, showConfirmButton: false}); document.getElementById('app-pin').value = ''; } catch(e) { Swal.fire({icon:'error', title:'Gagal mengubah PIN', text: e.message, background:'var(--card)', color:'var(--text)'}); } } else if (newPin) { Swal.fire({icon:'warning', title:'Gagal, harus 6 digit!', background:'var(--card)', color:'var(--text)'}); } }; if (choice === true) { promptNewPin(); } else if (choice === false) { const { value: oldPin } = await Swal.fire({ title: 'Masukkan PIN Lama', input: 'password', inputAttributes: { inputmode: 'numeric', maxlength: 6, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;', autofocus: true }, background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--border2)' }); if (!oldPin) return; if (oldPin !== window.userCloudPin) return Swal.fire({icon:'error', title:'PIN Lama Salah!', background:'var(--card)', color:'var(--text)'}); promptNewPin(); } };
+document.getElementById('app-pin').addEventListener('input', function(e) { this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length === 6) { window.verifyPin(); } });
 
-window.resetAccount = function() { 
-    Swal.fire({ 
-        title: 'Ganti Akun?', 
-        text: "Lu harus login Email lagi.", 
-        icon: 'warning', 
-        showCancelButton: true, 
-        background: 'var(--card)', 
-        color: 'var(--text)', 
-        confirmButtonColor: 'var(--red2)', 
-        cancelButtonColor: 'var(--bg3)', 
-        confirmButtonText: 'Ya, Ganti' 
-    }).then((result) => { 
-        if (result.isConfirmed) { 
-            localStorage.removeItem('last_uid_rhn'); 
-            document.getElementById('app-pin').value = ''; 
-            doLogout(); 
-        } 
-    }); 
-};
-
-window.resetPinFromLogin = async function() { 
-    const uid = currentUser ? currentUser.uid : localStorage.getItem('last_uid_rhn'); 
-    
-    if (!uid) { 
-        return Swal.fire({icon: 'error', title: 'Belum Login', text: 'Tunggu proses ke server sebentar', background: 'var(--card)', color: 'var(--text)'}); 
-    } 
-    
-    const { value: choice } = await Swal.fire({ 
-        title: 'Opsi Keamanan', 
-        text: 'Pilih tindakan untuk PIN lu:', 
-        icon: 'question', 
-        showCancelButton: true, 
-        showDenyButton: true, 
-        confirmButtonText: 'Lupa PIN (Buat Baru)', 
-        denyButtonText: 'Ingat PIN (Ganti PIN)', 
-        cancelButtonText: 'Batal', 
-        background: 'var(--card)', 
-        color: 'var(--text)', 
-        confirmButtonColor: 'var(--red2)', 
-        denyButtonColor: 'var(--gold)', 
-        cancelButtonColor: 'var(--bg3)' 
-    }); 
-    
-    const promptNewPin = async () => { 
-        const { value: newPin } = await Swal.fire({ 
-            title: 'Buat PIN Baru', 
-            text: 'Masukkan 6 angka PIN baru kamu', 
-            input: 'password', 
-            inputAttributes: { inputmode: 'numeric', maxlength: 6, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;', autofocus: true }, 
-            background: 'var(--card)', 
-            color: 'var(--text)', 
-            confirmButtonColor: 'var(--gold)', 
-            confirmButtonText: 'SIMPAN PIN BARU' 
-        }); 
-        
-        if (newPin && newPin.length === 6) { 
-            try { 
-                await setDoc(doc(db, 'users', uid, 'settings', 'security'), { pin: newPin }, { merge: true }); 
-                window.userCloudPin = newPin; 
-                Swal.fire({icon:'success', title:'PIN Berhasil Disimpan!', background:'var(--card)', color:'var(--text)', timer: 1500, showConfirmButton: false}); 
-                document.getElementById('app-pin').value = ''; 
-            } catch(e) { 
-                Swal.fire({icon:'error', title:'Gagal mengubah PIN', text: e.message, background:'var(--card)', color:'var(--text)'}); 
-            } 
-        } else if (newPin) { 
-            Swal.fire({icon:'warning', title:'Gagal, harus 6 digit!', background:'var(--card)', color:'var(--text)'}); 
-        } 
-    }; 
-    
-    if (choice === true) { 
-        promptNewPin(); 
-    } else if (choice === false) { 
-        const { value: oldPin } = await Swal.fire({ 
-            title: 'Masukkan PIN Lama', 
-            input: 'password', 
-            inputAttributes: { inputmode: 'numeric', maxlength: 6, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;', autofocus: true }, 
-            background: 'var(--card)', 
-            color: 'var(--text)', 
-            confirmButtonColor: 'var(--border2)' 
-        }); 
-        
-        if (!oldPin) return; 
-        
-        if (oldPin !== window.userCloudPin) return Swal.fire({icon:'error', title:'PIN Lama Salah!', background:'var(--card)', color:'var(--text)'}); 
-        promptNewPin(); 
-    } 
-};
-
-document.getElementById('app-pin').addEventListener('input', function(e) { 
-    this.value = this.value.replace(/[^0-9]/g, ''); 
-    if (this.value.length === 6) { 
-        window.verifyPin(); 
-    } 
-});
-
-function listenTransactions(uid) { 
-    if (unsubListener) unsubListener(); 
-    
-    unsubListener = onSnapshot(query(collection(db, 'users', uid, 'transactions'), orderBy('createdAt', 'desc')), snap => { 
-        txs = snap.docs.map(d => {
-            let data = d.data();
-            
-            // ==========================================
-            // LOGIKA MERGE/PENGHAPUSAN REKENING BANK
-            // Otomatis menimpa semua variasi "Rekening" agar terbaca sebagai "Bank" saja
-            // Jadi kotaknya pasti balik rapi ke 6 doang!
-            // ==========================================
-            if (data.wallet && data.wallet.toUpperCase().includes('REKENING')) data.wallet = 'Bank';
-            if (data.walletTo && data.walletTo.toUpperCase().includes('REKENING')) data.walletTo = 'Bank';
-            
-            return {id: d.id, ...data};
-        }); 
-        setSyncStatus(true); 
-        refreshAll(); 
-    }, err => { 
-        console.error(err); 
-        setSyncStatus(false); 
-    }); 
-}
+function listenTransactions(uid) { if (unsubListener) unsubListener(); unsubListener = onSnapshot(query(collection(db, 'users', uid, 'transactions'), orderBy('createdAt', 'desc')), snap => { txs = snap.docs.map(d => { let data = d.data(); if (data.wallet && data.wallet.toUpperCase().includes('REKENING')) data.wallet = 'Bank'; if (data.walletTo && data.walletTo.toUpperCase().includes('REKENING')) data.walletTo = 'Bank'; return {id: d.id, ...data}; }); setSyncStatus(true); refreshAll(); }, err => { console.error(err); setSyncStatus(false); }); }
 
 window.addTx = async function() { 
   if(!currentUser) return; 
-  
-  const amountInput = document.getElementById('f-amount');
-  const catInput = document.getElementById('f-cat');
-  const noteInput = document.getElementById('f-note');
-  
-  const rawValue = amountInput.value.replace(/\./g, '');
-  const amt = parseFloat(rawValue);
-  
-  let cat = catInput.value; 
-  if (curType === 'transfer') cat = 'Transfer Antar Dompet';
+  const amountInput = document.getElementById('f-amount'); const catInput = document.getElementById('f-cat'); const noteInput = document.getElementById('f-note'); 
+  const rawValue = amountInput.value.replace(/\./g, ''); const amt = parseFloat(rawValue); 
+  let cat = catInput.value; if (curType === 'transfer') cat = 'Transfer Antar Dompet';
+  const isAmtEmpty = !amt || isNaN(amt); const isCatEmpty = !cat; const note = noteInput.value.trim(); const isNoteEmpty = !note;
 
-  const isAmtEmpty = !amt || isNaN(amt);
-  const isCatEmpty = !cat;
-  const note = noteInput.value.trim();
-  const isNoteEmpty = !note;
+  if (isAmtEmpty && isCatEmpty && isNoteEmpty && curType !== 'transfer') { amountInput.classList.add('shake-error'); catInput.parentNode.previousSibling.classList.add('shake-error'); noteInput.classList.add('shake-error'); setTimeout(() => { amountInput.classList.remove('shake-error'); catInput.parentNode.previousSibling.classList.remove('shake-error'); noteInput.classList.remove('shake-error'); }, 400); return Swal.fire({ position: 'center', icon: 'warning', title: 'Data Masih Kosong!', text: 'Nominal, Kategori, dan Keterangan harus diisi!', showConfirmButton: true, confirmButtonText: 'OKE, PAHAM', confirmButtonColor: 'var(--gold)', background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' }); } else if (isAmtEmpty) { amountInput.classList.add('shake-error'); setTimeout(() => amountInput.classList.remove('shake-error'), 400); return Swal.fire({ position: 'center', icon: 'warning', title: 'Jumlah Belum Diisi!', text: 'Silakan isi nominal (Jumlah) transaksi terlebih dahulu.', showConfirmButton: true, confirmButtonText: 'OKE, PAHAM', confirmButtonColor: 'var(--gold)', background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' }); } else if (isCatEmpty && curType !== 'transfer') { catInput.parentNode.previousSibling.classList.add('shake-error'); setTimeout(() => catInput.parentNode.previousSibling.classList.remove('shake-error'), 400); return Swal.fire({ position: 'center', icon: 'warning', title: 'Kategori Belum Diisi!', text: 'Pilih Kategori transaksi terlebih dahulu, bro!', showConfirmButton: true, confirmButtonText: 'OKE, PAHAM', confirmButtonColor: 'var(--gold)', background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' }); } else if (isNoteEmpty) { noteInput.classList.add('shake-error'); setTimeout(() => noteInput.classList.remove('shake-error'), 400); return Swal.fire({ position: 'center', icon: 'warning', title: 'Keterangan Kosong!', text: 'Jangan lupa isi keterangan transaksinya ya.', showConfirmButton: true, confirmButtonText: 'OKE, PAHAM', confirmButtonColor: 'var(--gold)', background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' }); }
 
-  if (isAmtEmpty && isCatEmpty && isNoteEmpty && curType !== 'transfer') {
-      amountInput.classList.add('shake-error');
-      catInput.parentNode.previousSibling.classList.add('shake-error');
-      noteInput.classList.add('shake-error');
-      setTimeout(() => {
-          amountInput.classList.remove('shake-error');
-          catInput.parentNode.previousSibling.classList.remove('shake-error');
-          noteInput.classList.remove('shake-error');
-      }, 400);
-      return Swal.fire({ position: 'center', icon: 'warning', title: 'Data Masih Kosong!', text: 'Nominal, Kategori, dan Keterangan harus diisi!', showConfirmButton: true, confirmButtonText: 'OKE, PAHAM', confirmButtonColor: 'var(--gold)', background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' });
-  } else if (isAmtEmpty) {
-      amountInput.classList.add('shake-error');
-      setTimeout(() => amountInput.classList.remove('shake-error'), 400);
-      return Swal.fire({ position: 'center', icon: 'warning', title: 'Jumlah Belum Diisi!', text: 'Silakan isi nominal (Jumlah) transaksi terlebih dahulu.', showConfirmButton: true, confirmButtonText: 'OKE, PAHAM', confirmButtonColor: 'var(--gold)', background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' });
-  } else if (isCatEmpty && curType !== 'transfer') {
-      catInput.parentNode.previousSibling.classList.add('shake-error');
-      setTimeout(() => catInput.parentNode.previousSibling.classList.remove('shake-error'), 400);
-      return Swal.fire({ position: 'center', icon: 'warning', title: 'Kategori Belum Diisi!', text: 'Pilih Kategori transaksi terlebih dahulu, bro!', showConfirmButton: true, confirmButtonText: 'OKE, PAHAM', confirmButtonColor: 'var(--gold)', background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' });
-  } else if (isNoteEmpty) {
-      noteInput.classList.add('shake-error');
-      setTimeout(() => noteInput.classList.remove('shake-error'), 400);
-      return Swal.fire({ position: 'center', icon: 'warning', title: 'Keterangan Kosong!', text: 'Jangan lupa isi keterangan transaksinya ya.', showConfirmButton: true, confirmButtonText: 'OKE, PAHAM', confirmButtonColor: 'var(--gold)', background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' });
-  }
-
-  const dt = document.getElementById('f-date').value; 
-  const wallet = document.getElementById('f-wallet') ? document.getElementById('f-wallet').value : 'Kas Tunai';
-  const walletTo = document.getElementById('f-wallet-to') ? document.getElementById('f-wallet-to').value : 'Kas Tunai';
-  
-  if (curType === 'transfer' && wallet === walletTo) {
-      return Swal.fire({position: 'center', icon: 'warning', title: 'Oops...', text: 'Dompet asal dan tujuan tidak boleh sama!', showConfirmButton: true, confirmButtonText: 'OKE, PAHAM', confirmButtonColor: 'var(--gold)', background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)'});
-  }
-
+  const dt = document.getElementById('f-date').value; const wallet = document.getElementById('f-wallet') ? document.getElementById('f-wallet').value : 'Kas Tunai'; const walletTo = document.getElementById('f-wallet-to') ? document.getElementById('f-wallet-to').value : 'Kas Tunai'; 
+  if (curType === 'transfer' && wallet === walletTo) { return Swal.fire({position: 'center', icon: 'warning', title: 'Oops...', text: 'Dompet asal dan tujuan tidak boleh sama!', showConfirmButton: true, confirmButtonText: 'OKE, PAHAM', confirmButtonColor: 'var(--gold)', background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)'}); }
   if (document.activeElement) document.activeElement.blur();
-
-  const saveBtn = document.getElementById('save-btn');
-  saveBtn.textContent = 'MENYIMPAN...'; 
-  saveBtn.style.opacity = '0.7';
-  saveBtn.disabled = true;
+  const saveBtn = document.getElementById('save-btn'); saveBtn.textContent = 'MENYIMPAN...'; saveBtn.style.opacity = '0.7'; saveBtn.disabled = true;
 
   try { 
-      let payload = {
-          type: curType,
-          amount: amt,
-          category: cat,
-          wallet: wallet,
-          note: note,
-          date: dt || nowISO()
-      };
-      
-      if (curType === 'transfer') payload.walletTo = walletTo;
-      if (curType === 'debt' || curType === 'recv') payload.isPaid = false;
-
-      if (editId) { 
-          await updateDoc(doc(db, 'users', currentUser.uid, 'transactions', editId), payload); 
-          cancelEdit(); 
-      } else { 
-          payload.createdAt = serverTimestamp();
-          await addDoc(collection(db, 'users', currentUser.uid, 'transactions'), payload); 
-      } 
-      
-      amountInput.value = ''; 
-      document.getElementById('f-note').value = ''; 
-      
-      saveBtn.style.opacity = '1';
-      saveBtn.style.transform = 'scale(0.95)';
-      setTimeout(() => saveBtn.style.transform = 'scale(1)', 150);
-      
-      saveBtn.style.background = 'var(--green2)';
-      saveBtn.style.color = '#000';
-      saveBtn.textContent = 'TERSIMPAN ✅';
-      saveBtn.style.boxShadow = '0 0 15px rgba(16, 185, 129, 0.5)';
-      
+      let payload = { type: curType, amount: amt, category: cat, wallet: wallet, note: note, date: dt || nowISO() }; 
+      if (curType === 'transfer') payload.walletTo = walletTo; if (curType === 'debt' || curType === 'recv') payload.isPaid = false;
+      if (editId) { await updateDoc(doc(db, 'users', currentUser.uid, 'transactions', editId), payload); cancelEdit(); } else { payload.createdAt = serverTimestamp(); await addDoc(collection(db, 'users', currentUser.uid, 'transactions'), payload); } 
+      amountInput.value = ''; document.getElementById('f-note').value = ''; 
+      saveBtn.style.opacity = '1'; saveBtn.style.transform = 'scale(0.95)'; setTimeout(() => saveBtn.style.transform = 'scale(1)', 150); 
+      saveBtn.style.background = 'var(--green2)'; saveBtn.style.color = '#000'; saveBtn.textContent = 'TERSIMPAN ✅'; saveBtn.style.boxShadow = '0 0 15px rgba(16, 185, 129, 0.5)'; 
       if (navigator.vibrate) navigator.vibrate([30, 50, 30]); 
-      
-      let titleMsg = 'Berhasil Disimpan!';
-      if (curType === 'debt') titleMsg = '💳 Hutang Tercatat!';
-      if (curType === 'recv') titleMsg = '💸 Piutang Tercatat!';
-      if (curType === 'transfer') titleMsg = '🔄 Transfer Berhasil!';
-      
-      Swal.fire({
-         position: 'center',
-         icon: 'success',
-         title: titleMsg,
-         showConfirmButton: false,
-         timer: 2000,
-         background: 'var(--card)',
-         color: 'var(--text)',
-         backdrop: 'rgba(0,0,0,0.6)'
-      });
-      
-      setTimeout(() => {
-          saveBtn.style.boxShadow = 'none';
-          saveBtn.disabled = false;
-          window.setRealLocalTime();
-          
-          if (appPrefs && appPrefs.type) {
-              selType(appPrefs.type);
-              setTimeout(() => {
-                  if (document.getElementById('f-cat') && appPrefs.category) { 
-                      document.getElementById('f-cat').value = appPrefs.category; 
-                      document.getElementById('f-cat').dispatchEvent(new Event('change')); 
-                  }
-                  if (document.getElementById('f-wallet') && appPrefs.wallet) { 
-                      document.getElementById('f-wallet').value = appPrefs.wallet; 
-                      document.getElementById('f-wallet').dispatchEvent(new Event('change')); 
-                  }
-              }, 50);
-          } else {
-              selType('income');
-          }
-      }, 2000);
-
-  } catch(e) {
-      Swal.fire({
-          position: 'center', 
-          icon: 'error', 
-          title: 'Koneksi Terputus / Error', 
-          text: e.message, 
-          showConfirmButton: true, 
-          background: 'var(--card)', 
-          color: 'var(--text)', 
-          backdrop: 'rgba(0,0,0,0.6)'
-      }); 
-      saveBtn.textContent = 'COBA LAGI';
-      saveBtn.style.opacity = '1';
-      saveBtn.disabled = false;
-  } 
+      let titleMsg = 'Berhasil Disimpan!'; if (curType === 'debt') titleMsg = '💳 Hutang Tercatat!'; if (curType === 'recv') titleMsg = '💸 Piutang Tercatat!'; if (curType === 'transfer') titleMsg = '🔄 Transfer Berhasil!'; 
+      Swal.fire({ position: 'center', icon: 'success', title: titleMsg, showConfirmButton: false, timer: 2000, background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' }); 
+      setTimeout(() => { saveBtn.style.boxShadow = 'none'; saveBtn.disabled = false; window.setRealLocalTime(); if (appPrefs && appPrefs.type) { selType(appPrefs.type); setTimeout(() => { if (document.getElementById('f-cat') && appPrefs.category) { document.getElementById('f-cat').value = appPrefs.category; document.getElementById('f-cat').dispatchEvent(new Event('change')); } if (document.getElementById('f-wallet') && appPrefs.wallet) { document.getElementById('f-wallet').value = appPrefs.wallet; document.getElementById('f-wallet').dispatchEvent(new Event('change')); } }, 50); } else { selType('income'); } }, 2000);
+  } catch(e) { Swal.fire({ position: 'center', icon: 'error', title: 'Koneksi Terputus / Error', text: e.message, showConfirmButton: true, background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' }); saveBtn.textContent = 'COBA LAGI'; saveBtn.style.opacity = '1'; saveBtn.disabled = false; } 
 };
 
-window.delTx = async function(id) { 
-    if (!currentUser || !confirm('Yakin mau hapus riwayat ini?')) return; 
-    await deleteDoc(doc(db, 'users', currentUser.uid, 'transactions', id)); 
-};
+window.delTx = async function(id) { if (!currentUser || !confirm('Yakin mau hapus riwayat ini?')) return; await deleteDoc(doc(db, 'users', currentUser.uid, 'transactions', id)); };
 
 window.editTx = function(id) { 
-    const t = txs.find(x => x.id === id); 
-    if (!t) return; 
-    
-    editId = id; 
-    selType(t.type); 
-    document.getElementById('f-amount').value = t.amount; 
-    
-    setTimeout(() => { 
-        if (document.getElementById('f-cat')) { 
-            document.getElementById('f-cat').value = t.category; 
-            document.getElementById('f-cat').dispatchEvent(new Event('change')); 
-        } 
-    }, 50); 
-    
-    if (document.getElementById('f-wallet') && t.wallet) { 
-        document.getElementById('f-wallet').value = t.wallet; 
-        document.getElementById('f-wallet').dispatchEvent(new Event('change')); 
-    } 
-    if (document.getElementById('f-wallet-to') && t.walletTo) { 
-        document.getElementById('f-wallet-to').value = t.walletTo; 
-        document.getElementById('f-wallet-to').dispatchEvent(new Event('change')); 
-    } 
-    
-    document.getElementById('f-note').value = t.note === '-' ? '' : t.note; 
-    document.getElementById('f-date').value = t.date; 
-    document.getElementById('save-btn').textContent = 'UPDATE TRANSAKSI'; 
-    document.getElementById('cancel-edit-btn').style.display = 'block'; 
-    
+    const t = txs.find(x => x.id === id); if (!t) return; 
+    editId = id; selType(t.type); document.getElementById('f-amount').value = t.amount; 
+    setTimeout(() => { if (document.getElementById('f-cat')) { document.getElementById('f-cat').value = t.category; document.getElementById('f-cat').dispatchEvent(new Event('change')); } }, 50); 
+    if (document.getElementById('f-wallet') && t.wallet) { document.getElementById('f-wallet').value = t.wallet; document.getElementById('f-wallet').dispatchEvent(new Event('change')); } 
+    if (document.getElementById('f-wallet-to') && t.walletTo) { document.getElementById('f-wallet-to').value = t.walletTo; document.getElementById('f-wallet-to').dispatchEvent(new Event('change')); } 
+    document.getElementById('f-note').value = t.note === '-' ? '' : t.note; document.getElementById('f-date').value = t.date; document.getElementById('save-btn').textContent = 'UPDATE TRANSAKSI'; document.getElementById('cancel-edit-btn').style.display = 'block'; 
     switchPage('dashboard'); 
 };
 
-window.cancelEdit = function() { 
-    editId = null; 
-    document.getElementById('f-amount').value = ''; 
-    document.getElementById('f-note').value = ''; 
-    document.getElementById('f-date').value = nowISO(); 
-    document.getElementById('save-btn').textContent = 'SIMPAN TRANSAKSI'; 
-    document.getElementById('cancel-edit-btn').style.display = 'none'; 
-};
+window.cancelEdit = function() { editId = null; document.getElementById('f-amount').value = ''; document.getElementById('f-note').value = ''; document.getElementById('f-date').value = nowISO(); document.getElementById('save-btn').textContent = 'SIMPAN TRANSAKSI'; document.getElementById('cancel-edit-btn').style.display = 'none'; };
 
 window.selType = function(t) { 
-    curType = t; 
-    document.getElementById('btn-inc').classList.toggle('active', t === 'income'); 
-    document.getElementById('btn-exp').classList.toggle('active', t === 'expense'); 
-    
-    const btnDebt = document.getElementById('btn-debt'); 
-    if (btnDebt) btnDebt.classList.toggle('active', t === 'debt'); 
-    
-    const btnRecv = document.getElementById('btn-recv'); 
-    if (btnRecv) btnRecv.classList.toggle('active', t === 'recv'); 
-    
-    const btnTransfer = document.getElementById('btn-transfer'); 
-    if (btnTransfer) btnTransfer.classList.toggle('active', t === 'transfer'); 
-    
-    const s = document.getElementById('f-cat'); 
-    if (s) { 
-        s.innerHTML = '<option value="">Pilih kategori...</option>'; 
-        if (CATS[t]) { 
-            CATS[t].forEach(c => {
-                const o = document.createElement('option');
-                o.value = c;
-                o.textContent = c;
-                s.appendChild(o);
-            }); 
-        } 
-        s.dispatchEvent(new Event('change')); 
-    } 
-    
-    const saveBtn = document.getElementById('save-btn'); 
-    if (saveBtn) { 
-        if (t === 'income') { 
-            saveBtn.style.background = 'var(--green2)'; 
-            saveBtn.style.color = '#000'; 
-            saveBtn.textContent = 'SIMPAN PEMASUKAN'; 
-        } else if (t === 'expense') { 
-            saveBtn.style.background = 'var(--red2)'; 
-            saveBtn.style.color = '#fff'; 
-            saveBtn.textContent = 'SIMPAN PENGELUARAN'; 
-        } else if (t === 'debt') { 
-            saveBtn.style.background = 'var(--gold)'; 
-            saveBtn.style.color = '#000'; 
-            saveBtn.textContent = 'CATAT HUTANG'; 
-        } else if (t === 'recv') { 
-            saveBtn.style.background = 'var(--blue)'; 
-            saveBtn.style.color = '#fff'; 
-            saveBtn.textContent = 'CATAT PIUTANG'; 
-        } else if (t === 'transfer') { 
-            saveBtn.style.background = 'var(--text)'; 
-            saveBtn.style.color = 'var(--bg)'; 
-            saveBtn.textContent = 'LAKUKAN TRANSFER'; 
-        } 
-    } 
-    
-    const catRow = document.getElementById('row-cat'); 
-    const walletToRow = document.getElementById('row-wallet-to'); 
-    const walletLabel = document.getElementById('label-wallet'); 
-    
-    if (t === 'transfer') { 
-        if (catRow) catRow.style.display = 'none'; 
-        if (walletToRow) walletToRow.style.display = 'block'; 
-        if (walletLabel) walletLabel.textContent = 'SUMBER DANA (ASAL)'; 
-    } else { 
-        if (catRow) catRow.style.display = 'block'; 
-        if (walletToRow) walletToRow.style.display = 'none'; 
-        if (walletLabel) walletLabel.textContent = 'SUMBER DANA / DOMPET'; 
-    } 
+    curType = t; document.getElementById('btn-inc').classList.toggle('active', t === 'income'); document.getElementById('btn-exp').classList.toggle('active', t === 'expense'); 
+    const btnDebt = document.getElementById('btn-debt'); if (btnDebt) btnDebt.classList.toggle('active', t === 'debt'); 
+    const btnRecv = document.getElementById('btn-recv'); if (btnRecv) btnRecv.classList.toggle('active', t === 'recv'); 
+    const btnTransfer = document.getElementById('btn-transfer'); if (btnTransfer) btnTransfer.classList.toggle('active', t === 'transfer'); 
+    const s = document.getElementById('f-cat'); if (s) { s.innerHTML = '<option value="">Pilih kategori...</option>'; if (CATS[t]) { CATS[t].forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; s.appendChild(o); }); } s.dispatchEvent(new Event('change')); } 
+    const saveBtn = document.getElementById('save-btn'); if (saveBtn) { if (t === 'income') { saveBtn.style.background = 'var(--green2)'; saveBtn.style.color = '#000'; saveBtn.textContent = 'SIMPAN PEMASUKAN'; } else if (t === 'expense') { saveBtn.style.background = 'var(--red2)'; saveBtn.style.color = '#fff'; saveBtn.textContent = 'SIMPAN PENGELUARAN'; } else if (t === 'debt') { saveBtn.style.background = 'var(--gold)'; saveBtn.style.color = '#000'; saveBtn.textContent = 'CATAT HUTANG'; } else if (t === 'recv') { saveBtn.style.background = 'var(--blue)'; saveBtn.style.color = '#fff'; saveBtn.textContent = 'CATAT PIUTANG'; } else if (t === 'transfer') { saveBtn.style.background = 'var(--text)'; saveBtn.style.color = 'var(--bg)'; saveBtn.textContent = 'LAKUKAN TRANSFER'; } } 
+    const catRow = document.getElementById('row-cat'); const walletToRow = document.getElementById('row-wallet-to'); const walletLabel = document.getElementById('label-wallet'); 
+    if (t === 'transfer') { if (catRow) catRow.style.display = 'none'; if (walletToRow) walletToRow.style.display = 'block'; if (walletLabel) walletLabel.textContent = 'SUMBER DANA (ASAL)'; } else { if (catRow) catRow.style.display = 'block'; if (walletToRow) walletToRow.style.display = 'none'; if (walletLabel) walletLabel.textContent = 'SUMBER DANA / DOMPET'; } 
 };
 
-window.switchPage = function(p) { 
-    document.querySelectorAll('.page').forEach(el => el.classList.remove('active')); 
-    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active')); 
-    
-    document.getElementById('page-' + p).classList.add('active'); 
-    const pages = ['dashboard', 'harian', 'mingguan', 'bulanan', 'tahunan', 'riwayat']; 
-    const idx = pages.indexOf(p); 
-    
-    if (idx !== -1) { 
-        document.querySelectorAll('.nav-btn')[idx].classList.add('active'); 
-    } 
-    
-    activePage = p;
-    refreshAll(); 
-};
+window.switchPage = function(p) { document.querySelectorAll('.page').forEach(el => el.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active')); document.getElementById('page-' + p).classList.add('active'); const pages = ['dashboard', 'harian', 'mingguan', 'bulanan', 'tahunan', 'riwayat']; const idx = pages.indexOf(p); if (idx !== -1) { document.querySelectorAll('.nav-btn')[idx].classList.add('active'); } activePage = p; refreshAll(); };
 
-function calcSum(arr) { 
-    let inc = 0, exp = 0; 
-    arr.forEach(t => { 
-        if (t.type === 'income') {
-            inc += t.amount; 
-        } else if (t.type === 'expense') {
-            exp += t.amount; 
-        } else if (t.type === 'debt') { 
-            if (!t.isPaid) inc += t.amount; 
-            else { inc += t.amount; exp += t.amount; } 
-        } else if (t.type === 'recv') { 
-            if (!t.isPaid) exp += t.amount; 
-            else { exp += t.amount; inc += t.amount; } 
-        } 
-    }); 
-    return {inc, exp, bal: inc - exp, count: arr.length}; 
-}
+function calcSum(arr) { let inc = 0, exp = 0; arr.forEach(t => { if (t.type === 'income') { inc += t.amount; } else if (t.type === 'expense') { exp += t.amount; } else if (t.type === 'debt') { if (!t.isPaid) inc += t.amount; else { inc += t.amount; exp += t.amount; } } else if (t.type === 'recv') { if (!t.isPaid) exp += t.amount; else { exp += t.amount; inc += t.amount; } } }); return {inc, exp, bal: inc - exp, count: arr.length}; }
 
 function renderSumGrid(el, arr, isDash = false) { 
-    const s = calcSum(arr); 
-    const ts = calcSum(txs.filter(t => new Date(t.date).toDateString() === new Date().toDateString())); 
-    const pct = s.inc > 0 ? Math.min(100, Math.round((s.exp / s.inc) * 100)) : 0; 
-    
+    const s = calcSum(arr); const ts = calcSum(txs.filter(t => new Date(t.date).toDateString() === new Date().toDateString())); const pct = s.inc > 0 ? Math.min(100, Math.round((s.exp / s.inc) * 100)) : 0; 
     const warnStyle = (isDash && typeof extraPrefs !== 'undefined' && extraPrefs.ext_warnbalance === 'on' && s.bal < 50000) ? `style="border-color: var(--red2); box-shadow: 0 0 15px rgba(248,113,113,0.3);"` : ''; 
     const dailyColor = (typeof extraPrefs !== 'undefined' && extraPrefs.ext_budget === 'on' && ts.exp > 100000) ? 'color: var(--red2); text-shadow: 0 0 10px rgba(248,113,113,0.5);' : ''; 
     const dailyBorder = (typeof extraPrefs !== 'undefined' && extraPrefs.ext_budget === 'on' && ts.exp > 100000) ? 'border-color: rgba(248,113,113,0.5);' : ''; 
-    
     el.innerHTML = ` 
-    <div class="m-card inc"> 
-        <div class="m-label">TOTAL PEMASUKAN</div> 
-        <div class="m-val">${fmt(s.inc, isDash)}</div> 
-        <div class="usd-pill">${getUSD(s.inc)}</div> 
-        <div class="m-sub">${s.inc > 0 ? s.count + ' transaksi' : '-'}</div> 
-        <div class="m-bar"><div class="m-bar-fill" style="width:100%"></div></div> 
-    </div> 
-    <div class="m-card exp"> 
-        <div class="m-label">TOTAL PENGELUARAN</div> 
-        <div class="m-val">${fmt(s.exp, isDash)}</div> 
-        <div class="usd-pill">${getUSD(s.exp)}</div> 
-        <div class="m-sub">${pct}% dari pemasukan</div> 
-        <div class="m-bar"><div class="m-bar-fill" style="width:${pct}%"></div></div> 
-    </div> 
-    <div class="m-card bal" ${warnStyle}> 
-        <div class="m-label">SALDO BERSIH ${warnStyle !== '' ? '⚠️ KRITIS' : ''}</div> 
-        <div class="m-val">${fmt(s.bal, isDash)}</div> 
-        <div class="usd-pill">${getUSD(s.bal)}</div> 
-        <div class="m-sub">${s.bal >= 0 ? 'Surplus' : 'Defisit'}</div> 
-        <div class="m-bar"><div class="m-bar-fill" style="width:${s.inc > 0 ? Math.max(0, Math.min(100, Math.round((s.bal / s.inc) * 100))) : 0}%"></div></div> 
-    </div> 
-    <div class="m-card cnt" style="${dailyBorder}"> 
-        <div class="m-label">HARI INI ${dailyColor ? '⚠️ OVER LIMIT' : ''}</div> 
-        <div class="m-val" style="${dailyColor}">${ts.count} transaksi</div> 
-        <div class="m-sub" style="font-weight:700;">+ ${fmt(ts.inc, isDash)} | - <span style="${dailyColor}">${fmt(ts.exp, isDash)}</span></div> 
-        <div class="m-bar"><div class="m-bar-fill" style="width:${ts.count > 0 ? 100 : 0}%; background: ${dailyColor ? 'var(--red2)' : 'var(--blue)'};"></div></div> 
-    </div> `; 
+    <div class="m-card inc"> <div class="m-label">TOTAL PEMASUKAN</div> <div class="m-val">${fmt(s.inc, isDash)}</div> <div class="usd-pill">${getUSD(s.inc)}</div> <div class="m-sub">${s.inc > 0 ? s.count + ' transaksi' : '-'}</div> <div class="m-bar"><div class="m-bar-fill" style="width:100%"></div></div> </div> 
+    <div class="m-card exp"> <div class="m-label">TOTAL PENGELUARAN</div> <div class="m-val">${fmt(s.exp, isDash)}</div> <div class="usd-pill">${getUSD(s.exp)}</div> <div class="m-sub">${pct}% dari pemasukan</div> <div class="m-bar"><div class="m-bar-fill" style="width:${pct}%"></div></div> </div> 
+    <div class="m-card bal" ${warnStyle}> <div class="m-label">SALDO BERSIH ${warnStyle !== '' ? '⚠️ KRITIS' : ''}</div> <div class="m-val">${fmt(s.bal, isDash)}</div> <div class="usd-pill">${getUSD(s.bal)}</div> <div class="m-sub">${s.bal >= 0 ? 'Surplus' : 'Defisit'}</div> <div class="m-bar"><div class="m-bar-fill" style="width:${s.inc > 0 ? Math.max(0, Math.min(100, Math.round((s.bal / s.inc) * 100))) : 0}%"></div></div> </div> 
+    <div class="m-card cnt" style="${dailyBorder}"> <div class="m-label">HARI INI ${dailyColor ? '⚠️ OVER LIMIT' : ''}</div> <div class="m-val" style="${dailyColor}">${ts.count} transaksi</div> <div class="m-sub" style="font-weight:700;">+ ${fmt(ts.inc, isDash)} | - <span style="${dailyColor}">${fmt(ts.exp, isDash)}</span></div> <div class="m-bar"><div class="m-bar-fill" style="width:${ts.count > 0 ? 100 : 0}%; background: ${dailyColor ? 'var(--red2)' : 'var(--blue)'};"></div></div> </div> `; 
 }
 
 const escapeHTML = (str) => str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
@@ -2405,32 +1537,12 @@ const escapeHTML = (str) => str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<':
 const createTxCard = (t) => { 
     let icon = t.type === 'income' ? '↑' : t.type === 'expense' ? '↓' : t.type === 'debt' ? '💳' : t.type === 'transfer' ? '🔄' : '💸'; 
     let sign = (t.type === 'income' || t.type === 'recv') ? '+' : (t.type === 'transfer' ? '' : '-'); 
-    
-    if (t.type === 'debt') sign = '-'; 
-    if (t.type === 'recv') sign = '-'; 
-    
+    if (t.type === 'debt') sign = '-'; if (t.type === 'recv') sign = '-'; 
     let walletBadge = t.wallet ? `<span class="wallet-badge">${t.wallet}</span>` : ''; 
     if (t.type === 'transfer') walletBadge = `<span class="wallet-badge">${t.wallet} ➔ ${t.walletTo}</span>`; 
-    
-    let actionBtn = ''; 
-    let debtWarn = ''; 
-    
-    if (typeof extraPrefs !== 'undefined' && extraPrefs.ext_debtbadge === 'on') { 
-        if ((t.type === 'debt' || t.type === 'recv') && !t.isPaid) { 
-            debtWarn = `<div style="font-size:8px; font-weight:800; background:var(--red2); color:#000; padding:2px 6px; border-radius:4px; display:inline-block; margin-left:8px;">BELUM LUNAS</div>`; 
-        } 
-    } 
-    
-    if (t.type === 'debt' && !t.isPaid) { 
-        actionBtn = `<button class="edit-btn-recent" style="color:var(--gold); border: 1px solid var(--gold); padding: 4px 8px; border-radius: 6px; background: rgba(251, 191, 36, 0.1);" onclick="payDebt('${t.id}')">LUNAS</button>`; 
-    } else if (t.type === 'debt' && t.isPaid) { 
-        actionBtn = `<span style="color:var(--green2); font-size:10px; font-weight:800; padding: 4px 0;">LUNAS ✅</span>`; 
-    } else if (t.type === 'recv' && !t.isPaid) { 
-        actionBtn = `<button class="edit-btn-recent" style="color:var(--blue); border: 1px solid var(--blue); padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1);" onclick="payRecv('${t.id}')">SUDAH BAYAR</button>`; 
-    } else if (t.type === 'recv' && t.isPaid) { 
-        actionBtn = `<span style="color:var(--green2); font-size:10px; font-weight:800; padding: 4px 0;">LUNAS ✅</span>`; 
-    } 
-    
+    let actionBtn = ''; let debtWarn = ''; 
+    if (typeof extraPrefs !== 'undefined' && extraPrefs.ext_debtbadge === 'on') { if ((t.type === 'debt' || t.type === 'recv') && !t.isPaid) { debtWarn = `<div style="font-size:8px; font-weight:800; background:var(--red2); color:#000; padding:2px 6px; border-radius:4px; display:inline-block; margin-left:8px;">BELUM LUNAS</div>`; } } 
+    if (t.type === 'debt' && !t.isPaid) { actionBtn = `<button class="edit-btn-recent" style="color:var(--gold); border: 1px solid var(--gold); padding: 4px 8px; border-radius: 6px; background: rgba(251, 191, 36, 0.1);" onclick="payDebt('${t.id}')">LUNAS</button>`; } else if (t.type === 'debt' && t.isPaid) { actionBtn = `<span style="color:var(--green2); font-size:10px; font-weight:800; padding: 4px 0;">LUNAS ✅</span>`; } else if (t.type === 'recv' && !t.isPaid) { actionBtn = `<button class="edit-btn-recent" style="color:var(--blue); border: 1px solid var(--blue); padding: 4px 8px; border-radius: 6px; background: rgba(59, 130, 246, 0.1);" onclick="payRecv('${t.id}')">SUDAH BAYAR</button>`; } else if (t.type === 'recv' && t.isPaid) { actionBtn = `<span style="color:var(--green2); font-size:10px; font-weight:800; padding: 4px 0;">LUNAS ✅</span>`; } 
     return `
     <div class="recent-item" data-id="${t.id}"> 
         <div class="ri-left"> 
@@ -2448,77 +1560,28 @@ const createTxCard = (t) => {
             <div class="action-btns"> 
                 ${actionBtn} 
                 <button class="edit-btn-recent" onclick="editTx('${t.id}')">EDIT</button> 
+                <button class="edit-btn-recent" onclick="promptTransfer('${t.id}')" style="color:var(--text); border:1px solid var(--border2); background:var(--bg3);">TF</button>
                 <button class="del-btn-recent" onclick="delTx('${t.id}')">HAPUS</button> 
             </div> 
         </div> 
     </div>`; 
 };
 
-function renderList(container, arr) { 
-    container.innerHTML = arr.length ? arr.map(t => createTxCard(t)).join('') : '<div style="padding:40px;text-align:center;color:#888;font-size:12px;">Kosong</div>'; 
-}
-
-function renderMetrics() { 
-    renderSumGrid(document.getElementById('metric-cards'), txs, true); 
-}
+function renderList(container, arr) { container.innerHTML = arr.length ? arr.map(t => createTxCard(t)).join('') : '<div style="padding:40px;text-align:center;color:#888;font-size:12px;">Kosong</div>'; }
+function renderMetrics() { renderSumGrid(document.getElementById('metric-cards'), txs, true); }
 
 function renderWalletBalances() { 
     const wallets = { 'Kas Tunai': 0, 'DANA': 0, 'GoPay': 0, 'ShopeePay': 0, 'MT5 Trading': 0, 'Bank': 0 }; 
-    let hutangBal = 0; 
-    let piutangBal = 0; 
-    let totalAset = 0; 
-    
+    let hutangBal = 0; let piutangBal = 0; let totalAset = 0; 
     txs.forEach(t => { 
-        let w = t.wallet || 'Kas Tunai'; 
-        let wTo = t.walletTo; 
-        
+        let w = t.wallet || 'Kas Tunai'; let wTo = t.walletTo; 
         if (w !== 'Hutang' && w !== 'Piutang' && !wallets.hasOwnProperty(w)) wallets[w] = 0; 
         if (wTo && wTo !== 'Hutang' && wTo !== 'Piutang' && !wallets.hasOwnProperty(wTo)) wallets[wTo] = 0; 
-        
-        if (t.type === 'income') { 
-            if (wallets.hasOwnProperty(w)) wallets[w] += t.amount; 
-        } else if (t.type === 'expense') { 
-            if (wallets.hasOwnProperty(w)) wallets[w] -= t.amount; 
-        } else if (t.type === 'transfer') { 
-            if (w === 'Hutang') hutangBal -= t.amount; 
-            else if (w === 'Piutang') piutangBal += t.amount; 
-            else if (wallets.hasOwnProperty(w)) wallets[w] -= t.amount; 
-            
-            if (wTo === 'Hutang') hutangBal += t.amount; 
-            else if (wTo === 'Piutang') piutangBal -= t.amount; 
-            else if (wTo && wallets.hasOwnProperty(wTo)) wallets[wTo] += t.amount; 
-        } else if (t.type === 'debt') { 
-            if (wallets.hasOwnProperty(w)) wallets[w] += t.amount; 
-            if (!t.isPaid) { 
-                hutangBal -= t.amount; 
-            } else { 
-                if (wallets.hasOwnProperty(w)) wallets[w] -= t.amount; 
-            } 
-        } else if (t.type === 'recv') { 
-            if (wallets.hasOwnProperty(w)) wallets[w] -= t.amount; 
-            if (!t.isPaid) { 
-                piutangBal -= t.amount; 
-            } else { 
-                if (wallets.hasOwnProperty(w)) wallets[w] += t.amount; 
-            } 
-        } 
+        if (t.type === 'income') { if (wallets.hasOwnProperty(w)) wallets[w] += t.amount; } else if (t.type === 'expense') { if (wallets.hasOwnProperty(w)) wallets[w] -= t.amount; } else if (t.type === 'transfer') { if (w === 'Hutang') hutangBal -= t.amount; else if (w === 'Piutang') piutangBal += t.amount; else if (wallets.hasOwnProperty(w)) wallets[w] -= t.amount; if (wTo === 'Hutang') hutangBal += t.amount; else if (wTo === 'Piutang') piutangBal -= t.amount; else if (wTo && wallets.hasOwnProperty(wTo)) wallets[wTo] += t.amount; } else if (t.type === 'debt') { if (wallets.hasOwnProperty(w)) wallets[w] += t.amount; if (!t.isPaid) { hutangBal -= t.amount; } else { if (wallets.hasOwnProperty(w)) wallets[w] -= t.amount; } } else if (t.type === 'recv') { if (wallets.hasOwnProperty(w)) wallets[w] -= t.amount; if (!t.isPaid) { piutangBal -= t.amount; } else { if (wallets.hasOwnProperty(w)) wallets[w] += t.amount; } } 
     }); 
-    
-    for (let key in wallets) { 
-        if (wallets[key] > 0) totalAset += wallets[key]; 
-    } 
-    
-    const container = document.getElementById('wallet-balances'); 
-    if (!container) return; 
-    
-    let html = Object.entries(wallets).filter(([name, bal]) => { 
-        if (typeof extraPrefs !== 'undefined' && extraPrefs.ext_hidezero === 'on' && bal === 0) return false; 
-        return true; 
-    }).map(([name, bal]) => { 
-        let pct = (typeof extraPrefs !== 'undefined' && extraPrefs.ext_walletpct === 'on' && totalAset > 0 && bal > 0) ? `<div class="w-pct-badge" style="display:block;">${((bal/totalAset)*100).toFixed(1)}%</div>` : ''; 
-        return `<div class="w-card" style="position:relative;">${pct}<div class="w-label">${name}</div><div class="w-val ${bal < 0 ? 'min' : ''}">${fmtFull(bal)}</div><div class="usd-wallet-val" style="font-size: 8px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-top: 2px;">${getUSD(bal)}</div></div>` 
-    }).join(''); 
-    
+    for (let key in wallets) { if (wallets[key] > 0) totalAset += wallets[key]; } 
+    const container = document.getElementById('wallet-balances'); if (!container) return; 
+    let html = Object.entries(wallets).filter(([name, bal]) => { if (typeof extraPrefs !== 'undefined' && extraPrefs.ext_hidezero === 'on' && bal === 0) return false; return true; }).map(([name, bal]) => { let pct = (typeof extraPrefs !== 'undefined' && extraPrefs.ext_walletpct === 'on' && totalAset > 0 && bal > 0) ? `<div class="w-pct-badge" style="display:block;">${((bal/totalAset)*100).toFixed(1)}%</div>` : ''; return `<div class="w-card" style="position:relative;">${pct}<div class="w-label">${name}</div><div class="w-val ${bal < 0 ? 'min' : ''}">${fmtFull(bal)}</div><div class="usd-wallet-val" style="font-size: 8px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-top: 2px;">${getUSD(bal)}</div></div>` }).join(''); 
     html += `
     <div style="grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: inherit;"> 
         <div class="w-card" style="border-color:rgba(251, 191, 36, 0.5); background:rgba(251, 191, 36, 0.05);">
@@ -2532,308 +1595,44 @@ function renderWalletBalances() {
             <div class="usd-wallet-val" style="font-size: 8px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-top: 2px;">${getUSD(piutangBal)}</div>
         </div> 
     </div>`; 
-    
     container.innerHTML = html; 
 }
 
 function mkChart(id, labels, incData, expData) { 
-    if (charts[id]) charts[id].destroy(); 
-    const c = document.getElementById(id); 
-    if (!c) return; 
-    
-    const isLight = document.body.classList.contains('light-mode'); 
-    const isMobile = window.innerWidth <= 768; 
-    
-    charts[id] = new Chart(c, {
-        type: 'bar',
-        data: {
-            labels,
-            datasets: [
-                {label: 'Pemasukan', data: incData, backgroundColor: isLight ? '#10B981' : '#10B981', borderRadius: 4, barPercentage: 0.6},
-                {label: 'Pengeluaran', data: expData, backgroundColor: isLight ? '#F87171' : '#F87171', borderRadius: 4, barPercentage: 0.6}
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {legend: {display: false}},
-            scales: {
-                x: {
-                    ticks: {color: isLight ? '#888' : '#888', font: {size: isMobile ? 5 : 8, family: "'Outfit'", style: 'normal'}, autoSkip: false, maxRotation: 0, minRotation: 0},
-                    grid: {display: false},
-                    border: {display: false}
-                },
-                y: {
-                    ticks: {color: isLight ? '#888' : '#888', font: {size: isMobile ? 8 : 10, family: "'Outfit'", style: 'normal'}, callback: v => Intl.NumberFormat('id-ID', {notation: 'compact'}).format(v)},
-                    grid: {color: isLight ? '#DEE2E6' : '#222228', drawBorder: false},
-                    border: {display: false}
-                }
-            }
-        }
-    }); 
+    if (charts[id]) charts[id].destroy(); const c = document.getElementById(id); if (!c) return; 
+    const isLight = document.body.classList.contains('light-mode'); const isMobile = window.innerWidth <= 768; 
+    charts[id] = new Chart(c, { type: 'bar', data: { labels, datasets: [ {label: 'Pemasukan', data: incData, backgroundColor: isLight ? '#10B981' : '#10B981', borderRadius: 4, barPercentage: 0.6}, {label: 'Pengeluaran', data: expData, backgroundColor: isLight ? '#F87171' : '#F87171', borderRadius: 4, barPercentage: 0.6} ] }, options: { responsive: true, maintainAspectRatio: false, plugins: {legend: {display: false}}, scales: { x: { ticks: {color: isLight ? '#888' : '#888', font: {size: isMobile ? 5 : 8, family: "'Outfit'", style: 'normal'}, autoSkip: false, maxRotation: 0, minRotation: 0}, grid: {display: false}, border: {display: false} }, y: { ticks: {color: isLight ? '#888' : '#888', font: {size: isMobile ? 8 : 10, family: "'Outfit'", style: 'normal'}, callback: v => Intl.NumberFormat('id-ID', {notation: 'compact'}).format(v)}, grid: {color: isLight ? '#DEE2E6' : '#222228', drawBorder: false}, border: {display: false} } } } }); 
 }
 
-window.renderDaily = function() { 
-    const pick = document.getElementById('pick-daily').value;
-    const target = pick ? new Date(pick).toDateString() : new Date().toDateString();
-    const arr = txs.filter(t => new Date(t.date).toDateString() === target).sort((a, b) => new Date(b.date) - new Date(a.date)); 
-    
-    renderSumGrid(document.getElementById('daily-sum'), arr); 
-    renderList(document.getElementById('daily-body'), arr); 
-};
+window.renderDaily = function() { const pick = document.getElementById('pick-daily').value; const target = pick ? new Date(pick).toDateString() : new Date().toDateString(); const arr = txs.filter(t => new Date(t.date).toDateString() === target).sort((a, b) => new Date(b.date) - new Date(a.date)); renderSumGrid(document.getElementById('daily-sum'), arr); renderList(document.getElementById('daily-body'), arr); };
 
-function wkKey(d) { 
-    const dt = new Date(d); 
-    const day = dt.getDay(); 
-    const diff = dt.getDate() - day + (day === 0 ? -6 : 1); 
-    const monday = new Date(new Date(d).setDate(diff)); 
-    monday.setMinutes(monday.getMinutes() - monday.getTimezoneOffset()); 
-    return monday.toISOString().slice(0, 10); 
-}
+function wkKey(d) { const dt = new Date(d); const day = dt.getDay(); const diff = dt.getDate() - day + (day === 0 ? -6 : 1); const monday = new Date(new Date(d).setDate(diff)); monday.setMinutes(monday.getMinutes() - monday.getTimezoneOffset()); return monday.toISOString().slice(0, 10); }
 
-function renderWeekly() { 
-    const weeks = {};
-    txs.forEach(t => {
-        const k = wkKey(t.date);
-        (weeks[k] = weeks[k] || []).push(t);
-    }); 
-    
-    const keys = Object.keys(weeks).sort().reverse().slice(0, 8); 
-    document.getElementById('week-sel').innerHTML = keys.map((k, i) => {
-        const m = new Date(k), s = new Date(k);
-        s.setDate(s.getDate() + 6);
-        return `<button class="p-btn${i === 0 ? ' active' : ''}" onclick="selWeek('${k}',this)">${m.toLocaleDateString('id-ID', {day: '2-digit', month: 'short'})} – ${s.toLocaleDateString('id-ID', {day: '2-digit', month: 'short'})}</button>`;
-    }).join(''); 
-    
-    if (keys.length) showWeek(keys[0]); 
-}
+function renderWeekly() { const weeks = {}; txs.forEach(t => { const k = wkKey(t.date); (weeks[k] = weeks[k] || []).push(t); }); const keys = Object.keys(weeks).sort().reverse().slice(0, 8); document.getElementById('week-sel').innerHTML = keys.map((k, i) => { const m = new Date(k), s = new Date(k); s.setDate(s.getDate() + 6); return `<button class="p-btn${i === 0 ? ' active' : ''}" onclick="selWeek('${k}',this)">${m.toLocaleDateString('id-ID', {day: '2-digit', month: 'short'})} – ${s.toLocaleDateString('id-ID', {day: '2-digit', month: 'short'})}</button>`; }).join(''); if (keys.length) showWeek(keys[0]); }
+window.selWeek = function(k, btn) { document.querySelectorAll('#week-sel .p-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); showWeek(k); };
+function showWeek(k) { const arr = txs.filter(t => wkKey(t.date) === k).sort((a, b) => new Date(b.date) - new Date(a.date)); renderSumGrid(document.getElementById('week-sum'), arr); renderList(document.getElementById('week-body'), arr); const days = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min']; const inc = new Array(7).fill(0), exp = new Array(7).fill(0); arr.forEach(t => { const idx = (new Date(t.date).getDay() + 6) % 7; if (t.type === 'income') inc[idx] += t.amount; else if (t.type === 'expense') exp[idx] += t.amount; else if (t.type === 'debt') { inc[idx] += t.amount; if (t.isPaid) exp[idx] += t.amount; } else if (t.type === 'recv') { exp[idx] += t.amount; if (t.isPaid) inc[idx] += t.amount; } }); mkChart('chartWeek', days, inc, exp); }
 
-window.selWeek = function(k, btn) {
-    document.querySelectorAll('#week-sel .p-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    showWeek(k);
-};
+function renderMonthly() { const months = {}; txs.forEach(t => { const k = t.date.slice(0, 7); (months[k] = months[k] || []).push(t); }); const keys = Object.keys(months).sort().reverse().slice(0, 12); document.getElementById('month-sel').innerHTML = keys.map((k, i) => { const [y, m] = k.split('-'); const d = new Date(y, m - 1); return `<button class="p-btn${i === 0 ? ' active' : ''}" onclick="selMonth('${k}',this)">${d.toLocaleDateString('id-ID', {month: 'long', year: 'numeric'})}</button>`; }).join(''); if (keys.length) showMonth(keys[0]); }
+window.selMonth = function(k, btn) { document.querySelectorAll('#month-sel .p-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); showMonth(k); };
+function showMonth(k) { const arr = txs.filter(t => t.date.slice(0, 7) === k).sort((a, b) => new Date(b.date) - new Date(a.date)); renderSumGrid(document.getElementById('month-sum'), arr); renderList(document.getElementById('month-body'), arr); const [y, m] = k.split('-'); const dim = new Date(y, m, 0).getDate(); const labels = [], inc = new Array(dim).fill(0), exp = new Array(dim).fill(0); for (let i = 1; i <= dim; i++) labels.push(i + ''); arr.forEach(t => { const d = new Date(t.date).getDate() - 1; if (t.type === 'income') inc[d] += t.amount; else if (t.type === 'expense') exp[d] += t.amount; else if (t.type === 'debt') { inc[d] += t.amount; if (t.isPaid) exp[d] += t.amount; } else if (t.type === 'recv') { exp[d] += t.amount; if (t.isPaid) inc[d] += t.amount; } }); mkChart('chartMonth', labels, inc, exp); }
 
-function showWeek(k) { 
-    const arr = txs.filter(t => wkKey(t.date) === k).sort((a, b) => new Date(b.date) - new Date(a.date)); 
-    renderSumGrid(document.getElementById('week-sum'), arr); 
-    renderList(document.getElementById('week-body'), arr); 
-    
-    const days = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
-    const inc = new Array(7).fill(0), exp = new Array(7).fill(0); 
-    
-    arr.forEach(t => {
-        const idx = (new Date(t.date).getDay() + 6) % 7;
-        if (t.type === 'income') inc[idx] += t.amount;
-        else if (t.type === 'expense') exp[idx] += t.amount;
-        else if (t.type === 'debt') { inc[idx] += t.amount; if (t.isPaid) exp[idx] += t.amount; }
-        else if (t.type === 'recv') { exp[idx] += t.amount; if (t.isPaid) inc[idx] += t.amount; }
-    }); 
-    
-    mkChart('chartWeek', days, inc, exp); 
-}
+function renderYearly() { const years = {}; txs.forEach(t => { const k = t.date.slice(0, 4); (years[k] = years[k] || []).push(t); }); const keys = Object.keys(years).sort().reverse(); document.getElementById('year-sel').innerHTML = keys.map((k, i) => `<button class="p-btn${i === 0 ? ' active' : ''}" onclick="selYear('${k}',this)">${k}</button>`).join(''); if (keys.length) showYear(keys[0]); }
+window.selYear = function(k, btn) { document.querySelectorAll('#year-sel .p-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); showYear(k); };
+function showYear(k) { const arr = txs.filter(t => t.date.startsWith(k)).sort((a, b) => new Date(b.date) - new Date(a.date)); renderSumGrid(document.getElementById('year-sum'), arr); renderList(document.getElementById('year-body'), arr); const MNTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']; const inc = new Array(12).fill(0), exp = new Array(12).fill(0); arr.forEach(t => { const m = new Date(t.date).getMonth(); if (t.type === 'income') inc[m] += t.amount; else if (t.type === 'expense') exp[m] += t.amount; else if (t.type === 'debt') { inc[m] += t.amount; if (t.isPaid) exp[m] += t.amount; } else if (t.type === 'recv') { exp[m] += t.amount; if (t.isPaid) inc[m] += t.amount; } }); mkChart('chartYear', MNTHS, inc, exp); }
 
-function renderMonthly() { 
-    const months = {};
-    txs.forEach(t => {
-        const k = t.date.slice(0, 7);
-        (months[k] = months[k] || []).push(t);
-    }); 
-    
-    const keys = Object.keys(months).sort().reverse().slice(0, 12); 
-    document.getElementById('month-sel').innerHTML = keys.map((k, i) => {
-        const [y, m] = k.split('-');
-        const d = new Date(y, m - 1);
-        return `<button class="p-btn${i === 0 ? ' active' : ''}" onclick="selMonth('${k}',this)">${d.toLocaleDateString('id-ID', {month: 'long', year: 'numeric'})}</button>`;
-    }).join(''); 
-    
-    if (keys.length) showMonth(keys[0]); 
-}
+window.renderAll = function() { const tf = document.getElementById('flt-type').value; const s = (document.getElementById('flt-search').value || '').toLowerCase(); let arr = [...txs]; if (tf) arr = arr.filter(t => t.type === tf); if (s) arr = arr.filter(t => t.note.toLowerCase().includes(s) || t.category.toLowerCase().includes(s)); arr.sort((a, b) => new Date(b.date) - new Date(a.date)); renderSumGrid(document.getElementById('all-sum'), arr); renderList(document.getElementById('all-body'), arr); const wObj = {}; arr.forEach(t => { const w = t.wallet || 'Kas Tunai'; if (!wObj[w]) wObj[w] = {inc: 0, exp: 0}; if (t.type === 'income') wObj[w].inc += t.amount; else if (t.type === 'expense') wObj[w].exp += t.amount; }); const wLabels = Object.keys(wObj); const wInc = wLabels.map(w => wObj[w].inc); const wExp = wLabels.map(w => wObj[w].exp); mkChart('chartRiwayat', wLabels, wInc, wExp); };
 
-window.selMonth = function(k, btn) {
-    document.querySelectorAll('#month-sel .p-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    showMonth(k);
-};
-
-function showMonth(k) { 
-    const arr = txs.filter(t => t.date.slice(0, 7) === k).sort((a, b) => new Date(b.date) - new Date(a.date)); 
-    renderSumGrid(document.getElementById('month-sum'), arr); 
-    renderList(document.getElementById('month-body'), arr); 
-    
-    const [y, m] = k.split('-');
-    const dim = new Date(y, m, 0).getDate();
-    const labels = [], inc = new Array(dim).fill(0), exp = new Array(dim).fill(0); 
-    
-    for (let i = 1; i <= dim; i++) labels.push(i + ''); 
-    
-    arr.forEach(t => {
-        const d = new Date(t.date).getDate() - 1;
-        if (t.type === 'income') inc[d] += t.amount;
-        else if (t.type === 'expense') exp[d] += t.amount;
-        else if (t.type === 'debt') { inc[d] += t.amount; if (t.isPaid) exp[d] += t.amount; }
-        else if (t.type === 'recv') { exp[d] += t.amount; if (t.isPaid) inc[d] += t.amount; }
-    }); 
-    
-    mkChart('chartMonth', labels, inc, exp); 
-}
-
-function renderYearly() { 
-    const years = {};
-    txs.forEach(t => {
-        const k = t.date.slice(0, 4);
-        (years[k] = years[k] || []).push(t);
-    }); 
-    
-    const keys = Object.keys(years).sort().reverse(); 
-    document.getElementById('year-sel').innerHTML = keys.map((k, i) => `<button class="p-btn${i === 0 ? ' active' : ''}" onclick="selYear('${k}',this)">${k}</button>`).join(''); 
-    
-    if (keys.length) showYear(keys[0]); 
-}
-
-window.selYear = function(k, btn) {
-    document.querySelectorAll('#year-sel .p-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    showYear(k);
-};
-
-function showYear(k) { 
-    const arr = txs.filter(t => t.date.startsWith(k)).sort((a, b) => new Date(b.date) - new Date(a.date)); 
-    renderSumGrid(document.getElementById('year-sum'), arr); 
-    renderList(document.getElementById('year-body'), arr); 
-    
-    const MNTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-    const inc = new Array(12).fill(0), exp = new Array(12).fill(0); 
-    
-    arr.forEach(t => {
-        const m = new Date(t.date).getMonth();
-        if (t.type === 'income') inc[m] += t.amount;
-        else if (t.type === 'expense') exp[m] += t.amount;
-        else if (t.type === 'debt') { inc[m] += t.amount; if (t.isPaid) exp[m] += t.amount; }
-        else if (t.type === 'recv') { exp[m] += t.amount; if (t.isPaid) inc[m] += t.amount; }
-    }); 
-    
-    mkChart('chartYear', MNTHS, inc, exp); 
-}
-
-window.renderAll = function() { 
-    const tf = document.getElementById('flt-type').value; 
-    const s = (document.getElementById('flt-search').value || '').toLowerCase(); 
-    let arr = [...txs]; 
-    
-    if (tf) arr = arr.filter(t => t.type === tf); 
-    if (s) arr = arr.filter(t => t.note.toLowerCase().includes(s) || t.category.toLowerCase().includes(s)); 
-    
-    arr.sort((a, b) => new Date(b.date) - new Date(a.date)); 
-    renderSumGrid(document.getElementById('all-sum'), arr); 
-    renderList(document.getElementById('all-body'), arr); 
-    
-    const wObj = {}; 
-    arr.forEach(t => { 
-        const w = t.wallet || 'Kas Tunai'; 
-        if (!wObj[w]) wObj[w] = {inc: 0, exp: 0}; 
-        if (t.type === 'income') wObj[w].inc += t.amount; 
-        else if (t.type === 'expense') wObj[w].exp += t.amount; 
-    }); 
-    
-    const wLabels = Object.keys(wObj); 
-    const wInc = wLabels.map(w => wObj[w].inc); 
-    const wExp = wLabels.map(w => wObj[w].exp); 
-    mkChart('chartRiwayat', wLabels, wInc, wExp); 
-};
-
-function refreshAll() { 
-    renderMetrics(); 
-    renderWalletBalances(); 
-    renderList(document.getElementById('recent-list'), txs.slice(0, 6)); 
-    
-    if (activePage === 'harian') renderDaily(); 
-    if (activePage === 'mingguan') renderWeekly(); 
-    if (activePage === 'bulanan') renderMonthly(); 
-    if (activePage === 'tahunan') renderYearly(); 
-    if (activePage === 'riwayat') renderAll(); 
-    
-    window.renderCalcDisplay(); 
-}
+function refreshAll() { renderMetrics(); renderWalletBalances(); renderList(document.getElementById('recent-list'), txs.slice(0, 6)); if (activePage === 'harian') renderDaily(); if (activePage === 'mingguan') renderWeekly(); if (activePage === 'bulanan') renderMonthly(); if (activePage === 'tahunan') renderYearly(); if (activePage === 'riwayat') renderAll(); window.renderCalcDisplay(); }
 
 document.getElementById('pick-daily').value = nowISO().slice(0, 10); 
 document.getElementById('f-date').value = nowISO();
 
-window.exportCSV = function() { 
-    if (!txs.length) return Swal.fire('Kosong', 'Tidak ada data untuk diunduh', 'info'); 
-    let csv = "Tanggal,Waktu,Tipe,Kategori,Nominal(Rp),Keterangan\n"; 
-    
-    txs.forEach(t => { 
-        const d = t.date.split('T'); 
-        csv += `${d[0]},${d[1] || '-'},${t.type === 'income' ? 'Pemasukan' : 'Pengeluaran'},${t.category},${t.amount},"${t.note}"\n`; 
-    }); 
-    
-    const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'}); 
-    const link = document.createElement('a'); 
-    link.href = URL.createObjectURL(blob); 
-    link.download = 'Laporan_Keuangan_RHN.csv'; 
-    link.click(); 
-};
+window.exportCSV = function() { if (!txs.length) return Swal.fire('Kosong', 'Tidak ada data untuk diunduh', 'info'); let csv = "Tanggal,Waktu,Tipe,Kategori,Nominal(Rp),Keterangan\n"; txs.forEach(t => { const d = t.date.split('T'); csv += `${d[0]},${d[1] || '-'},${t.type === 'income' ? 'Pemasukan' : 'Pengeluaran'},${t.category},${t.amount},"${t.note}"\n`; }); const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'}); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'Laporan_Keuangan_RHN.csv'; link.click(); };
 
-window.payDebt = async function(id) { 
-    if (!currentUser) return; 
-    
-    Swal.fire({ 
-        title: 'Bayar Hutang?', 
-        text: "Saldo bersih / dompet lo akan dipotong otomatis untuk bayar hutang ini.", 
-        icon: 'question', 
-        showCancelButton: true, 
-        background: 'var(--card)', 
-        color: 'var(--text)', 
-        confirmButtonColor: 'var(--gold)', 
-        cancelButtonColor: 'var(--bg3)', 
-        confirmButtonText: 'Ya, Bayar Lunas', 
-        position: 'center', 
-        backdrop: 'rgba(0,0,0,0.6)' 
-    }).then(async (result) => { 
-        if (result.isConfirmed) { 
-            try { 
-                await updateDoc(doc(db, 'users', currentUser.uid, 'transactions', id), { isPaid: true }); 
-                Swal.fire({position: 'center', icon: 'success', title: 'Hutang Lunas!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)'}); 
-            } catch(e) { 
-                Swal.fire('Error', e.message, 'error'); 
-            } 
-        } 
-    }); 
-};
+window.payDebt = async function(id) { if (!currentUser) return; Swal.fire({ title: 'Bayar Hutang?', text: "Saldo bersih / dompet lo akan dipotong otomatis untuk bayar hutang ini.", icon: 'question', showCancelButton: true, background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--gold)', cancelButtonColor: 'var(--bg3)', confirmButtonText: 'Ya, Bayar Lunas', position: 'center', backdrop: 'rgba(0,0,0,0.6)' }).then(async (result) => { if (result.isConfirmed) { try { await updateDoc(doc(db, 'users', currentUser.uid, 'transactions', id), { isPaid: true }); Swal.fire({position: 'center', icon: 'success', title: 'Hutang Lunas!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)'}); } catch(e) { Swal.fire('Error', e.message, 'error'); } } }); };
+window.payRecv = async function(id) { if (!currentUser) return; Swal.fire({ title: 'Piutang Dibayar?', text: "Uang kembali utuh, saldo bersih / dompet lo akan otomatis bertambah.", icon: 'question', showCancelButton: true, background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--blue)', cancelButtonColor: 'var(--bg3)', confirmButtonText: 'Ya, Sudah Dibayar', position: 'center', backdrop: 'rgba(0,0,0,0.6)' }).then(async (result) => { if (result.isConfirmed) { try { await updateDoc(doc(db, 'users', currentUser.uid, 'transactions', id), { isPaid: true }); Swal.fire({position: 'center', icon: 'success', title: 'Piutang Lunas!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)'}); } catch(e) { Swal.fire('Error', e.message, 'error'); } } }); };
 
-window.payRecv = async function(id) { 
-    if (!currentUser) return; 
-    
-    Swal.fire({ 
-        title: 'Piutang Dibayar?', 
-        text: "Uang kembali utuh, saldo bersih / dompet lo akan otomatis bertambah.", 
-        icon: 'question', 
-        showCancelButton: true, 
-        background: 'var(--card)', 
-        color: 'var(--text)', 
-        confirmButtonColor: 'var(--blue)', 
-        cancelButtonColor: 'var(--bg3)', 
-        confirmButtonText: 'Ya, Sudah Dibayar', 
-        position: 'center', 
-        backdrop: 'rgba(0,0,0,0.6)' 
-    }).then(async (result) => { 
-        if (result.isConfirmed) { 
-            try { 
-                await updateDoc(doc(db, 'users', currentUser.uid, 'transactions', id), { isPaid: true }); 
-                Swal.fire({position: 'center', icon: 'success', title: 'Piutang Lunas!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)'}); 
-            } catch(e) { 
-                Swal.fire('Error', e.message, 'error'); 
-            } 
-        } 
-    }); 
-};
-
-if ('serviceWorker' in navigator) { 
-    window.addEventListener('load', () => { 
-        navigator.serviceWorker.register('sw.js').catch(e => console.log('SW Error:', e)); 
-    }); 
-}
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(e => console.log('SW Error:', e)); }); }
 </script>
 
 <style>
@@ -2887,464 +1686,72 @@ if ('serviceWorker' in navigator) {
 
 <script>
 window.addEventListener('DOMContentLoaded', (event) => {
-  const Toast = Swal.mixin({ 
-      position: 'center', showConfirmButton: false, timer: 2000, 
-      timerProgressBar: true, background: 'var(--card)', 
-      color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' 
-  });
+  const Toast = Swal.mixin({ position: 'center', showConfirmButton: false, timer: 2000, timerProgressBar: true, background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' });
   
-  window.addEventListener('offline', () => { 
-      document.getElementById('offline-banner').style.display = 'block'; 
-      Toast.fire({ icon: 'warning', title: 'Koneksi Terputus!' }); 
-  });
-  
-  window.addEventListener('online', () => { 
-      document.getElementById('offline-banner').style.display = 'none'; 
-      Toast.fire({ icon: 'success', title: 'Online Kembali!' }); 
-  });
+  window.addEventListener('offline', () => { document.getElementById('offline-banner').style.display = 'block'; Toast.fire({ icon: 'warning', title: 'Koneksi Terputus!' }); });
+  window.addEventListener('online', () => { document.getElementById('offline-banner').style.display = 'none'; Toast.fire({ icon: 'success', title: 'Online Kembali!' }); });
 
-  // LOGIKA KONFIRMASI KELUAR APLIKASI KETIKA MENCET BACK DI HP
   window.history.pushState({ noBackExitsApp: true }, '');
   window.addEventListener('popstate', function(event) {
-      Swal.fire({
-          title: 'Keluar Aplikasi?',
-          text: "Anda serius ingin keluar dari aplikasi RHN CAPITAL?",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: 'var(--red2)',
-          cancelButtonColor: 'var(--bg3)',
-          confirmButtonText: 'Ya, Keluar',
-          cancelButtonText: 'Batal',
-          background: 'var(--card)',
-          color: 'var(--text)',
-          backdrop: 'rgba(0,0,0,0.6)',
-          position: 'center'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              window.history.back();
-          } else {
-              window.history.pushState({ noBackExitsApp: true }, '');
-          }
-      });
+      Swal.fire({ title: 'Keluar Aplikasi?', text: "Anda serius ingin keluar dari aplikasi RHN CAPITAL?", icon: 'warning', showCancelButton: true, confirmButtonColor: 'var(--red2)', cancelButtonColor: 'var(--bg3)', confirmButtonText: 'Ya, Keluar', cancelButtonText: 'Batal', background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)', position: 'center' }).then((result) => { if (result.isConfirmed) { window.history.back(); } else { window.history.pushState({ noBackExitsApp: true }, ''); } });
   });
 
-  if (window.Chart) { 
-      Chart.defaults.animation = false; 
-      Chart.defaults.transitions.active.animation.duration = 0; 
-  }
+  if (window.Chart) { Chart.defaults.animation = false; Chart.defaults.transitions.active.animation.duration = 0; }
 
   const originalDelTx = window.delTx; 
-  window.delTx = function(id) { 
-      if (navigator.vibrate) navigator.vibrate(20); 
-      Swal.fire({ 
-          title: 'Hapus Transaksi?', text: "Data yang dihapus tidak bisa dikembalikan.", 
-          icon: 'warning', showCancelButton: true, background: 'var(--card)', color: 'var(--text)', 
-          confirmButtonColor: 'var(--red2)', cancelButtonColor: 'var(--bg3)', 
-          confirmButtonText: 'Ya, Hapus', position: 'center', backdrop: 'rgba(0,0,0,0.6)' 
-      }).then((result) => { 
-          if (result.isConfirmed) { 
-              const nativeConfirm = window.confirm; 
-              window.confirm = () => true; 
-              originalDelTx(id).then(() => { 
-                  window.confirm = nativeConfirm; 
-                  Toast.fire({ icon: 'success', title: 'Data terhapus!' }); 
-              }).catch(err => { 
-                  window.confirm = nativeConfirm; 
-              }); 
-          } 
-      }); 
-  };
+  window.delTx = function(id) { if (navigator.vibrate) navigator.vibrate(20); Swal.fire({ title: 'Hapus Transaksi?', text: "Data yang dihapus tidak bisa dikembalikan.", icon: 'warning', showCancelButton: true, background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--red2)', cancelButtonColor: 'var(--bg3)', confirmButtonText: 'Ya, Hapus', position: 'center', backdrop: 'rgba(0,0,0,0.6)' }).then((result) => { if (result.isConfirmed) { const nativeConfirm = window.confirm; window.confirm = () => true; originalDelTx(id).then(() => { window.confirm = nativeConfirm; Toast.fire({ icon: 'success', title: 'Data terhapus!' }); }).catch(err => { window.confirm = nativeConfirm; }); } }); };
   
-  // MODIFIKASI KONFIRMASI TOMBOL EDIT
   const originalEditTx = window.editTx; 
-  window.editTx = function(id) { 
-      if (navigator.vibrate) navigator.vibrate(20); 
-      Swal.fire({
-          title: 'Edit Transaksi?',
-          text: "Data riwayat ini akan ditarik ke form untuk diubah.",
-          icon: 'question',
-          showCancelButton: true,
-          background: 'var(--card)',
-          color: 'var(--text)',
-          confirmButtonColor: 'var(--blue)',
-          cancelButtonColor: 'var(--bg3)',
-          confirmButtonText: 'Ya, Edit',
-          cancelButtonText: 'Batal',
-          position: 'center',
-          backdrop: 'rgba(0,0,0,0.6)'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              originalEditTx(id);
-          }
-      });
-  };
+  window.editTx = function(id) { if (navigator.vibrate) navigator.vibrate(20); Swal.fire({ title: 'Edit Transaksi?', text: "Data riwayat ini akan ditarik ke form untuk diubah.", icon: 'question', showCancelButton: true, background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--blue)', cancelButtonColor: 'var(--bg3)', confirmButtonText: 'Ya, Edit', cancelButtonText: 'Batal', position: 'center', backdrop: 'rgba(0,0,0,0.6)' }).then((result) => { if (result.isConfirmed) { originalEditTx(id); } }); };
   
   const originalDoLogout = window.doLogout; 
-  window.doLogout = function() { 
-      if (navigator.vibrate) navigator.vibrate(20); 
-      Swal.fire({ 
-          title: 'Keluar Akun?', text: "Lu yakin mau keluar dari aplikasi?", 
-          icon: 'warning', showCancelButton: true, background: 'var(--card)', color: 'var(--text)', 
-          confirmButtonColor: 'var(--red2)', cancelButtonColor: 'var(--bg3)', 
-          confirmButtonText: 'Ya, Keluar', position: 'center', backdrop: 'rgba(0,0,0,0.6)' 
-      }).then((result) => { 
-          if (result.isConfirmed) { 
-              originalDoLogout(); 
-          } 
-      }); 
-  };
+  window.doLogout = function() { if (navigator.vibrate) navigator.vibrate(20); Swal.fire({ title: 'Keluar Akun?', text: "Lu yakin mau keluar dari aplikasi?", icon: 'warning', showCancelButton: true, background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--red2)', cancelButtonColor: 'var(--bg3)', confirmButtonText: 'Ya, Keluar', position: 'center', backdrop: 'rgba(0,0,0,0.6)' }).then((result) => { if (result.isConfirmed) { originalDoLogout(); } }); };
 
-  const amountInput = document.getElementById('f-amount'); 
-  const catInput = document.getElementById('f-cat');
-  
-  if (amountInput) { 
-      amountInput.type = 'text'; 
-      amountInput.inputMode = 'numeric'; 
-      
-      amountInput.addEventListener('blur', function() { 
-          let val = this.value.replace(/[^0-9+\-*/().]/g, ''); 
-          try { 
-              if (val && /[+\-*/]/.test(val)) { 
-                  let cleanMath = val.replace(/\./g, ''); 
-                  let result = new Function('return (' + cleanMath + ')')(); 
-                  this.value = parseInt(result, 10).toLocaleString('id-ID'); 
-                  Toast.fire({ icon: 'info', title: 'Auto-hitung berhasil!' }); 
-              } else if (val) { 
-                  this.value = parseInt(val.replace(/\./g, ''), 10).toLocaleString('id-ID'); 
-              } 
-          } catch (e) { 
-              this.value = ''; 
-          } 
-      }); 
-      
-      amountInput.addEventListener('input', function(e) { 
-          let raw = this.value.replace(/[^0-9+\-*/().]/g, ''); 
-          if (/[+\-*/()]/.test(raw)) { 
-              this.value = raw; 
-          } else { 
-              let nums = raw.replace(/\./g, ''); 
-              this.value = nums ? parseInt(nums, 10).toLocaleString('id-ID') : ''; 
-          } 
-      }); 
-  }
+  const amountInput = document.getElementById('f-amount'); const catInput = document.getElementById('f-cat');
+  if (amountInput) { amountInput.type = 'text'; amountInput.inputMode = 'numeric'; amountInput.addEventListener('blur', function() { let val = this.value.replace(/[^0-9+\-*/().]/g, ''); try { if (val && /[+\-*/]/.test(val)) { let cleanMath = val.replace(/\./g, ''); let result = new Function('return (' + cleanMath + ')')(); this.value = parseInt(result, 10).toLocaleString('id-ID'); Toast.fire({ icon: 'info', title: 'Auto-hitung berhasil!' }); } else if (val) { this.value = parseInt(val.replace(/\./g, ''), 10).toLocaleString('id-ID'); } } catch (e) { this.value = ''; } }); amountInput.addEventListener('input', function(e) { let raw = this.value.replace(/[^0-9+\-*/().]/g, ''); if (/[+\-*/()]/.test(raw)) { this.value = raw; } else { let nums = raw.replace(/\./g, ''); this.value = nums ? parseInt(nums, 10).toLocaleString('id-ID') : ''; } }); }
 
-  window.setRealLocalTime = function() { 
-      const now = new Date(); 
-      now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); 
-      const dateInput = document.getElementById('f-date'); 
-      if (dateInput) dateInput.value = now.toISOString().slice(0,16); 
-  }; 
+  window.setRealLocalTime = function() { const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); const dateInput = document.getElementById('f-date'); if (dateInput) dateInput.value = now.toISOString().slice(0,16); }; 
   window.setRealLocalTime(); 
-  
-  const originalCancelEdit = window.cancelEdit; 
-  window.cancelEdit = function() { 
-      originalCancelEdit(); 
-      window.setRealLocalTime(); 
-  };
+  const originalCancelEdit = window.cancelEdit; window.cancelEdit = function() { originalCancelEdit(); window.setRealLocalTime(); };
 
-  function applyBalanceColor() { 
-      document.querySelectorAll('.m-card.bal').forEach(card => { 
-          const el = card.querySelector('.m-val'); 
-          const textVal = el.innerText; 
-          if (textVal.includes('-')) { 
-              el.style.color = 'var(--red2)'; 
-              card.style.boxShadow = '0 0 15px rgba(248,113,113,0.15)'; 
-              card.style.borderColor = 'rgba(248,113,113,0.4)'; 
-          } else { 
-              card.style.boxShadow = 'none'; 
-              card.style.borderColor = 'var(--border)'; 
-              if (textVal !== 'Rp 0' && textVal !== 'Rp NaN' && textVal !== '') { 
-                  el.style.color = 'var(--green2)'; 
-              } else { 
-                  el.style.color = 'var(--text)'; 
-              } 
-          } 
-      }); 
-  }
-  
-  const originalRefreshAll = window.refreshAll; 
-  window.refreshAll = function() { 
-      originalRefreshAll(); 
-      setTimeout(applyBalanceColor, 50); 
-  };
-  
-  const originalRenderSumGrid = window.renderSumGrid; 
-  window.renderSumGrid = function(el, arr, isDash) { 
-      originalRenderSumGrid(el, arr, isDash); 
-      setTimeout(applyBalanceColor, 50); 
-  };
+  function applyBalanceColor() { document.querySelectorAll('.m-card.bal').forEach(card => { const el = card.querySelector('.m-val'); const textVal = el.innerText; if (textVal.includes('-')) { el.style.color = 'var(--red2)'; card.style.boxShadow = '0 0 15px rgba(248,113,113,0.15)'; card.style.borderColor = 'rgba(248,113,113,0.4)'; } else { card.style.boxShadow = 'none'; card.style.borderColor = 'var(--border)'; if (textVal !== 'Rp 0' && textVal !== 'Rp NaN' && textVal !== '') { el.style.color = 'var(--green2)'; } else { el.style.color = 'var(--text)'; } } }); }
+  const originalRefreshAll = window.refreshAll; window.refreshAll = function() { originalRefreshAll(); setTimeout(applyBalanceColor, 50); };
+  const originalRenderSumGrid = window.renderSumGrid; window.renderSumGrid = function(el, arr, isDash) { originalRenderSumGrid(el, arr, isDash); setTimeout(applyBalanceColor, 50); };
 
-  document.addEventListener('click', e => { 
-      const balCard = e.target.closest('.m-card.bal'); 
-      if(balCard) { 
-          document.body.classList.toggle('global-privacy'); 
-          if(navigator.vibrate) vibrate(15); 
-      } 
-  });
+  document.addEventListener('click', e => { const balCard = e.target.closest('.m-card.bal'); if(balCard) { document.body.classList.toggle('global-privacy'); if(navigator.vibrate) navigator.vibrate(15); } });
 
-  const originalSwitchPage = window.switchPage; 
-  window.switchPage = function(p) { 
-      if (amountInput && amountInput.value && amountInput.value !== '' && p !== 'dashboard' && p !== 'pengaturan') { 
-          Swal.fire({ 
-              title: 'Pindah Tab?', text: "Ada nominal yang belum lu simpan. Lanjut pindah?", icon: 'warning', 
-              showCancelButton: true, confirmButtonText: 'Tetap Pindah', cancelButtonText: 'Batal', 
-              background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--border2)', 
-              position: 'center', backdrop: 'rgba(0,0,0,0.6)' 
-          }).then((result) => { 
-              if (result.isConfirmed) { 
-                  originalSwitchPage(p); 
-              } 
-          }); 
-      } else { 
-          originalSwitchPage(p); 
-      } 
-  };
+  const originalSwitchPage = window.switchPage; window.switchPage = function(p) { if (amountInput && amountInput.value && amountInput.value !== '' && p !== 'dashboard' && p !== 'pengaturan') { Swal.fire({ title: 'Pindah Tab?', text: "Ada nominal yang belum lu simpan. Lanjut pindah?", icon: 'warning', showCancelButton: true, confirmButtonText: 'Tetap Pindah', cancelButtonText: 'Batal', background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--border2)', position: 'center', backdrop: 'rgba(0,0,0,0.6)' }).then((result) => { if (result.isConfirmed) { originalSwitchPage(p); } }); } else { originalSwitchPage(p); } };
 
-  const scrollTopBtn = document.createElement('button'); 
-  scrollTopBtn.id = 'scroll-to-top'; 
-  scrollTopBtn.innerHTML = '⬆️'; 
-  document.body.appendChild(scrollTopBtn); 
-  
-  scrollTopBtn.onclick = () => { 
-      window.scrollTo({ top: 0, behavior: 'smooth' }); 
-  }; 
-  
-  window.addEventListener('scroll', () => { 
-      let currentScroll = window.pageYOffset; 
-      if (currentScroll > 400) { 
-          scrollTopBtn.style.display = 'flex'; 
-      } else { 
-          scrollTopBtn.style.display = 'none'; 
-      } 
-  });
+  const scrollTopBtn = document.createElement('button'); scrollTopBtn.id = 'scroll-to-top'; scrollTopBtn.innerHTML = '⬆️'; document.body.appendChild(scrollTopBtn);
+  scrollTopBtn.onclick = () => { window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  window.addEventListener('scroll', () => { let currentScroll = window.pageYOffset; if (currentScroll > 400) { scrollTopBtn.style.display = 'flex'; } else { scrollTopBtn.style.display = 'none'; } });
 
-  document.addEventListener('keydown', function(e) { 
-      if (e.altKey && e.key.toLowerCase() === 'n') { 
-          e.preventDefault(); 
-          window.switchPage('dashboard'); 
-          if(amountInput) amountInput.focus(); 
-      } 
-      if (e.altKey && e.key.toLowerCase() === 's') { 
-          e.preventDefault(); 
-          const saveBtn = document.getElementById('save-btn'); 
-          if(saveBtn) saveBtn.click(); 
-      } 
-  });
+  document.addEventListener('keydown', function(e) { if (e.altKey && e.key.toLowerCase() === 'n') { e.preventDefault(); window.switchPage('dashboard'); if(amountInput) amountInput.focus(); } if (e.altKey && e.key.toLowerCase() === 's') { e.preventDefault(); const saveBtn = document.getElementById('save-btn'); if(saveBtn) saveBtn.click(); } });
+  document.addEventListener('dblclick', function(e) { const txCard = e.target.closest('.recent-item'); if (txCard) { const editBtn = txCard.querySelector('.edit-btn-recent'); if (editBtn) { if (navigator.vibrate) navigator.vibrate([15, 30]); editBtn.click(); } } });
   
-  document.addEventListener('dblclick', function(e) { 
-      const txCard = e.target.closest('.recent-item'); 
-      if (txCard) { 
-          const editBtn = txCard.querySelector('.edit-btn-recent'); 
-          if (editBtn) { 
-              if (navigator.vibrate) navigator.vibrate([15, 30]); 
-              editBtn.click(); 
-          } 
-      } 
-  });
-  
-  document.body.addEventListener('click', function(e) { 
-      if (e.target && e.target.classList.contains('cat-badge')) { 
-          const cat = e.target.innerText.replace(/[^a-zA-Z0-9\s]/g, '').trim(); 
-          const searchInput = document.getElementById('flt-search'); 
-          if (searchInput) { 
-              if (searchInput.value === cat) { 
-                  searchInput.value = ''; 
-              } else { 
-                  searchInput.value = cat; 
-                  Toast.fire({ icon: 'info', title: `Filter: ${cat}` }); 
-              } 
-              window.switchPage('riwayat'); 
-              window.renderAll(); 
-          } 
-      } 
-  });
+  document.body.addEventListener('click', function(e) { if (e.target && e.target.classList.contains('cat-badge')) { const cat = e.target.innerText.replace(/[^a-zA-Z0-9\s]/g, '').trim(); const searchInput = document.getElementById('flt-search'); if (searchInput) { if (searchInput.value === cat) { searchInput.value = ''; } else { searchInput.value = cat; Toast.fire({ icon: 'info', title: `Filter: ${cat}` }); } window.switchPage('riwayat'); window.renderAll(); } } });
 
   let pressTimer; 
-  document.body.addEventListener('touchstart', function(e) { 
-      const txCard = e.target.closest('.recent-item'); 
-      if(txCard) { 
-          pressTimer = window.setTimeout(function() { 
-              const delBtn = txCard.querySelector('.del-btn-recent'); 
-              if(delBtn) { 
-                  if (navigator.vibrate) navigator.vibrate([40, 40]); 
-                  delBtn.click(); 
-              } 
-          }, 1000); 
-      } 
-  }); 
-  document.body.addEventListener('touchend', function(e) { clearTimeout(pressTimer); }); 
-  document.body.addEventListener('touchmove', function(e) { clearTimeout(pressTimer); });
+  document.body.addEventListener('touchstart', function(e) { const txCard = e.target.closest('.recent-item'); if(txCard) { pressTimer = window.setTimeout(function() { const delBtn = txCard.querySelector('.del-btn-recent'); if(delBtn) { if (navigator.vibrate) navigator.vibrate([40, 40]); delBtn.click(); } }, 1000); } }); 
+  document.body.addEventListener('touchend', function(e) { clearTimeout(pressTimer); }); document.body.addEventListener('touchmove', function(e) { clearTimeout(pressTimer); });
 
   const uiObserver = new MutationObserver(() => { 
-      const todayStr = new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short'}); 
-      const yesterdayStr = new Date(Date.now() - 86400000).toLocaleDateString('id-ID',{day:'2-digit',month:'short'}); 
-      
-      document.querySelectorAll('.ri-meta').forEach(meta => { 
-          if (meta.innerText.includes(todayStr) && !meta.innerText.includes('Hari Ini')) { 
-              meta.innerHTML = meta.innerHTML.replace(todayStr, '<span style="color:var(--gold);font-weight:700;">Hari Ini</span>'); 
-          } else if(meta.innerText.includes(yesterdayStr) && !meta.innerText.includes('Kemarin')) { 
-              meta.innerHTML = meta.innerHTML.replace(yesterdayStr, '<span style="font-weight:700;">Kemarin</span>'); 
-          } 
-      });
-      
-      document.querySelectorAll('.recent-item').forEach(card => { 
-          const amountEl = card.querySelector('.ri-amount'); 
-          if(amountEl && !amountEl.dataset.glowChecked) { 
-              const nominalRaw = amountEl.innerText.replace(/[^0-9]/g, ''); 
-              if(parseInt(nominalRaw) >= 5000000) { 
-                  amountEl.classList.add('big-money-glow'); 
-              } 
-              amountEl.dataset.glowChecked = 'true'; 
-          }
-          
-          const badge = card.querySelector('.cat-badge'); 
-          if(badge && !badge.dataset.colored) { 
-              const catText = badge.innerText.toLowerCase(); 
-              if(catText.includes('investasi') || catText.includes('profit') || catText.includes('bonus')) { 
-                  badge.style.background = 'rgba(251, 191, 36, 0.15)'; 
-                  badge.style.color = 'var(--gold)'; 
-                  badge.style.borderColor = 'rgba(251, 191, 36, 0.4)'; 
-              } else if(catText.includes('jajan') || catText.includes('makan') || catText.includes('loss')) { 
-                  badge.style.background = 'rgba(248, 113, 113, 0.15)'; 
-                  badge.style.color = 'var(--red2)'; 
-                  badge.style.borderColor = 'rgba(248, 113, 113, 0.4)'; 
-              } else if(catText.includes('utilitas') || catText.includes('transportasi') || catText.includes('ongkos')) { 
-                  badge.style.background = 'rgba(59, 130, 246, 0.15)'; 
-                  badge.style.color = '#0266CC'; 
-                  badge.style.borderColor = 'rgba(59, 130, 246, 0.4)'; 
-              } 
-              badge.dataset.colored = 'true'; 
-          }
-          
-          const noteEl = card.querySelector('.ri-note'); 
-          if(noteEl && !noteEl.dataset.badged) { 
-              const txt = noteEl.innerText.toLowerCase(); 
-              let badgesHTML = ''; 
-              if(txt.includes('dana') || txt.includes('gopay') || txt.includes('shopeepay')) { 
-                  badgesHTML += `<span class="ewallet-badge">💳 E-WALLET</span>`; 
-              } 
-              if(txt.includes('xauusd') || txt.includes('smc') || txt.includes('mt5')) { 
-                  badgesHTML += `<span class="trading-badge">📈 TRADING</span>`; 
-              } 
-              if(badgesHTML !== '') { 
-                  noteEl.innerHTML += badgesHTML; 
-              } 
-              noteEl.dataset.badged = 'true'; 
-          }
-      });
-      
-      const userNameEl = document.getElementById('user-name'); 
-      if (userNameEl && userNameEl.innerText !== 'Memuat...' && !userNameEl.dataset.greeted) { 
-          const hour = new Date().getHours(); 
-          let greeting = 'Malam 🌙'; 
-          if (hour >= 5 && hour < 11) greeting = 'Pagi ☀️'; 
-          else if (hour >= 11 && hour < 15) greeting = 'Siang 🌤️'; 
-          else if (hour >= 15 && hour < 18) greeting = 'Sore 🌇'; 
-          
-          const nameParts = userNameEl.innerText.split(' '); 
-          userNameEl.innerText = `${greeting}, ${nameParts[0]}!`; 
-          userNameEl.dataset.greeted = 'true'; 
-      }
+      const todayStr = new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short'}); const yesterdayStr = new Date(Date.now() - 86400000).toLocaleDateString('id-ID',{day:'2-digit',month:'short'}); 
+      document.querySelectorAll('.ri-meta').forEach(meta => { if (meta.innerText.includes(todayStr) && !meta.innerText.includes('Hari Ini')) { meta.innerHTML = meta.innerHTML.replace(todayStr, '<span style="color:var(--gold);font-weight:700;">Hari Ini</span>'); } else if(meta.innerText.includes(yesterdayStr) && !meta.innerText.includes('Kemarin')) { meta.innerHTML = meta.innerHTML.replace(yesterdayStr, '<span style="font-weight:700;">Kemarin</span>'); } });
+      document.querySelectorAll('.recent-item').forEach(card => { const amountEl = card.querySelector('.ri-amount'); if(amountEl && !amountEl.dataset.glowChecked) { const nominalRaw = amountEl.innerText.replace(/[^0-9]/g, ''); if(parseInt(nominalRaw) >= 5000000) { amountEl.classList.add('big-money-glow'); } amountEl.dataset.glowChecked = 'true'; } const badge = card.querySelector('.cat-badge'); if(badge && !badge.dataset.colored) { const catText = badge.innerText.toLowerCase(); if(catText.includes('investasi') || catText.includes('profit') || catText.includes('bonus')) { badge.style.background = 'rgba(251, 191, 36, 0.15)'; badge.style.color = 'var(--gold)'; badge.style.borderColor = 'rgba(251, 191, 36, 0.4)'; } else if(catText.includes('jajan') || catText.includes('makan') || catText.includes('loss')) { badge.style.background = 'rgba(248, 113, 113, 0.15)'; badge.style.color = 'var(--red2)'; badge.style.borderColor = 'rgba(248, 113, 113, 0.4)'; } else if(catText.includes('utilitas') || catText.includes('transportasi') || catText.includes('ongkos')) { badge.style.background = 'rgba(59, 130, 246, 0.15)'; badge.style.color = '#0266CC'; badge.style.borderColor = 'rgba(59, 130, 246, 0.4)'; } badge.dataset.colored = 'true'; } const noteEl = card.querySelector('.ri-note'); if(noteEl && !noteEl.dataset.badged) { const txt = noteEl.innerText.toLowerCase(); let badgesHTML = ''; if(txt.includes('dana') || txt.includes('gopay') || txt.includes('shopeepay')) { badgesHTML += `<span class="ewallet-badge">💳 E-WALLET</span>`; } if(txt.includes('xauusd') || txt.includes('smc') || txt.includes('mt5')) { badgesHTML += `<span class="trading-badge">📈 TRADING</span>`; } if(badgesHTML !== '') { noteEl.innerHTML += badgesHTML; } noteEl.dataset.badged = 'true'; } });
   }); 
   uiObserver.observe(document.getElementById('app-screen'), { childList: true, subtree: true });
 
-  const originalRenderAll = window.renderAll; 
-  window.renderAll = function() { 
-      originalRenderAll(); 
-      const searchInput = document.getElementById('flt-search'); 
-      if (searchInput && searchInput.value.trim() !== '') { 
-          const keyword = searchInput.value.trim().toLowerCase(); 
-          document.querySelectorAll('#all-body .ri-note').forEach(noteEl => { 
-              const originalHTML = noteEl.innerHTML; 
-              const regex = new RegExp(`(${keyword})`, "gi"); 
-              noteEl.innerHTML = originalHTML.replace(/(>([^<]+)<)/ig, function(match, p1, p2) { 
-                  return ">" + p2.replace(regex, `<mark style="background:var(--gold); color:#000; border-radius:2px; padding:0 2px;">$1</mark>`) + "<"; 
-              }); 
-          }); 
-      } 
-  };
+  const originalRenderAll = window.renderAll; window.renderAll = function() { originalRenderAll(); const searchInput = document.getElementById('flt-search'); if (searchInput && searchInput.value.trim() !== '') { const keyword = searchInput.value.trim().toLowerCase(); document.querySelectorAll('#all-body .ri-note').forEach(noteEl => { const originalHTML = noteEl.innerHTML; const regex = new RegExp(`(${keyword})`, "gi"); noteEl.innerHTML = originalHTML.replace(/(>([^<]+)<)/ig, function(match, p1, p2) { return ">" + p2.replace(regex, `<mark style="background:var(--gold); color:#000; border-radius:2px; padding:0 2px;">$1</mark>`) + "<"; }); }); } };
 
   window.lastActiveTime = Date.now();
-  window.checkLock = () => { 
-      const appScreen = document.getElementById('app-screen'); 
-      if (appScreen && appScreen.style.display === 'block') { 
-          const autolockSetting = document.getElementById('ext_autolock') ? document.getElementById('ext_autolock').value : 'off'; 
-          if (autolockSetting === 'on') { 
-              if (Date.now() - window.lastActiveTime > 30000) { 
-                  appScreen.style.display = 'none'; 
-                  const pinScreen = document.getElementById('pin-screen'); 
-                  if (pinScreen) pinScreen.style.display = 'flex'; 
-                  
-                  const pinTitle = document.getElementById('pin-title'); 
-                  if (pinTitle) pinTitle.textContent = 'Otomatis Terkunci'; 
-                  
-                  const pinSub = document.getElementById('pin-sub'); 
-                  if (pinSub) pinSub.textContent = 'Aplikasi tertidur (30 detik)'; 
-                  
-                  window.pinMode = 'verify'; 
-                  
-                  const pinInput = document.getElementById('app-pin'); 
-                  if (pinInput) pinInput.value = ''; 
-                  
-                  if (navigator.vibrate) navigator.vibrate([50, 50]); 
-                  window.lastActiveTime = Date.now(); 
-                  return true; 
-              } 
-          } 
-      } 
-      return false; 
-  };
-  
-  window.resetIdle = () => { 
-      if (window.checkLock()) return; 
-      window.lastActiveTime = Date.now(); 
-      document.body.classList.remove('idle-mode'); 
-  };
-  
-  ['click','touchstart','mousemove','keypress','scroll','visibilitychange'].forEach(evt => { 
-      window.addEventListener(evt, window.resetIdle, { passive: true }); 
-  });
-  
-  setInterval(() => { 
-      window.checkLock(); 
-      const appScreen = document.getElementById('app-screen'); 
-      if (appScreen && appScreen.style.display === 'block') { 
-          if (Date.now() - window.lastActiveTime > 120000) { 
-              document.body.classList.add('idle-mode'); 
-          } 
-      } 
-  }, 1000);
+  window.checkLock = () => { const appScreen = document.getElementById('app-screen'); if (appScreen && appScreen.style.display === 'block') { const autolockSetting = document.getElementById('ext_autolock') ? document.getElementById('ext_autolock').value : 'off'; if (autolockSetting === 'on') { if (Date.now() - window.lastActiveTime > 30000) { appScreen.style.display = 'none'; const pinScreen = document.getElementById('pin-screen'); if (pinScreen) pinScreen.style.display = 'flex'; const pinTitle = document.getElementById('pin-title'); if (pinTitle) pinTitle.textContent = 'Otomatis Terkunci'; const pinSub = document.getElementById('pin-sub'); if (pinSub) pinSub.textContent = 'Aplikasi tertidur (30 detik)'; window.pinMode = 'verify'; const pinInput = document.getElementById('app-pin'); if (pinInput) pinInput.value = ''; if (navigator.vibrate) navigator.vibrate([50, 50]); window.lastActiveTime = Date.now(); return true; } } } return false; };
+  window.resetIdle = () => { if (window.checkLock()) return; window.lastActiveTime = Date.now(); document.body.classList.remove('idle-mode'); };
+  ['click','touchstart','mousemove','keypress','scroll','visibilitychange'].forEach(evt => { window.addEventListener(evt, window.resetIdle, { passive: true }); });
+  setInterval(() => { window.checkLock(); const appScreen = document.getElementById('app-screen'); if (appScreen && appScreen.style.display === 'block') { if (Date.now() - window.lastActiveTime > 120000) { document.body.classList.add('idle-mode'); } } }, 1000);
 });
 
-// SCRIPT SPLASH SCREEN V4 (AUTO HILANG)
-window.addEventListener('DOMContentLoaded', () => {
-  const pContainer = document.getElementById('splash-particles'); 
-  if (pContainer) { 
-      for (let i = 0; i < 25; i++) { 
-          const p = document.createElement('div'); 
-          p.className = 'particle'; 
-          p.style.left = Math.random() * 100 + '%'; 
-          p.style.top = Math.random() * 100 + '%'; 
-          p.style.width = Math.random() * 4 + 2 + 'px'; 
-          p.style.height = p.style.width; 
-          p.style.animationDelay = Math.random() * 2 + 's'; 
-          p.style.animationDuration = Math.random() * 2 + 3 + 's'; 
-          pContainer.appendChild(p); 
-      } 
-  }
-  
-  // BIANG KEROK TERATASI: 3.8 Detik auto tutup!
-  setTimeout(() => { 
-      const splash = document.getElementById('splash-screen'); 
-      if (splash) { 
-          splash.classList.add('splash-exit'); 
-          setTimeout(() => {
-              splash.style.display = 'none'; 
-              splash.remove(); 
-          }, 1000); 
-      } 
-  }, 3800); 
-});
+window.addEventListener('DOMContentLoaded', () => { setTimeout(() => { const splash = document.getElementById('splash-screen'); if (splash) { splash.classList.add('splash-exit'); setTimeout(() => { splash.style.display = 'none'; splash.remove(); }, 600); } }, 3000); });
 </script>
 </body>
 </html>
