@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
@@ -87,8 +86,6 @@ body {
 .f-input { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg2); color: var(--text); outline: none; font-family: 'Outfit'; font-size: 12px; transition: border 0.3s; }
 .f-input:focus { border-color: var(--gold); background: #16161a; }
 textarea.f-input { resize: vertical; min-height: 120px; }
-input[type="file"].f-input { padding: 9px 14px; cursor: pointer; color: var(--text2); }
-input[type="file"].f-input::file-selector-button { background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 4px 10px; border-radius: 6px; margin-right: 12px; font-family: 'Outfit'; font-size: 10px; font-weight: 700; cursor: pointer; }
 
 /* ARTICLE GRID - COMPACT */
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
@@ -246,7 +243,6 @@ input[type="file"].f-input::file-selector-button { background: var(--bg3); borde
 
   <div class="main">
 
-    <!-- BERANDA -->
     <div id="page-beranda" class="page active">
       <div class="progress-hero">
         <div class="ring-wrap">
@@ -269,7 +265,6 @@ input[type="file"].f-input::file-selector-button { background: var(--bg3); borde
       <div id="art-grid" class="grid"></div>
     </div>
 
-    <!-- DETAIL -->
     <div id="page-detail" class="page">
       <button class="detail-back" onclick="goPage('beranda')">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> KEMBALI
@@ -282,7 +277,6 @@ input[type="file"].f-input::file-selector-button { background: var(--bg3); borde
       <button class="mark-read-btn unread" id="mark-read-btn" onclick="toggleRead()">TANDAI SUDAH DIBACA</button>
     </div>
 
-    <!-- PROGRES -->
     <div id="page-progres" class="page">
       <div class="card">
         <div class="card-title">Ringkasan Progres</div>
@@ -291,16 +285,17 @@ input[type="file"].f-input::file-selector-button { background: var(--bg3); borde
       <div id="progres-by-cat"></div>
     </div>
 
-    <!-- ADMIN -->
     <div id="page-admin" class="page">
       <div class="card">
         <div class="card-title" id="admin-form-title">Tambah Artikel Baru</div>
         <div class="card-sub">Perubahan langsung tayang ke pengguna.</div>
+        
         <div class="form-row"><label class="form-label">Judul</label><input type="text" id="f-title" class="f-input" placeholder="Contoh: Cara Menyusun Dana Darurat"></div>
+        
         <div class="form-grid-2">
           <div class="form-row">
             <label class="form-label">Kategori</label>
-            <input type="text" id="f-cat" class="f-input" placeholder="Contoh: Budgeting" list="cat-suggest">
+            <input type="text" id="f-cat" class="f-input" placeholder="Contoh: Trading Strategy" list="cat-suggest">
             <datalist id="cat-suggest"></datalist>
           </div>
           <div class="form-row">
@@ -312,12 +307,16 @@ input[type="file"].f-input::file-selector-button { background: var(--bg3); borde
             </select>
           </div>
         </div>
-        
-        <!-- FItur Upload File -->
-        <div class="form-row">
-          <label class="form-label">Upload Gambar (opsional)</label>
-          <input type="file" id="f-img-file" class="f-input" accept="image/*">
-          <div id="admin-current-img-status" style="font-size:10px; color:var(--gold); margin-top:6px; display:none;">Gambar sudah ada (Abaikan jika tidak ingin diganti)</div>
+
+        <div class="form-grid-2">
+          <div class="form-row">
+            <label class="form-label">Bab / Modul (Opsional)</label>
+            <input type="text" id="f-chapter" class="f-input" placeholder="Contoh: Bab 1">
+          </div>
+          <div class="form-row">
+            <label class="form-label">URL Gambar (Opsional)</label>
+            <input type="text" id="f-img" class="f-input" placeholder="Contoh: https://i.postimg.cc/...jpg">
+          </div>
         </div>
 
         <div class="form-row"><label class="form-label">Ringkasan Singkat</label><input type="text" id="f-summary" class="f-input" placeholder="1-2 kalimat untuk kartu artikel"></div>
@@ -354,9 +353,6 @@ import {
   updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp,
   setDoc, getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import {
-  getStorage, ref, uploadBytes, getDownloadURL
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCx04v3ppq3DxbXDg0PrWBeJYIZjmJF9cg",
@@ -367,13 +363,12 @@ const firebaseConfig = {
   appId: "1:74905216682:web:4687a5b0bd7bcac09292d3"
 };
 
-// Email ini HARGA MATI buat masuk panel Admin
+// Email khusus akses panel Admin
 const ADMIN_EMAIL = "rehantop245@gmail.com";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = initializeFirestore(app, { localCache: persistentLocalCache() });
-const storage = getStorage(app);
 const googleProvider = new GoogleAuthProvider();
 
 let currentUser = null;
@@ -384,7 +379,6 @@ let activeCat = "";
 let activeLevel = "";
 let currentArticleId = null;
 let editingArticleId = null;
-let currentEditingImageUrl = ""; // Menyimpan URL gambar lama saat mode Edit
 let unsubArticles = null;
 
 const escapeHTML = (s) => (s || "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -454,7 +448,6 @@ window.doLogout = async function(){
   if (res.isConfirmed) { if (unsubArticles) unsubArticles(); await signOut(auth); }
 };
 
-// Pastikan fungsi ini mengecek identitas admin secara absolut
 function isAdmin(){ 
   return currentUser && currentUser.email === ADMIN_EMAIL; 
 }
@@ -477,7 +470,6 @@ onAuthStateChanged(auth, async (user) => {
         avatarEl.textContent = name.charAt(0).toUpperCase();
     }
     
-    // Tampilkan tombol menu Admin jika email = rehantop245@gmail.com
     document.getElementById('nav-admin').style.display = isAdmin() ? 'inline-block' : 'none';
     
     await loadProgress();
@@ -530,9 +522,10 @@ window.setLevel = function(l){ activeLevel = l; renderCatFilter(); renderBeranda
 function renderBeranda(){
   const term = (document.getElementById('search-input').value || '').toLowerCase();
   let list = visibleArticles();
+  
   if (activeCat) list = list.filter(a => a.category === activeCat);
   if (activeLevel) list = list.filter(a => a.level === activeLevel);
-  if (term) list = list.filter(a => (a.title||'').toLowerCase().includes(term) || (a.summary||'').toLowerCase().includes(term) || (a.category||'').toLowerCase().includes(term));
+  if (term) list = list.filter(a => (a.title||'').toLowerCase().includes(term) || (a.summary||'').toLowerCase().includes(term) || (a.category||'').toLowerCase().includes(term) || (a.chapter||'').toLowerCase().includes(term));
 
   const grid = document.getElementById('art-grid');
   if (!list.length) {
@@ -542,6 +535,10 @@ function renderBeranda(){
       const isRead = !!progressMap[a.id];
       const thumb = a.imageUrl ? 'style="background-image:url(\'' + a.imageUrl.replace(/'/g,"") + '\')"' : '';
       const draftBadge = (a.published === false) ? '<span class="read-badge" style="background:var(--text3);color:#000;">DRAF</span>' : '';
+      
+      // Menyiapkan teks Bab (jika diisi)
+      const chapterBadge = a.chapter ? escapeHTML(a.chapter) + ' • ' : '';
+      
       return '<div class="art-card" onclick="openArticle(\'' + a.id + '\')">' +
         '<div class="art-thumb" ' + thumb + '>' +
           (a.imageUrl ? '' : '📘') +
@@ -549,7 +546,7 @@ function renderBeranda(){
           (isRead ? '<span class="read-badge">SELESAI ✓</span>' : draftBadge) +
         '</div>' +
         '<div class="art-body">' +
-          '<div class="art-cat">' + escapeHTML(a.category||'Umum') + '</div>' +
+          '<div class="art-cat">' + chapterBadge + escapeHTML(a.category||'Umum') + '</div>' +
           '<div class="art-title">' + escapeHTML(a.title||'Tanpa Judul') + '</div>' +
           '<div class="art-summary">' + escapeHTML(a.summary||'') + '</div>' +
           '<div class="art-meta">' + fmtDate(a.createdAt && a.createdAt.toDate ? a.createdAt.toDate() : Date.now()) + '</div>' +
@@ -565,8 +562,17 @@ window.openArticle = function(id){
   if (!a) return;
   currentArticleId = id;
   const imgEl = document.getElementById('detail-img');
-  if (a.imageUrl) { imgEl.src = a.imageUrl; imgEl.style.display = 'block'; } else { imgEl.style.display = 'none'; }
-  document.getElementById('detail-cat').textContent = a.category || 'Umum';
+  
+  if (a.imageUrl) { 
+    imgEl.src = a.imageUrl; 
+    imgEl.style.display = 'block'; 
+  } else { 
+    imgEl.style.display = 'none'; 
+  }
+  
+  const chapterBadge = a.chapter ? escapeHTML(a.chapter) + ' • ' : '';
+  document.getElementById('detail-cat').textContent = chapterBadge + (a.category || 'Umum');
+  
   document.getElementById('detail-title').textContent = a.title || 'Tanpa Judul';
   document.getElementById('detail-meta').innerHTML = '<span>' + escapeHTML(a.level||'Umum') + '</span><span>' + fmtDate(a.createdAt && a.createdAt.toDate ? a.createdAt.toDate() : Date.now()) + '</span>';
   document.getElementById('detail-content').innerHTML = paragraphize(a.content || a.summary || '');
@@ -650,9 +656,8 @@ function renderProgres(){
   }).join('');
 }
 
-// ============== ADMIN (CRUD dengan Upload Storage) ==============
+// ============== ADMIN (CRUD dengan URL Input) ==============
 window.saveArticle = async function(){
-  // Double protection check
   if (!isAdmin()) {
     Swal.fire('Akses Ditolak', 'Hanya admin yang dapat menyimpan artikel.', 'error');
     return;
@@ -660,43 +665,32 @@ window.saveArticle = async function(){
 
   const title = document.getElementById('f-title').value.trim();
   const category = document.getElementById('f-cat').value.trim() || 'Umum';
+  const chapter = document.getElementById('f-chapter').value.trim(); // Ambil input Bab
   const level = document.getElementById('f-level').value;
+  const imageUrl = document.getElementById('f-img').value.trim(); // Ambil URL Gambar langsung
   const summary = document.getElementById('f-summary').value.trim();
   const content = document.getElementById('f-content').value.trim();
   const published = document.getElementById('f-published').value === 'true';
-  const fileInput = document.getElementById('f-img-file');
-  const file = fileInput.files[0];
 
   if (!title || !content) {
     return Swal.fire({icon:'warning', title:'Judul dan isi artikel wajib diisi', background:'var(--card)', color:'var(--text)'});
   }
 
   const saveBtn = document.getElementById('admin-save-btn');
-  saveBtn.disabled = true; saveBtn.textContent = 'MEMPROSES...';
+  saveBtn.disabled = true; saveBtn.textContent = 'MENYIMPAN ARTIKEL...';
 
   try {
-    let finalImageUrl = currentEditingImageUrl; 
-
-    // Jika admin memilih file gambar baru, upload ke Storage dulu
-    if (file) {
-      saveBtn.textContent = 'MENGUNGGAH GAMBAR...';
-      const fileRef = ref(storage, 'edu_images/' + Date.now() + '_' + file.name);
-      await uploadBytes(fileRef, file);
-      finalImageUrl = await getDownloadURL(fileRef);
-    }
-
     const payload = { 
       title, 
       category, 
+      chapter, 
       level, 
-      imageUrl: finalImageUrl, 
+      imageUrl, 
       summary, 
       content, 
       published, 
       updatedAt: serverTimestamp() 
     };
-
-    saveBtn.textContent = 'MENYIMPAN ARTIKEL...';
 
     if (editingArticleId) {
       await updateDoc(doc(db, 'edu_articles', editingArticleId), payload);
@@ -716,24 +710,16 @@ window.editArticleAdmin = function(id){
   const a = articles.find(x => x.id === id);
   if (!a) return;
   editingArticleId = id;
-  currentEditingImageUrl = a.imageUrl || ''; // Simpan memori gambar lama
   
   document.getElementById('admin-form-title').textContent = 'Edit Artikel';
   document.getElementById('f-title').value = a.title || '';
   document.getElementById('f-cat').value = a.category || '';
+  document.getElementById('f-chapter').value = a.chapter || ''; // Set value bab lama
   document.getElementById('f-level').value = a.level || 'Pemula';
+  document.getElementById('f-img').value = a.imageUrl || ''; // Set value URL lama
   document.getElementById('f-summary').value = a.summary || '';
   document.getElementById('f-content').value = a.content || '';
   document.getElementById('f-published').value = (a.published === false) ? 'false' : 'true';
-  document.getElementById('f-img-file').value = ''; // Kosongkan file input saat edit
-  
-  // Tampilkan notifikasi jika gambar sudah ada
-  const imgStatus = document.getElementById('admin-current-img-status');
-  if (currentEditingImageUrl) {
-    imgStatus.style.display = 'block';
-  } else {
-    imgStatus.style.display = 'none';
-  }
 
   document.getElementById('admin-cancel-btn').style.display = 'block';
   window.scrollTo({top:0, behavior:'smooth'});
@@ -741,13 +727,11 @@ window.editArticleAdmin = function(id){
 
 window.cancelAdminEdit = function(){
   editingArticleId = null;
-  currentEditingImageUrl = '';
   document.getElementById('admin-form-title').textContent = 'Tambah Artikel Baru';
-  ['f-title','f-cat','f-summary','f-content','f-img-file'].forEach(id => document.getElementById(id).value = '');
+  ['f-title','f-cat','f-chapter','f-img','f-summary','f-content'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('f-level').value = 'Pemula';
   document.getElementById('f-published').value = 'true';
   document.getElementById('admin-cancel-btn').style.display = 'none';
-  document.getElementById('admin-current-img-status').style.display = 'none';
 };
 
 window.deleteArticleAdmin = async function(id){
@@ -771,11 +755,12 @@ function renderAdminList(){
   wrap.innerHTML = articles.map(a => {
     const pub = a.published !== false;
     const thumb = a.imageUrl ? 'style="background-image:url(\'' + a.imageUrl.replace(/'/g,"") + '\')"' : '';
+    const chapText = a.chapter ? escapeHTML(a.chapter) + ' • ' : '';
     return '<div class="adm-item">' +
       '<div class="adm-thumb" ' + thumb + '></div>' +
       '<div class="adm-info">' +
         '<div class="adm-title">' + escapeHTML(a.title||'Tanpa Judul') + '</div>' +
-        '<div class="adm-sub">' + escapeHTML(a.category||'Umum') + ' · ' + escapeHTML(a.level||'-') + ' &nbsp; <span class="pub-pill ' + (pub?'on':'off') + '">' + (pub?'TAYANG':'DRAF') + '</span></div>' +
+        '<div class="adm-sub">' + chapText + escapeHTML(a.category||'Umum') + ' · ' + escapeHTML(a.level||'-') + ' &nbsp; <span class="pub-pill ' + (pub?'on':'off') + '">' + (pub?'TAYANG':'DRAF') + '</span></div>' +
       '</div>' +
       '<div class="adm-actions">' +
         '<button class="adm-btn" onclick="togglePublish(\'' + a.id + '\', ' + pub + ')">' + (pub?'Sembunyikan':'Tayangkan') + '</button>' +
