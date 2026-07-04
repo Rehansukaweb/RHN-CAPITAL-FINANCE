@@ -3,14 +3,14 @@
 <meta charset="UTF-8">
 <meta name="color-scheme" content="dark">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Edukasi Finance</title>
+<title>Edukasi Finance | RHN CAPITAL</title>
 <meta name="theme-color" content="#050505">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
 /* ==========================================================================
-   EDUKASI FINANCE (PREMIUM DARK & COMPACT UI)
+   EDUKASI FINANCE (PREMIUM DARK & COMPACT UI) - UPDATED VERSION
    ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -43,10 +43,23 @@ body {
 
 /* HEADER - COMPACT */
 .header-area { padding: 16px 20px 0; max-width: 1200px; margin: 0 auto; }
-.logo-row { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; padding: 8px 0 16px; }
-.logo-badge { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px var(--gold-glow); overflow: hidden; }
-.logo-badge img { width: 100%; height: 100%; object-fit: cover; }
-.logo-text .main-text { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; text-align: center; }
+.logo-row { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; padding: 8px 0 16px; }
+
+/* PENYEMPURNAAN LOGO BADGE */
+.logo-badge { 
+  width: 50px; height: 50px; border-radius: 12px; 
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%); 
+  display: flex; align-items: center; justify-content: center; 
+  font-size: 20px; font-weight: 800; color: #000; 
+  box-shadow: 0 4px 16px var(--gold-glow); position: relative;
+}
+.logo-badge img { 
+  width: 100%; height: 100%; object-fit: cover; border-radius: inherit; 
+  position: absolute; inset: 0; z-index: 2; background-color: var(--bg);
+}
+
+.logo-text .main-text { font-size: 17px; font-weight: 800; letter-spacing: 0.5px; text-align: center; }
+.logo-text .sub-text { font-size: 9px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; text-align: center; margin-top: -2px; }
 
 .user-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
 .u-avatar { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold); font-weight: 700; font-size: 12px; flex-shrink: 0; background: var(--bg-glass); overflow: hidden; }
@@ -88,30 +101,31 @@ body {
 textarea.f-input { resize: vertical; min-height: 120px; }
 
 /* ARTICLE GRID - COMPACT */
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
 .art-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; transition: all 0.3s ease; }
 .art-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
-.art-thumb { width: 100%; height: 110px; background: var(--bg3) center/cover no-repeat; display: flex; align-items: center; justify-content: center; color: var(--text3); font-size: 24px; position: relative; }
+.art-thumb { width: 100%; height: 120px; background: var(--bg3) center/cover no-repeat; display: flex; align-items: center; justify-content: center; color: var(--text3); font-size: 24px; position: relative; }
 .art-thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(18,18,21,1) 0%, rgba(18,18,21,0) 100%); opacity: 0.5; }
-.art-thumb .lvl-badge { position: absolute; top: 8px; left: 8px; font-size: 8px; font-weight: 800; padding: 3px 6px; border-radius: 4px; text-transform: uppercase; background: rgba(5,5,5,0.8); border: 1px solid var(--border2); z-index: 2; }
-.art-thumb .read-badge { position: absolute; top: 8px; right: 8px; font-size: 8px; font-weight: 800; padding: 3px 6px; border-radius: 4px; background: var(--green2); color: #000; z-index: 2; }
-.art-body { padding: 12px; flex: 1; display: flex; flex-direction: column; gap: 4px; z-index: 2; }
+.art-thumb .lvl-badge { position: absolute; top: 8px; left: 8px; font-size: 8px; font-weight: 800; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; background: rgba(5,5,5,0.8); border: 1px solid var(--border2); z-index: 2; }
+.art-thumb .read-badge { position: absolute; top: 8px; right: 8px; font-size: 8px; font-weight: 800; padding: 4px 8px; border-radius: 4px; background: var(--green2); color: #000; z-index: 2; }
+.art-body { padding: 14px; flex: 1; display: flex; flex-direction: column; gap: 6px; z-index: 2; }
 .art-cat { font-size: 9px; font-weight: 800; color: var(--gold); text-transform: uppercase; letter-spacing: 0.5px; }
-.art-title { font-size: 13px; font-weight: 700; line-height: 1.3; }
-.art-summary { font-size: 11px; color: var(--text3); line-height: 1.4; flex: 1; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.art-meta { font-size: 9px; color: var(--text3); border-top: 1px dashed var(--border2); padding-top: 6px; margin-top: 6px; }
+.art-title { font-size: 14px; font-weight: 700; line-height: 1.3; }
+.art-summary { font-size: 11px; color: var(--text3); line-height: 1.5; flex: 1; margin-top: 2px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.art-meta { font-size: 10px; color: var(--text3); border-top: 1px dashed var(--border2); padding-top: 8px; margin-top: 6px; display: flex; justify-content: space-between; align-items: center; }
+.read-time { display: flex; align-items: center; gap: 4px; color: var(--gold2); font-weight: 600; }
 
 /* ARTICLE DETAIL */
 .detail-back { background: var(--bg-glass); backdrop-filter: blur(10px); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 10px; text-transform: uppercase; cursor: pointer; margin-bottom: 16px; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
 .detail-back:hover { border-color: var(--gold); color: var(--gold); }
-.detail-hero-img { width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px; margin-bottom: 16px; border: 1px solid var(--border); }
+.detail-hero-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px; margin-bottom: 16px; border: 1px solid var(--border); }
 .detail-cat { font-size: 10px; font-weight: 800; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-.detail-title { font-size: 20px; font-weight: 800; line-height: 1.3; margin-bottom: 8px; }
-.detail-meta { font-size: 10px; color: var(--text3); margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
-.detail-meta span { padding: 4px 8px; background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; }
-.detail-content { font-size: 13px; line-height: 1.8; color: var(--text2); }
-.detail-content p { margin-bottom: 12px; }
-.mark-read-btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 12px; font-weight: 800; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+.detail-title { font-size: 22px; font-weight: 800; line-height: 1.3; margin-bottom: 10px; }
+.detail-meta { font-size: 11px; color: var(--text3); margin-bottom: 20px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.detail-meta span { padding: 4px 10px; background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; }
+.detail-content { font-size: 14px; line-height: 1.8; color: var(--text2); }
+.detail-content p { margin-bottom: 14px; }
+.mark-read-btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 12px; font-weight: 800; text-transform: uppercase; cursor: pointer; margin-top: 24px; transition: 0.3s; }
 .mark-read-btn.unread { background: var(--gold); color: #000; box-shadow: 0 4px 15px var(--gold-glow); }
 .mark-read-btn.read { background: rgba(16,185,129,0.1); color: var(--green2); border: 1px solid var(--green2); }
 
@@ -148,9 +162,21 @@ textarea.f-input { resize: vertical; min-height: 120px; }
 /* AUTH - PREMIUM CENTERED */
 #auth-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px; background-image: radial-gradient(circle at top right, rgba(251,191,36,0.05), transparent 40%); }
 .auth-box { background: var(--bg-glass); backdrop-filter: blur(16px); border-radius: 20px; padding: 32px 24px; width: 100%; max-width: 360px; border: 1px solid var(--border); text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
-.auth-badge { width: 64px; height: 64px; border-radius: 12px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px var(--gold-glow); overflow: hidden; }
-.auth-badge img { width: 100%; height: 100%; object-fit: cover; }
-.auth-title { font-size: 18px; font-weight: 800; margin-bottom: 20px; }
+
+/* AUTH BADGE FALLBACK CSS */
+.auth-badge { 
+  width: 64px; height: 64px; border-radius: 14px; margin: 0 auto 12px; 
+  display: flex; align-items: center; justify-content: center; 
+  box-shadow: 0 8px 24px var(--gold-glow); position: relative;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  font-size: 24px; font-weight: 800; color: #000;
+}
+.auth-badge img { 
+  width: 100%; height: 100%; object-fit: cover; border-radius: inherit; 
+  position: absolute; inset: 0; z-index: 2; background-color: var(--bg);
+}
+
+.auth-title { font-size: 20px; font-weight: 800; margin-bottom: 20px; }
 .auth-tabs { display: flex; background: var(--bg); border-radius: 10px; padding: 4px; margin-bottom: 16px; border: 1px solid var(--border); }
 .auth-tab { flex: 1; padding: 10px; font-size: 11px; font-weight: 700; cursor: pointer; background: transparent; border: none; color: var(--text3); border-radius: 6px; transition: 0.2s; }
 .auth-tab.active { background: var(--bg2); color: var(--gold); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
@@ -184,7 +210,8 @@ textarea.f-input { resize: vertical; min-height: 120px; }
 <div id="auth-screen" style="display:none;">
   <div class="auth-box">
     <div class="auth-badge">
-      <img src="WhatsApp Image 2026-07-04 at 22.03.31.jpeg" alt="Logo">
+      RC
+      <img src="logo.jpg" alt="Logo" onerror="this.style.display='none'">
     </div>
     <div class="auth-title">Edukasi Finance</div>
     
@@ -219,10 +246,12 @@ textarea.f-input { resize: vertical; min-height: 120px; }
   <div class="header-area">
     <div class="logo-row">
       <div class="logo-badge">
-        <img src="image_a06fe6.jpg" alt="Logo">
+        RC
+        <img src="logo.jpg" alt="Logo" onerror="this.style.display='none'">
       </div>
       <div class="logo-text">
         <div class="main-text">EDUKASI FINANCE</div>
+        <div class="sub-text">RHN CAPITAL</div>
       </div>
     </div>
     <div class="user-row">
@@ -387,6 +416,13 @@ const escapeHTML = (s) => (s || "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'
 const paragraphize = (s) => (s || "").split(/\n\s*\n/).map(p => "<p>" + escapeHTML(p).replace(/\n/g,"<br>") + "</p>").join("");
 const fmtDate = (ts) => { try { return new Date(ts).toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric'}); } catch(e){ return ''; } };
 
+// MENGHITUNG ESTIMASI WAKTU BACA
+const calcReadTime = (text) => {
+  const wordCount = (text || '').trim().split(/\s+/).length;
+  const mins = Math.ceil(wordCount / 200); // Rata-rata 200 kata per menit
+  return mins > 0 ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> ${mins} mnt baca` : '1 mnt baca';
+};
+
 window.goPage = function(p){
   document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
@@ -467,7 +503,7 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('u-name').textContent = name;
     const avatarEl = document.getElementById('u-avatar');
     if (photo) {
-        avatarEl.innerHTML = `<img src="${photo}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+        avatarEl.innerHTML = `<img src="${photo}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" onerror="this.style.display='none'; this.parentNode.textContent='${name.charAt(0).toUpperCase()}';">`;
     } else {
         avatarEl.textContent = name.charAt(0).toUpperCase();
     }
@@ -531,15 +567,14 @@ function renderBeranda(){
 
   const grid = document.getElementById('art-grid');
   if (!list.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px 20px; color:var(--text3); font-size:12px;">📭 Belum ada artikel yang cocok.<br>Coba ubah filter atau kata kunci pencarian.</div>';
+    grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px 20px; color:var(--text3); font-size:13px;">📭 Belum ada artikel yang cocok.<br>Coba ubah filter atau kata kunci pencarian.</div>';
   } else {
     grid.innerHTML = list.map(a => {
       const isRead = !!progressMap[a.id];
       const thumb = a.imageUrl ? 'style="background-image:url(\'' + a.imageUrl.replace(/'/g,"") + '\')"' : '';
       const draftBadge = (a.published === false) ? '<span class="read-badge" style="background:var(--text3);color:#000;">DRAF</span>' : '';
-      
-      // Menyiapkan teks Bab (jika diisi)
       const chapterBadge = a.chapter ? escapeHTML(a.chapter) + ' • ' : '';
+      const readTimeInfo = calcReadTime(a.content || a.summary);
       
       return '<div class="art-card" onclick="openArticle(\'' + a.id + '\')">' +
         '<div class="art-thumb" ' + thumb + '>' +
@@ -551,7 +586,10 @@ function renderBeranda(){
           '<div class="art-cat">' + chapterBadge + escapeHTML(a.category||'Umum') + '</div>' +
           '<div class="art-title">' + escapeHTML(a.title||'Tanpa Judul') + '</div>' +
           '<div class="art-summary">' + escapeHTML(a.summary||'') + '</div>' +
-          '<div class="art-meta">' + fmtDate(a.createdAt && a.createdAt.toDate ? a.createdAt.toDate() : Date.now()) + '</div>' +
+          '<div class="art-meta">' + 
+            '<span>' + fmtDate(a.createdAt && a.createdAt.toDate ? a.createdAt.toDate() : Date.now()) + '</span>' +
+            '<span class="read-time">' + readTimeInfo + '</span>' +
+          '</div>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -573,14 +611,16 @@ window.openArticle = function(id){
   }
   
   const chapterBadge = a.chapter ? escapeHTML(a.chapter) + ' • ' : '';
-  document.getElementById('detail-cat').textContent = chapterBadge + (a.category || 'Umum');
+  const readTimeInfo = calcReadTime(a.content || a.summary);
   
+  document.getElementById('detail-cat').textContent = chapterBadge + (a.category || 'Umum');
   document.getElementById('detail-title').textContent = a.title || 'Tanpa Judul';
-  document.getElementById('detail-meta').innerHTML = '<span>' + escapeHTML(a.level||'Umum') + '</span><span>' + fmtDate(a.createdAt && a.createdAt.toDate ? a.createdAt.toDate() : Date.now()) + '</span>';
+  document.getElementById('detail-meta').innerHTML = '<span>Lvl: ' + escapeHTML(a.level||'Umum') + '</span><span>' + fmtDate(a.createdAt && a.createdAt.toDate ? a.createdAt.toDate() : Date.now()) + '</span><span style="color:var(--gold); font-weight:700;">' + readTimeInfo.replace(/(<([^>]+)>)/gi, "") + '</span>';
   document.getElementById('detail-content').innerHTML = paragraphize(a.content || a.summary || '');
+  
   updateReadButton();
   goPage('detail');
-  window.scrollTo({top:0, behavior:'instant'});
+  window.scrollTo({top:0, behavior:'smooth'});
 };
 
 function updateReadButton(){
@@ -603,11 +643,20 @@ async function loadProgress(){
 window.toggleRead = async function(){
   if (!currentUser || !currentArticleId) return;
   const isRead = !!progressMap[currentArticleId];
-  if (isRead) delete progressMap[currentArticleId]; else progressMap[currentArticleId] = true;
+  
+  // Fitur konfirmasi mini saat membatalkan "Sudah Dibaca"
+  if (isRead) {
+    const res = await Swal.fire({ title:'Batalkan progres?', text:'Artikel ini akan kembali ditandai belum dibaca.', icon:'question', showCancelButton:true, confirmButtonText:'Ya', cancelButtonText:'Batal', background:'var(--card)', color:'var(--text)', confirmButtonColor:'#F87171' });
+    if(!res.isConfirmed) return;
+    delete progressMap[currentArticleId];
+  } else {
+    progressMap[currentArticleId] = true;
+  }
+  
   updateReadButton();
   try {
     await setDoc(doc(db, 'edu_progress', currentUser.uid), { read: progressMap, updatedAt: serverTimestamp() }, { merge: true });
-    if (!isRead) Swal.fire({toast:true, position:'top', icon:'success', title:'Progres tersimpan', showConfirmButton:false, timer:1200, background:'var(--card)', color:'var(--text)'});
+    if (!isRead) Swal.fire({toast:true, position:'top', icon:'success', title:'Progres tersimpan 🚀', showConfirmButton:false, timer:1500, background:'var(--card)', color:'var(--text)'});
   } catch(e) { Swal.fire('Gagal menyimpan progres', e.message, 'error'); }
   renderBeranda();
 };
@@ -646,13 +695,13 @@ function renderProgres(){
   wrap.innerHTML = keys.map(c => {
     const d = byCat[c];
     const pct = d.total ? Math.round(d.done/d.total*100) : 0;
-    return '<div class="card" style="margin-bottom:10px; padding:12px 16px;">' +
-      '<div style="display:flex;justify-content:space-between;margin-bottom:6px;">' +
-        '<div style="font-weight:700;font-size:12px;">' + escapeHTML(c) + '</div>' +
-        '<div class="mono" style="font-size:11px;color:var(--gold);">' + d.done + '/' + d.total + '</div>' +
+    return '<div class="card" style="margin-bottom:12px; padding:16px;">' +
+      '<div style="display:flex;justify-content:space-between;margin-bottom:8px;">' +
+        '<div style="font-weight:700;font-size:13px;">' + escapeHTML(c) + '</div>' +
+        '<div class="mono" style="font-size:12px;color:var(--gold);">' + d.done + '/' + d.total + '</div>' +
       '</div>' +
-      '<div style="height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;">' +
-        '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg, var(--gold2), var(--gold));"></div>' +
+      '<div style="height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;">' +
+        '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg, var(--gold2), var(--gold)); border-radius:4px;"></div>' +
       '</div>' +
     '</div>';
   }).join('');
@@ -667,9 +716,9 @@ window.saveArticle = async function(){
 
   const title = document.getElementById('f-title').value.trim();
   const category = document.getElementById('f-cat').value.trim() || 'Umum';
-  const chapter = document.getElementById('f-chapter').value.trim(); // Ambil input Bab
+  const chapter = document.getElementById('f-chapter').value.trim();
   const level = document.getElementById('f-level').value;
-  const imageUrl = document.getElementById('f-img').value.trim(); // Ambil URL Gambar langsung
+  const imageUrl = document.getElementById('f-img').value.trim();
   const summary = document.getElementById('f-summary').value.trim();
   const content = document.getElementById('f-content').value.trim();
   const published = document.getElementById('f-published').value === 'true';
@@ -716,9 +765,9 @@ window.editArticleAdmin = function(id){
   document.getElementById('admin-form-title').textContent = 'Edit Artikel';
   document.getElementById('f-title').value = a.title || '';
   document.getElementById('f-cat').value = a.category || '';
-  document.getElementById('f-chapter').value = a.chapter || ''; // Set value bab lama
+  document.getElementById('f-chapter').value = a.chapter || ''; 
   document.getElementById('f-level').value = a.level || 'Pemula';
-  document.getElementById('f-img').value = a.imageUrl || ''; // Set value URL lama
+  document.getElementById('f-img').value = a.imageUrl || ''; 
   document.getElementById('f-summary').value = a.summary || '';
   document.getElementById('f-content').value = a.content || '';
   document.getElementById('f-published').value = (a.published === false) ? 'false' : 'true';
@@ -753,7 +802,7 @@ window.togglePublish = async function(id, current){
 function renderAdminList(){
   if (!isAdmin()) return;
   const wrap = document.getElementById('admin-list');
-  if (!articles.length) { wrap.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text3); font-size:11px;">Belum ada artikel. Tambahkan lewat form di atas.</div>'; return; }
+  if (!articles.length) { wrap.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text3); font-size:12px;">Belum ada artikel. Tambahkan lewat form di atas.</div>'; return; }
   wrap.innerHTML = articles.map(a => {
     const pub = a.published !== false;
     const thumb = a.imageUrl ? 'style="background-image:url(\'' + a.imageUrl.replace(/'/g,"") + '\')"' : '';
