@@ -10,6 +10,19 @@
 
 <style>
 /* ==========================================================================
+   KODE PEMAKSA: MENGHILANGKAN TULISAN BIRU BAWAAN GITHUB
+   ========================================================================== */
+header, .page-header, .repo-header, .markdown-body h1, body > h1:first-child, h1.project-name, #header { 
+  display: none !important; 
+  opacity: 0 !important; 
+  visibility: hidden !important; 
+  height: 0 !important; 
+  margin: 0 !important; 
+  padding: 0 !important; 
+}
+.markdown-body { padding: 0 !important; margin: 0 !important; }
+
+/* ==========================================================================
    EDUKASI FINANCE (PREMIUM DARK & COMPACT UI) - UPDATED VERSION
    ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -45,7 +58,6 @@ body {
 .header-area { padding: 16px 20px 0; max-width: 1200px; margin: 0 auto; }
 .logo-row { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; padding: 8px 0 16px; }
 
-/* PENYEMPURNAAN LOGO BADGE */
 .logo-badge { 
   width: 50px; height: 50px; border-radius: 12px; 
   background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%); 
@@ -163,7 +175,6 @@ textarea.f-input { resize: vertical; min-height: 120px; }
 #auth-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px; background-image: radial-gradient(circle at top right, rgba(251,191,36,0.05), transparent 40%); }
 .auth-box { background: var(--bg-glass); backdrop-filter: blur(16px); border-radius: 20px; padding: 32px 24px; width: 100%; max-width: 360px; border: 1px solid var(--border); text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
 
-/* AUTH BADGE FALLBACK CSS */
 .auth-badge { 
   width: 64px; height: 64px; border-radius: 14px; margin: 0 auto 12px; 
   display: flex; align-items: center; justify-content: center; 
@@ -394,9 +405,7 @@ const firebaseConfig = {
   appId: "1:74905216682:web:4687a5b0bd7bcac09292d3"
 };
 
-// Email khusus akses panel Admin
 const ADMIN_EMAIL = "rehantop245@gmail.com";
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = initializeFirestore(app, { localCache: persistentLocalCache() });
@@ -416,10 +425,9 @@ const escapeHTML = (s) => (s || "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'
 const paragraphize = (s) => (s || "").split(/\n\s*\n/).map(p => "<p>" + escapeHTML(p).replace(/\n/g,"<br>") + "</p>").join("");
 const fmtDate = (ts) => { try { return new Date(ts).toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric'}); } catch(e){ return ''; } };
 
-// MENGHITUNG ESTIMASI WAKTU BACA
 const calcReadTime = (text) => {
   const wordCount = (text || '').trim().split(/\s+/).length;
-  const mins = Math.ceil(wordCount / 200); // Rata-rata 200 kata per menit
+  const mins = Math.ceil(wordCount / 200);
   return mins > 0 ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> ${mins} mnt baca` : '1 mnt baca';
 };
 
@@ -524,7 +532,6 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// ============== ARTIKEL (real-time dari Firestore) ==============
 function listenArticles(){
   if (unsubArticles) unsubArticles();
   const q = query(collection(db, 'edu_articles'), orderBy('createdAt', 'desc'));
@@ -630,7 +637,6 @@ function updateReadButton(){
   btn.textContent = isRead ? '✓ SUDAH DIBACA — BATALKAN' : 'TANDAI SUDAH DIBACA';
 }
 
-// ============== PROGRES BACA (per user, Firestore) ==============
 async function loadProgress(){
   progressMap = {};
   try {
@@ -644,7 +650,6 @@ window.toggleRead = async function(){
   if (!currentUser || !currentArticleId) return;
   const isRead = !!progressMap[currentArticleId];
   
-  // Fitur konfirmasi mini saat membatalkan "Sudah Dibaca"
   if (isRead) {
     const res = await Swal.fire({ title:'Batalkan progres?', text:'Artikel ini akan kembali ditandai belum dibaca.', icon:'question', showCancelButton:true, confirmButtonText:'Ya', cancelButtonText:'Batal', background:'var(--card)', color:'var(--text)', confirmButtonColor:'#F87171' });
     if(!res.isConfirmed) return;
@@ -707,7 +712,6 @@ function renderProgres(){
   }).join('');
 }
 
-// ============== ADMIN (CRUD dengan URL Input) ==============
 window.saveArticle = async function(){
   if (!isAdmin()) {
     Swal.fire('Akses Ditolak', 'Hanya admin yang dapat menyimpan artikel.', 'error');
@@ -732,15 +736,7 @@ window.saveArticle = async function(){
 
   try {
     const payload = { 
-      title, 
-      category, 
-      chapter, 
-      level, 
-      imageUrl, 
-      summary, 
-      content, 
-      published, 
-      updatedAt: serverTimestamp() 
+      title, category, chapter, level, imageUrl, summary, content, published, updatedAt: serverTimestamp() 
     };
 
     if (editingArticleId) {
