@@ -3,14 +3,14 @@
 <meta charset="UTF-8">
 <meta name="color-scheme" content="dark">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Edukasi Finance | RHN CAPITAL</title>
+<title>Edukasi Finance</title>
 <meta name="theme-color" content="#050505">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
 /* ==========================================================================
-   RHN CAPITAL — EDUKASI FINANCE (PREMIUM DARK & COMPACT UI)
+   EDUKASI FINANCE (PREMIUM DARK & COMPACT UI)
    ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -44,12 +44,12 @@ body {
 /* HEADER - COMPACT */
 .header-area { padding: 16px 20px 0; max-width: 1200px; margin: 0 auto; }
 .logo-row { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; padding: 8px 0 16px; }
-.logo-badge { width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: #000; box-shadow: 0 4px 16px var(--gold-glow); }
+.logo-badge { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px var(--gold-glow); overflow: hidden; }
+.logo-badge img { width: 100%; height: 100%; object-fit: cover; }
 .logo-text .main-text { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; text-align: center; }
-.logo-text .sub-text { font-size: 9px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; text-align: center; }
 
 .user-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-.u-avatar { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold); font-weight: 700; font-size: 12px; flex-shrink: 0; background: var(--bg-glass); }
+.u-avatar { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; color: var(--gold); font-weight: 700; font-size: 12px; flex-shrink: 0; background: var(--bg-glass); overflow: hidden; }
 .user-pill { flex: 1; background: var(--bg-glass); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: 10px; padding: 6px 10px; display: flex; align-items: center; justify-content: space-between; gap: 8px; transition: 0.2s; }
 .u-name { font-size: 12px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .u-sub { font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -148,9 +148,9 @@ textarea.f-input { resize: vertical; min-height: 120px; }
 /* AUTH - PREMIUM CENTERED */
 #auth-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px; background-image: radial-gradient(circle at top right, rgba(251,191,36,0.05), transparent 40%); }
 .auth-box { background: var(--bg-glass); backdrop-filter: blur(16px); border-radius: 20px; padding: 32px 24px; width: 100%; max-width: 360px; border: 1px solid var(--border); text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
-.auth-badge { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, var(--gold), var(--gold2)); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; color: #000; box-shadow: 0 8px 24px var(--gold-glow); }
-.auth-title { font-size: 18px; font-weight: 800; margin-bottom: 2px; }
-.auth-sub { font-size: 11px; color: var(--text3); margin-bottom: 20px; }
+.auth-badge { width: 64px; height: 64px; border-radius: 12px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px var(--gold-glow); overflow: hidden; }
+.auth-badge img { width: 100%; height: 100%; object-fit: cover; }
+.auth-title { font-size: 18px; font-weight: 800; margin-bottom: 20px; }
 .auth-tabs { display: flex; background: var(--bg); border-radius: 10px; padding: 4px; margin-bottom: 16px; border: 1px solid var(--border); }
 .auth-tab { flex: 1; padding: 10px; font-size: 11px; font-weight: 700; cursor: pointer; background: transparent; border: none; color: var(--text3); border-radius: 6px; transition: 0.2s; }
 .auth-tab.active { background: var(--bg2); color: var(--gold); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
@@ -183,9 +183,10 @@ textarea.f-input { resize: vertical; min-height: 120px; }
 
 <div id="auth-screen" style="display:none;">
   <div class="auth-box">
-    <div class="auth-badge">RC</div>
+    <div class="auth-badge">
+      <img src="WhatsApp Image 2026-07-04 at 22.03.31.jpeg" alt="Logo">
+    </div>
     <div class="auth-title">Edukasi Finance</div>
-    <div class="auth-sub">Bagian dari ekosistem RHN CAPITAL</div>
     
     <div class="auth-tabs">
       <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Masuk</button>
@@ -217,10 +218,11 @@ textarea.f-input { resize: vertical; min-height: 120px; }
 <div id="app-screen" style="display:none;">
   <div class="header-area">
     <div class="logo-row">
-      <div class="logo-badge">RC</div>
+      <div class="logo-badge">
+        <img src="image_a06fe6.jpg" alt="Logo">
+      </div>
       <div class="logo-text">
         <div class="main-text">EDUKASI FINANCE</div>
-        <div class="sub-text">RHN CAPITAL</div>
       </div>
     </div>
     <div class="user-row">
