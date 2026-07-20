@@ -1790,7 +1790,7 @@ window.openCurrencySelector = function(rId) {
   let html = '<div style="display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto; padding-bottom:12px; scrollbar-width:none;">'; 
   calcCurrencies.forEach(c => { 
       let isActive = (rId === 'from' && calcFromCode === c.code) || (rId === 'to' && calcToCode === c.code); 
-      html += `<button onclick="changeCalcCurr('${rId}', '${c.code}'); Swal.close();" style="background:${isActive?'var(--bg3)':'var(--bg2)'}; color:var(--text); border:1px solid ${isActive?'var(--gold)':'var(--border)'}; padding:14px; border-radius:12px; font-family:'Outfit'; text-align:left; font-size:14px; font-weight:600; display:flex; align-items:center; gap:12px;"><span style="font-size:20px;">${c.flag}</span> ${c.code} - ${c.name}</button>`; 
+      html += `<button onclick="changeCalcCurr('${c.code}', '${c.code}'); Swal.close();" style="background:${isActive?'var(--bg3)':'var(--bg2)'}; color:var(--text); border:1px solid ${isActive?'var(--gold)':'var(--border)'}; padding:14px; border-radius:12px; font-family:'Outfit'; text-align:left; font-size:14px; font-weight:600; display:flex; align-items:center; gap:12px;"><span style="font-size:20px;">${c.flag}</span> ${c.code} - ${c.name}</button>`; 
   }); 
   html += '</div>'; 
   Swal.fire({ title: '<div style="font-size:18px; text-align:left; font-weight:800; border-bottom:1px dashed var(--border); padding-bottom:12px; margin-bottom:8px;">Pilih Mata Uang</div>', html: html, showConfirmButton: false, background: 'var(--card)', color: 'var(--text)', position: 'center', padding: '24px 16px', margin:0, width: window.innerWidth <= 768 ? '90%' : '400px', customClass: { popup: 'centered-modal' } }); 
@@ -1878,7 +1878,7 @@ window.doGoogleAuth = async function() {
     btn.disabled = true;
     btn.innerHTML = 'Memproses...';
     try {
-        await withTimeout(signInWithPopup(auth, provider), 3000, 'Login Google terlalu lama / macet. Coba lagi ya.');
+        await withTimeout(signInWithPopup(auth, provider), 60000, 'Login Google terlalu lama / macet. Coba lagi ya.');
         // onAuthStateChanged akan lanjut ambil alih & sembunyikan layar auth.
     } catch(e) {
         let msg = e.message || 'Gagal login dengan Google.';
@@ -1901,13 +1901,13 @@ window.doAuth = async function() {
     setLoading(true); 
     try { 
         if (authMode === 'login') {
-            await withTimeout(signInWithEmailAndPassword(auth, email, pass), 3000, 'Proses login terlalu lama / macet. Cek koneksi lalu coba lagi.');
+            await withTimeout(signInWithEmailAndPassword(auth, email, pass), 15000, 'Proses login terlalu lama / macet. Cek koneksi lalu coba lagi.');
         } else { 
             if (pass !== document.getElementById('auth-pass2').value) {
                 setLoading(false);
                 return showErr('Sandi beda.');
             }
-            await withTimeout(createUserWithEmailAndPassword(auth, email, pass), 3000, 'Proses daftar terlalu lama / macet. Cek koneksi lalu coba lagi.');
+            await withTimeout(createUserWithEmailAndPassword(auth, email, pass), 15000, 'Proses daftar terlalu lama / macet. Cek koneksi lalu coba lagi.');
         }
         // Sukses -> onAuthStateChanged yang lanjut nyembunyiin layar auth.
         // Tapi kita tetap reset tombol untuk jaga-jaga kalau transisi lambat.
@@ -1917,7 +1917,7 @@ window.doAuth = async function() {
         setLoading(false);
     }
 };
-window.doResetPassword = async function() { const email = document.getElementById('auth-email').value.trim(); hideErr(); if (!email) { return showErr('Masukkan email kamu dulu di kolom atas untuk reset sandi.'); } setLoading(true); document.getElementById('auth-submit-btn').textContent = 'MENGIRIM...'; try { await withTimeout(sendPasswordResetEmail(auth, email), 3000, 'Pengiriman email terlalu lama / macet. Coba lagi.'); Swal.fire({ position: 'center', icon: 'success', title: 'Email Terkirim!', html: 'Cek <b>Inbox</b> atau folder <b>SPAM</b> email kamu.', showConfirmButton: true, background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' }); } catch(e) { showErr(e.message); } setLoading(false); document.getElementById('auth-submit-btn').textContent = authMode === 'login' ? 'MASUK' : 'DAFTAR'; };
+window.doResetPassword = async function() { const email = document.getElementById('auth-email').value.trim(); hideErr(); if (!email) { return showErr('Masukkan email kamu dulu di kolom atas untuk reset sandi.'); } setLoading(true); document.getElementById('auth-submit-btn').textContent = 'MENGIRIM...'; try { await withTimeout(sendPasswordResetEmail(auth, email), 15000, 'Pengiriman email terlalu lama / macet. Coba lagi.'); Swal.fire({ position: 'center', icon: 'success', title: 'Email Terkirim!', html: 'Cek <b>Inbox</b> atau folder <b>SPAM</b> email kamu.', showConfirmButton: true, background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' }); } catch(e) { showErr(e.message); } setLoading(false); document.getElementById('auth-submit-btn').textContent = authMode === 'login' ? 'MASUK' : 'DAFTAR'; };
 window.reqResetPasswordViaSettings = async function() { if (!currentUser) return; try { await sendPasswordResetEmail(auth, currentUser.email); Swal.fire({ position: 'center', icon: 'success', title: 'Terkirim!', html: `Link reset sandi telah dikirim ke <b>${currentUser.email}</b>`, showConfirmButton: true, background: 'var(--card)', color: 'var(--text)' }); } catch(e) { Swal.fire('Gagal', e.message, 'error'); } };
 window.clearLocalCache = function() { Swal.fire({ title: 'Bersihkan Cache?', text: "Data inti di cloud aman, hanya mereset preferensi hp ini.", icon: 'warning', showCancelButton: true, confirmButtonColor: 'var(--red2)', cancelButtonColor: 'var(--bg3)', cancelButtonText: 'Batal', background: 'var(--card)', color: 'var(--text)' }).then((res) => { if (res.isConfirmed) { let tempLastUid = localStorage.getItem('last_uid_rhn'); localStorage.clear(); if (tempLastUid) localStorage.setItem('last_uid_rhn', tempLastUid); Swal.fire({ position: 'center', icon: 'success', title: 'Bersih!', showConfirmButton: false, timer: 800, background: 'var(--card)', color: 'var(--text)' }); setTimeout(() => location.reload(), 800); } }); };
 window.deleteAllData = async function() { if (!currentUser) return; Swal.fire({ title: 'Verifikasi PIN Keamanan', text: 'Masukkan 6 digit PIN untuk format total akun:', input: 'password', inputAttributes: { inputmode: 'numeric', maxlength: 6, autofocus: true, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;' }, icon: 'warning', showCancelButton: true, confirmButtonColor: 'var(--red2)', cancelButtonColor: 'var(--bg3)', confirmButtonText: 'HAPUS SEMUA', background: 'var(--card)', color: 'var(--text)' }).then(async (res) => { if (res.isConfirmed) { if (res.value !== window.userCloudPin && res.value !== localStorage.getItem('local_pin_rhn')) return Swal.fire({icon: 'error', title: 'PIN Salah!', background:'var(--card)', color:'var(--text)'}); Swal.fire({title: 'Menghapus...', background:'var(--card)', color:'var(--text)', didOpen: () => {Swal.showLoading()}}); try { for (let t of txs) { await deleteDoc(doc(db, 'users', currentUser.uid, 'transactions', t.id)); } Swal.fire({icon: 'success', title: 'Data Diformat!', background:'var(--card)', color:'var(--text)', timer: 1000, showConfirmButton: false}); } catch(e) { Swal.fire('Error', e.message, 'error'); } } }); };
@@ -1935,7 +1935,7 @@ window.manageCategories = async function() {
     if(window.userCats[type]) {
         window.userCats[type].forEach((cat, idx) => {
             html += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding:8px 12px; background:var(--bg2); border-radius:8px; border:1px solid var(--border);">
-                        <span style="font-size:12px; font-weight:600;">${cat}</span>
+                        <span style="font-size:12px; font-weight:600;">${escapeHTML(cat)}</span>
                         <button onclick="delCategory('${type}', ${idx})" style="color:var(--red2); background:rgba(248,113,113,0.1); border:none; padding:4px 8px; border-radius:6px; cursor:pointer; font-weight:bold; font-size:10px;">HAPUS</button>
                      </div>`;
         });
@@ -1992,7 +1992,7 @@ window.manageRecurring = async function() {
             let r = d.data();
             let intv = r.interval === 'daily' ? 'Harian' : (r.interval === 'weekly' ? 'Mingguan' : 'Bulanan');
             html += `<div style="padding:12px; border:1px solid var(--border); border-radius:12px; margin-bottom:8px; background:var(--bg2);">
-                <div style="font-size:12px; font-weight:700; color:var(--text);">${escapeHTML(r.note)} (${r.category})</div>
+                <div style="font-size:12px; font-weight:700; color:var(--text);">${escapeHTML(r.note)} (${escapeHTML(r.category)})</div>
                 <div style="font-size:10px; color:var(--text3); margin-bottom:8px;">${fmtFull(r.amount)} | ${intv} | Jam: ${r.runTime || '09:00'}</div>
                 <button onclick="stopRecurring('${d.id}')" style="width:100%; background:rgba(248, 113, 113, 0.1); color:var(--red2); border:1px solid var(--red2); padding:6px; border-radius:8px; font-size:10px; font-weight:bold; cursor:pointer;">HENTIKAN JADWAL</button>
             </div>`;
@@ -2401,8 +2401,8 @@ window.loadAllUsersData = async function() {
           <div class="ri-left"> 
               <div class="ri-icon ${t.type}">${icon}</div> 
               <div> 
-                  <div class="ri-note">${escapeHTML(t.note)} <span class="cat-badge">${t.category}</span></div> 
-                  <div class="ri-meta" style="color: var(--gold); margin-bottom: 2px;">👤 ${ownerLabel}</div> 
+                  <div class="ri-note">${escapeHTML(t.note)} <span class="cat-badge">${escapeHTML(t.category)}</span></div> 
+                  <div class="ri-meta" style="color: var(--gold); margin-bottom: 2px;">👤 ${escapeHTML(ownerLabel)}</div> 
                   <div class="ri-meta">📅 ${fmtDate(t.date)} · ⏱️ ${fmtTime(t.date)}</div> 
               </div> 
           </div> 
@@ -2424,7 +2424,7 @@ window.loadAllUsersData = async function() {
     });
 
   } catch (error) {
-    adminContainer.innerHTML = `<div style="padding:40px;text-align:center;color:var(--red2);font-size:12px;">Gagal memuat. Periksa status admin. Error: ${error.message}</div>`;
+    adminContainer.innerHTML = `<div style="padding:40px;text-align:center;color:var(--red2);font-size:12px;">Gagal memuat. Periksa status admin. Error: ${escapeHTML(error.message)}</div>`;
     Swal.fire({icon: 'error', title: 'Gagal', text: error.message, background: 'var(--card)', color: 'var(--text)'});
   }
 };
@@ -2496,7 +2496,7 @@ window.addTx = async function() {
           let limitStr = fmtFull(window.userBudgets[cat]);
           let spentStr = fmtFull(spent + amt);
           let res = await Swal.fire({
-              title: 'Batas Budget Terlewati!', html: `Pengeluaran <b>${cat}</b> bulan ini akan mencapai <b style="color:var(--red2)">${spentStr}</b>.<br>Batas budget kamu hanya <b>${limitStr}</b>.`,
+              title: 'Batas Budget Terlewati!', html: `Pengeluaran <b>${escapeHTML(cat)}</b> bulan ini akan mencapai <b style="color:var(--red2)">${spentStr}</b>.<br>Batas budget kamu hanya <b>${limitStr}</b>.`,
               icon: 'warning', background: 'var(--card)', color: 'var(--text)', confirmButtonText: 'TETAP SIMPAN', showCancelButton: true, cancelButtonText: 'Batal', confirmButtonColor: 'var(--red2)', cancelButtonColor: 'var(--bg3)'
           });
           if (!res.isConfirmed) { saveBtn.textContent = 'SIMPAN TRANSAKSI'; saveBtn.style.opacity = '1'; saveBtn.disabled = false; return; }
@@ -2572,7 +2572,7 @@ window.showRecycleBin = function() {
     deletedTxs.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(t => {
         html += `
         <div style="padding:12px; border:1px solid var(--border); border-radius:12px; margin-bottom:8px; background:var(--bg2);">
-            <div style="font-size:12px; font-weight:700; color:var(--text);">${escapeHTML(t.note)} (${t.category})</div>
+            <div style="font-size:12px; font-weight:700; color:var(--text);">${escapeHTML(t.note)} (${escapeHTML(t.category)})</div>
             <div style="font-size:10px; color:var(--text3); margin-bottom:8px;">${fmtFull(t.amount)} | ${fmtDate(t.date)}</div>
             <div style="display:flex; gap:8px;">
                 <button onclick="restoreTx('${t.id}')" style="background:rgba(16, 185, 129, 0.2); color:var(--green2); border:1px solid var(--green2); padding:6px 12px; border-radius:8px; font-size:10px; font-weight:bold; cursor:pointer; flex:1;">PULIHKAN</button>
@@ -2626,7 +2626,7 @@ window.showBudgetSetup = async function() {
     if (window.userBudgets && Object.keys(window.userBudgets).length > 0) {
         existingHtml = '<div style="font-size:10px; color:var(--gold); margin-bottom:12px; text-align:left;">BUDGET YANG SEDANG AKTIF:</div>';
         for (let c in window.userBudgets) {
-            existingHtml += `<div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; padding-bottom:4px; border-bottom:1px dashed var(--border2); color:var(--text);"><span>${c}</span><span style="font-family:'JetBrains Mono', monospace;">${fmtFull(window.userBudgets[c])}</span></div>`;
+            existingHtml += `<div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; padding-bottom:4px; border-bottom:1px dashed var(--border2); color:var(--text);"><span>${escapeHTML(c)}</span><span style="font-family:'JetBrains Mono', monospace;">${fmtFull(window.userBudgets[c])}</span></div>`;
         }
         existingHtml += '<div style="margin-bottom:16px;"></div>';
     }
@@ -2673,7 +2673,7 @@ function renderBudgets(k) {
         html += `
         <div style="margin-bottom:16px;">
             <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700; margin-bottom:6px;">
-                <span>${cat}</span><span style="color:${color}">${fmtFull(spent)} / ${fmtFull(limit)}</span>
+                <span>${escapeHTML(cat)}</span><span style="color:${color}">${fmtFull(spent)} / ${fmtFull(limit)}</span>
             </div>
             <div class="m-bar" style="height:6px; background:var(--bg2);"><div class="m-bar-fill" style="width:${pct}%; background:${color};"></div></div>
         </div>`;
@@ -2695,7 +2695,7 @@ window.renderSavings = function() {
         html += `
         <div class="w-card" style="flex: 1 1 300px; padding:16px; background:var(--bg2); border:1px solid var(--border); cursor:default;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <div style="font-weight:800; font-size:12px; color:var(--gold); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${g.name}</div>
+                <div style="font-weight:800; font-size:12px; color:var(--gold); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHTML(g.name)}</div>
                 <button onclick="editGoal(${idx})" style="background:none; border:none; color:var(--text3); cursor:pointer; font-size:12px;">⚙️</button>
             </div>
             <div style="font-size:16px; font-weight:800; font-family:'JetBrains Mono', monospace; margin-bottom:2px; color:var(--text);">${fmtFull(g.current)}</div>
@@ -2748,7 +2748,7 @@ window.editGoal = async function(idx) {
         if (res.isConfirmed) {
             const { value: formValues } = await Swal.fire({
                 title: 'Edit Target',
-                html: `<input id="swal-g-name-edit" class="f-input-dark" value="${window.savingsGoals[idx].name}" style="margin-bottom:12px;">
+                html: `<input id="swal-g-name-edit" class="f-input-dark" value="${escapeHTML(window.savingsGoals[idx].name)}" style="margin-bottom:12px;">
                        <input id="swal-g-target-edit" type="number" class="f-input-dark" value="${window.savingsGoals[idx].target}">`,
                 focusConfirm: false, background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--gold)',
                 preConfirm: () => { return { name: document.getElementById('swal-g-name-edit').value, target: parseFloat(document.getElementById('swal-g-target-edit').value) } }
@@ -2820,15 +2820,15 @@ function renderSumGrid(el, arr, isDash = false) {
     <div class="m-card cnt" style="${dailyBorder}"> <div class="m-label">HARI INI ${dailyColor ? '⚠️ OVER LIMIT' : ''}</div> <div class="m-val" style="${dailyColor}">${ts.count} transaksi</div> <div class="m-sub" style="font-weight:700;">+ ${fmt(ts.inc, isDash)} | - <span style="${dailyColor}">${fmt(ts.exp, isDash)}</span></div> <div class="m-bar"><div class="m-bar-fill" style="width:${ts.count > 0 ? 100 : 0}%; background: ${dailyColor ? 'var(--red2)' : 'var(--blue)'};"></div></div> </div> `; 
 }
 
-const escapeHTML = (str) => str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
+const escapeHTML = (str) => String(str == null ? '' : str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
 window.escapeHTML = escapeHTML;
 
 const createTxCard = (t) => { 
     let icon = t.type === 'income' ? '↑' : t.type === 'expense' ? '↓' : t.type === 'debt' ? '💳' : t.type === 'transfer' ? '🔄' : '💸'; 
     let sign = (t.type === 'income' || t.type === 'recv') ? '+' : (t.type === 'transfer' ? '' : '-'); 
     if (t.type === 'debt') sign = '-'; if (t.type === 'recv') sign = '-'; 
-    let walletBadge = t.wallet ? `<span class="wallet-badge">${t.wallet}</span>` : ''; 
-    if (t.type === 'transfer') walletBadge = `<span class="wallet-badge">${t.wallet} ➔ ${t.walletTo}</span>`; 
+    let walletBadge = t.wallet ? `<span class="wallet-badge">${escapeHTML(t.wallet)}</span>` : ''; 
+    if (t.type === 'transfer') walletBadge = `<span class="wallet-badge">${escapeHTML(t.wallet)} ➔ ${escapeHTML(t.walletTo || '')}</span>`; 
     
     let debtWarn = ''; 
     if (typeof extraPrefs !== 'undefined' && extraPrefs.ext_debtbadge === 'on') { if ((t.type === 'debt' || t.type === 'recv') && !t.isPaid) { debtWarn = `<div style="font-size:8px; font-weight:800; background:var(--red2); color:#000; padding:2px 6px; border-radius:4px; display:inline-block; margin-left:6px;">BELUM LUNAS</div>`; } } 
@@ -2843,7 +2843,7 @@ const createTxCard = (t) => {
             ${cbHtml}
             <div class="ri-icon ${t.type}">${icon}</div> 
             <div> 
-                <div class="ri-note">${escapeHTML(t.note)} <span class="cat-badge">${t.category}</span>${walletBadge}${debtWarn}</div> 
+                <div class="ri-note">${escapeHTML(t.note)} <span class="cat-badge">${escapeHTML(t.category)}</span>${walletBadge}${debtWarn}</div> 
                 <div class="ri-meta">${fmtDate(t.date)} · ${fmtTime(t.date)}</div> 
             </div> 
         </div> 
@@ -2868,7 +2868,7 @@ function renderMetrics() { renderSumGrid(document.getElementById('metric-cards')
 window.promptKoreksi = async function(walletName, recordedBal) {
     if(!currentUser) return;
     const { value: formValues } = await Swal.fire({
-        title: `Koreksi Saldo ${walletName}`,
+        title: `Koreksi Saldo ${escapeHTML(walletName)}`,
         html: `<div style="font-size:12px; color:var(--text3); margin-bottom:16px;">Saldo Tercatat: <b style="color:var(--text);">${fmtFull(recordedBal)}</b></div>
                <div style="font-size:10px; color:var(--text3); margin-bottom:8px; text-align:left;">Masukkan saldo nyata kamu saat ini:</div>
                <input id="swal-koreksi-amt" type="number" class="f-input-dark" style="width:100%; margin-bottom:16px;" placeholder="Cth: 150000">
@@ -2923,10 +2923,10 @@ function renderWalletBalances() {
     const container = document.getElementById('wallet-balances'); if (!container) return; 
     let html = Object.entries(wallets).filter(([name, bal]) => { if (typeof extraPrefs !== 'undefined' && extraPrefs.ext_hidezero === 'on' && bal === 0) return false; return true; }).map(([name, bal]) => { 
         let pct = (typeof extraPrefs !== 'undefined' && extraPrefs.ext_walletpct === 'on' && totalAset > 0 && bal > 0) ? `<div class="w-pct-badge" style="display:block;">${((bal/totalAset)*100).toFixed(1)}%</div>` : ''; 
-        return `<div class="w-card" style="position:relative; cursor:pointer;" onclick="promptKoreksi('${name}', ${bal})" title="Klik untuk Koreksi Saldo">
+        return `<div class="w-card" style="position:relative; cursor:pointer;" onclick="promptKoreksi('${escapeHTML(name)}', ${bal})" title="Klik untuk Koreksi Saldo">
                     <span style="position:absolute; top:8px; right:${pct ? '42px' : '8px'}; font-size:12px; opacity:0.4;">✏️</span>
                     ${pct}
-                    <div class="w-label">${name}</div><div class="w-val ${bal < 0 ? 'min' : ''}">${fmtFull(bal)}</div><div class="usd-wallet-val" style="font-size: 8px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-top: 2px;">${getUSD(bal)}</div>
+                    <div class="w-label">${escapeHTML(name)}</div><div class="w-val ${bal < 0 ? 'min' : ''}">${fmtFull(bal)}</div><div class="usd-wallet-val" style="font-size: 8px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-top: 2px;">${getUSD(bal)}</div>
                 </div>` 
     }).join(''); 
     html += `
