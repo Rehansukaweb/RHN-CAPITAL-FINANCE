@@ -1292,7 +1292,7 @@ import {
 import { 
   initializeFirestore, persistentLocalCache, collection, doc, 
   addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, 
-  serverTimestamp, getDoc, setDoc, collectionGroup, getDocs
+  serverTimestamp, getDoc, setDoc, collectionGroup, getDocs, writeBatch
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = { 
@@ -1509,6 +1509,29 @@ window.initTransferAccount = async function() {
     }
 };
 
+// ======================================================================
+// LOOKUP PENERIMA TRANSFER (nama + email) berdasarkan kode 3 digit
+// ======================================================================
+window.lookupTransferTarget = async function(code) {
+    const registryRef = doc(db, 'transfer_registry', code);
+    const registrySnap = await getDoc(registryRef);
+    if (!registrySnap.exists()) return null;
+
+    const targetUid = registrySnap.data().uid;
+    let nama = 'Pengguna RHN Capital';
+    let email = '(email tidak ditemukan)';
+    try {
+        const uSnap = await getDoc(doc(db, 'users', targetUid));
+        if (uSnap.exists()) {
+            const d = uSnap.data();
+            if (d.email) email = d.email;
+            if (d.nama) nama = d.nama; else if (d.email) nama = d.email.split('@')[0];
+        }
+    } catch(e) { /* biarin default kalau gagal ambil profil */ }
+
+    return { uid: targetUid, nama, email };
+};
+
 window.promptTransfer = async function(txId) {
     if (!currentUser) return;
     const t = txs.find(x => x.id === txId);
@@ -1519,7 +1542,7 @@ window.promptTransfer = async function(txId) {
         html: '<input id="swal-tcode" class="swal2-input" placeholder="Masukkan 3 Angka" maxlength="3" type="number" style="text-align:center; font-family:Outfit; font-weight:800; font-size:18px; letter-spacing:2px; max-width:100%; width:80%; margin:0 auto; display:block; box-sizing:border-box;">',
         focusConfirm: false,
         showCancelButton: true,
-        confirmButtonText: 'TRANSFER SEKARANG',
+        confirmButtonText: 'LANJUT ➔',
         cancelButtonText: 'Batal',
         background: 'var(--card)', color: 'var(--text)',
         confirmButtonColor: 'var(--blue)', cancelButtonColor: 'var(--bg3)',
@@ -1528,7 +1551,7 @@ window.promptTransfer = async function(txId) {
 
     if (targetCode) {
         if (targetCode.length !== 3) return Swal.fire({icon:'error', title:'Harus 3 Angka!', background:'var(--card)', color:'var(--text)'});
-        window.executeTransfer([t], targetCode, true);
+        await window.confirmAndTransfer([t], targetCode, true);
     }
 };
 
@@ -1542,7 +1565,7 @@ window.promptTransferAll = async function() {
               '<input id="swal-tcode-all" class="swal2-input" placeholder="Masukkan 3 Angka" maxlength="3" type="number" style="text-align:center; font-family:Outfit; font-weight:800; font-size:18px; letter-spacing:2px; max-width:100%; width:80%; margin:0 auto; display:block; box-sizing:border-box;">',
         focusConfirm: false,
         showCancelButton: true,
-        confirmButtonText: 'TRANSFER SEMUA',
+        confirmButtonText: 'LANJUT ➔',
         cancelButtonText: 'Batal',
         background: 'var(--card)', color: 'var(--text)',
         confirmButtonColor: 'var(--blue)', cancelButtonColor: 'var(--bg3)',
@@ -1551,30 +1574,74 @@ window.promptTransferAll = async function() {
 
     if (targetCode) {
         if (targetCode.length !== 3) return Swal.fire({icon:'error', title:'Harus 3 Angka!', background:'var(--card)', color:'var(--text)'});
-        window.executeTransfer(txs, targetCode, false);
+        await window.confirmAndTransfer(txs, targetCode, false);
     }
 };
 
-window.executeTransfer = async function(txList, targetCode, isSingle) {
-    Swal.fire({title: 'Memproses...', background:'var(--card)', color:'var(--text)', didOpen: () => {Swal.showLoading()}});
+// ======================================================================
+// Tahap konfirmasi: cari nama+email penerima dulu, baru user acc, baru eksekusi
+// ======================================================================
+window.confirmAndTransfer = async function(txList, targetCode, isSingle) {
+    Swal.fire({title: 'Mencari Akun Tujuan...', background:'var(--card)', color:'var(--text)', didOpen: () => {Swal.showLoading()}});
+
+    let target;
+    try {
+        target = await window.lookupTransferTarget(targetCode);
+    } catch(e) {
+        return Swal.fire({icon:'error', title:'Gagal Mencari Akun', text: e.message, background:'var(--card)', color:'var(--text)'});
+    }
+
+    if (!target) {
+        return Swal.fire({icon:'error', title:'Transfer Gagal', text:'Kode 3 Angka tidak ditemukan! Pastikan akun tujuan buka aplikasinya.', background:'var(--card)', color:'var(--text)'});
+    }
+    if (target.uid === currentUser.uid) {
+        return Swal.fire({icon:'warning', title:'Gagal', text:'Nggak bisa transfer ke akun lu sendiri bro!', background:'var(--card)', color:'var(--text)'});
+    }
+
+    const res = await Swal.fire({
+        title: 'Konfirmasi Penerima',
+        html: `
+          <div style="text-align:left; background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:16px; margin-top:8px;">
+            <div style="font-size:10px; font-weight:800; color:var(--text3); text-transform:uppercase; margin-bottom:8px;">Transfer akan dikirim ke:</div>
+            <div style="font-size:16px; font-weight:800; color:var(--gold); margin-bottom:4px;">${window.escapeHTML ? window.escapeHTML(target.nama) : target.nama}</div>
+            <div style="font-size:12px; color:var(--text2); font-family:'JetBrains Mono', monospace;">${window.escapeHTML ? window.escapeHTML(target.email) : target.email}</div>
+            <div style="font-size:10px; color:var(--text3); margin-top:12px;">Kode: <b style="color:var(--text);">${targetCode}</b> · Jumlah data: <b style="color:var(--text);">${txList.length} transaksi</b></div>
+          </div>
+          <div style="font-size:11px; color:var(--red2); margin-top:12px;">Pastikan nama & email di atas benar sebelum lanjut. Transaksi akan dipindahkan dan dihapus dari akun ini.</div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: isSingle ? 'YA, KIRIM SEKARANG' : `YA, KIRIM ${txList.length} DATA`,
+        cancelButtonText: 'Batal',
+        background: 'var(--card)', color: 'var(--text)',
+        confirmButtonColor: 'var(--green2)', cancelButtonColor: 'var(--bg3)'
+    });
+
+    if (res.isConfirmed) {
+        await window.executeTransfer(txList, target.uid, isSingle);
+    }
+};
+
+// ======================================================================
+// Eksekusi transfer pakai writeBatch -> jauh lebih cepat dari loop satu-satu
+// ======================================================================
+window.executeTransfer = async function(txList, targetUid, isSingle) {
+    Swal.fire({title: 'Memproses Transfer...', html: `Memindahkan ${txList.length} transaksi, mohon tunggu...`, background:'var(--card)', color:'var(--text)', didOpen: () => {Swal.showLoading()}});
 
     try {
-        const registryRef = doc(db, 'transfer_registry', targetCode);
-        const registrySnap = await getDoc(registryRef);
-
-        if (!registrySnap.exists()) {
-            return Swal.fire({icon:'error', title:'Transfer Gagal', text:'Kode 3 Angka tidak ditemukan! Pastikan akun tujuan buka aplikasinya.', background:'var(--card)', color:'var(--text)'});
-        }
-        const targetUid = registrySnap.data().uid;
-        if (targetUid === currentUser.uid) {
-            return Swal.fire({icon:'warning', title:'Gagal', text:'Nggak bisa transfer ke akun lu sendiri bro!', background:'var(--card)', color:'var(--text)'});
-        }
-        for (let t of txList) {
-            let payload = { ...t };
-            delete payload.id; 
-            payload.createdAt = serverTimestamp(); 
-            await addDoc(collection(db, 'users', targetUid, 'transactions'), payload);
-            await deleteDoc(doc(db, 'users', currentUser.uid, 'transactions', t.id));
+        const CHUNK_SIZE = 200; // aman di bawah limit 500 operasi per batch (2 operasi per transaksi)
+        for (let i = 0; i < txList.length; i += CHUNK_SIZE) {
+            const chunk = txList.slice(i, i + CHUNK_SIZE);
+            const batch = writeBatch(db);
+            chunk.forEach(t => {
+                let payload = { ...t };
+                delete payload.id;
+                payload.createdAt = serverTimestamp();
+                const newRef = doc(collection(db, 'users', targetUid, 'transactions'));
+                batch.set(newRef, payload);
+                const oldRef = doc(db, 'users', currentUser.uid, 'transactions', t.id);
+                batch.delete(oldRef);
+            });
+            await batch.commit();
         }
         Swal.fire({icon:'success', title:'Transfer Berhasil!', text: isSingle ? '1 transaksi dipindahkan.' : `${txList.length} transaksi dipindahkan.`, background:'var(--card)', color:'var(--text)'});
     } catch(e) {
@@ -1792,8 +1859,40 @@ function hideErr() { document.getElementById('auth-err').style.display = 'none';
 function setLoading(on) { document.getElementById('auth-submit-btn').disabled = on; document.getElementById('auth-submit-btn').textContent = on ? 'Memproses...' : (authMode === 'login' ? 'MASUK' : 'DAFTAR'); }
 function setSyncStatus(ok) { document.getElementById('sync-dot').style.background = ok ? 'var(--green2)' : 'var(--red2)'; document.getElementById('sync-label').textContent = ok ? 'TERSINKRON' : 'OFFLINE'; document.getElementById('sync-dot').style.boxShadow = ok ? '0 0 8px var(--green2)' : 'none'; }
 
+// Helper: kasih timeout ke promise biar tombol gak nyangkut selamanya kalau koneksi lelet/hang
+function withTimeout(promise, ms, timeoutMsg) {
+    let timer;
+    const timeoutPromise = new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error(timeoutMsg || 'Waktu tunggu habis. Cek koneksi internet kamu.')), ms);
+    });
+    return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timer));
+}
+
 window.switchTab = function(mode) { authMode = mode; document.getElementById('tab-login').classList.toggle('active', mode === 'login'); document.getElementById('tab-register').classList.toggle('active', mode === 'register'); document.getElementById('field-confirm').style.display = mode === 'register' ? 'block' : 'none'; document.getElementById('auth-submit-btn').textContent = mode === 'login' ? 'MASUK' : 'DAFTAR'; hideErr(); };
-window.doGoogleAuth = async function() { const provider = new GoogleAuthProvider(); hideErr(); setLoading(true); try { await signInWithPopup(auth, provider); } catch(e) { showErr(e.message); setLoading(false); } };
+
+window.doGoogleAuth = async function() {
+    const provider = new GoogleAuthProvider();
+    hideErr();
+    const btn = document.getElementById('btn-google');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = 'Memproses...';
+    try {
+        await withTimeout(signInWithPopup(auth, provider), 3000, 'Login Google terlalu lama / macet. Coba lagi ya.');
+        // onAuthStateChanged akan lanjut ambil alih & sembunyikan layar auth.
+    } catch(e) {
+        let msg = e.message || 'Gagal login dengan Google.';
+        if (e.code === 'auth/popup-closed-by-user') msg = 'Jendela login ditutup sebelum selesai. Coba lagi.';
+        if (e.code === 'auth/cancelled-popup-request') msg = 'Ada proses login lain yang masih berjalan. Coba lagi.';
+        if (e.code === 'auth/popup-blocked') msg = 'Popup login diblokir browser. Izinkan pop-up untuk situs ini lalu coba lagi.';
+        showErr(msg);
+    } finally {
+        // Selalu balikin tombol ke normal, apapun hasilnya, biar gak nyangkut di "Memproses..."
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
+};
+
 window.doAuth = async function() { 
     const email = document.getElementById('auth-email').value.trim(); 
     const pass = document.getElementById('auth-pass').value; 
@@ -1801,17 +1900,24 @@ window.doAuth = async function() {
     if (!email || !pass) return showErr('Kredensial kosong.'); 
     setLoading(true); 
     try { 
-        if (authMode === 'login') { await signInWithEmailAndPassword(auth, email, pass); } 
-        else { 
+        if (authMode === 'login') {
+            await withTimeout(signInWithEmailAndPassword(auth, email, pass), 3000, 'Proses login terlalu lama / macet. Cek koneksi lalu coba lagi.');
+        } else { 
             if (pass !== document.getElementById('auth-pass2').value) {
                 setLoading(false);
                 return showErr('Sandi beda.');
             }
-            await createUserWithEmailAndPassword(auth, email, pass); 
-        } 
-    } catch(e) { showErr(e.message); setLoading(false); } 
+            await withTimeout(createUserWithEmailAndPassword(auth, email, pass), 3000, 'Proses daftar terlalu lama / macet. Cek koneksi lalu coba lagi.');
+        }
+        // Sukses -> onAuthStateChanged yang lanjut nyembunyiin layar auth.
+        // Tapi kita tetap reset tombol untuk jaga-jaga kalau transisi lambat.
+        setLoading(false);
+    } catch(e) {
+        showErr(e.message);
+        setLoading(false);
+    }
 };
-window.doResetPassword = async function() { const email = document.getElementById('auth-email').value.trim(); hideErr(); if (!email) { return showErr('Masukkan email kamu dulu di kolom atas untuk reset sandi.'); } setLoading(true); document.getElementById('auth-submit-btn').textContent = 'MENGIRIM...'; try { await sendPasswordResetEmail(auth, email); Swal.fire({ position: 'center', icon: 'success', title: 'Email Terkirim!', html: 'Cek <b>Inbox</b> atau folder <b>SPAM</b> email kamu.', showConfirmButton: true, background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' }); } catch(e) { showErr(e.message); } setLoading(false); document.getElementById('auth-submit-btn').textContent = authMode === 'login' ? 'MASUK' : 'DAFTAR'; };
+window.doResetPassword = async function() { const email = document.getElementById('auth-email').value.trim(); hideErr(); if (!email) { return showErr('Masukkan email kamu dulu di kolom atas untuk reset sandi.'); } setLoading(true); document.getElementById('auth-submit-btn').textContent = 'MENGIRIM...'; try { await withTimeout(sendPasswordResetEmail(auth, email), 3000, 'Pengiriman email terlalu lama / macet. Coba lagi.'); Swal.fire({ position: 'center', icon: 'success', title: 'Email Terkirim!', html: 'Cek <b>Inbox</b> atau folder <b>SPAM</b> email kamu.', showConfirmButton: true, background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)' }); } catch(e) { showErr(e.message); } setLoading(false); document.getElementById('auth-submit-btn').textContent = authMode === 'login' ? 'MASUK' : 'DAFTAR'; };
 window.reqResetPasswordViaSettings = async function() { if (!currentUser) return; try { await sendPasswordResetEmail(auth, currentUser.email); Swal.fire({ position: 'center', icon: 'success', title: 'Terkirim!', html: `Link reset sandi telah dikirim ke <b>${currentUser.email}</b>`, showConfirmButton: true, background: 'var(--card)', color: 'var(--text)' }); } catch(e) { Swal.fire('Gagal', e.message, 'error'); } };
 window.clearLocalCache = function() { Swal.fire({ title: 'Bersihkan Cache?', text: "Data inti di cloud aman, hanya mereset preferensi hp ini.", icon: 'warning', showCancelButton: true, confirmButtonColor: 'var(--red2)', cancelButtonColor: 'var(--bg3)', cancelButtonText: 'Batal', background: 'var(--card)', color: 'var(--text)' }).then((res) => { if (res.isConfirmed) { let tempLastUid = localStorage.getItem('last_uid_rhn'); localStorage.clear(); if (tempLastUid) localStorage.setItem('last_uid_rhn', tempLastUid); Swal.fire({ position: 'center', icon: 'success', title: 'Bersih!', showConfirmButton: false, timer: 800, background: 'var(--card)', color: 'var(--text)' }); setTimeout(() => location.reload(), 800); } }); };
 window.deleteAllData = async function() { if (!currentUser) return; Swal.fire({ title: 'Verifikasi PIN Keamanan', text: 'Masukkan 6 digit PIN untuk format total akun:', input: 'password', inputAttributes: { inputmode: 'numeric', maxlength: 6, autofocus: true, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;' }, icon: 'warning', showCancelButton: true, confirmButtonColor: 'var(--red2)', cancelButtonColor: 'var(--bg3)', confirmButtonText: 'HAPUS SEMUA', background: 'var(--card)', color: 'var(--text)' }).then(async (res) => { if (res.isConfirmed) { if (res.value !== window.userCloudPin && res.value !== localStorage.getItem('local_pin_rhn')) return Swal.fire({icon: 'error', title: 'PIN Salah!', background:'var(--card)', color:'var(--text)'}); Swal.fire({title: 'Menghapus...', background:'var(--card)', color:'var(--text)', didOpen: () => {Swal.showLoading()}}); try { for (let t of txs) { await deleteDoc(doc(db, 'users', currentUser.uid, 'transactions', t.id)); } Swal.fire({icon: 'success', title: 'Data Diformat!', background:'var(--card)', color:'var(--text)', timer: 1000, showConfirmButton: false}); } catch(e) { Swal.fire('Error', e.message, 'error'); } } }); };
@@ -2441,8 +2547,13 @@ window.execBatchDelete = async function() {
         if (result.isConfirmed) { 
             Swal.fire({title: 'Memproses...', background:'var(--card)', color:'var(--text)', didOpen: () => {Swal.showLoading()}});
             try {
-                for (let i = 0; i < checkboxes.length; i++) {
-                    await updateDoc(doc(db, 'users', currentUser.uid, 'transactions', checkboxes[i].value), { isDeleted: true });
+                const ids = Array.from(checkboxes).map(cb => cb.value);
+                const CHUNK_SIZE = 400;
+                for (let i = 0; i < ids.length; i += CHUNK_SIZE) {
+                    const chunk = ids.slice(i, i + CHUNK_SIZE);
+                    const batch = writeBatch(db);
+                    chunk.forEach(id => batch.update(doc(db, 'users', currentUser.uid, 'transactions', id), { isDeleted: true }));
+                    await batch.commit();
                 }
                 batchMode = false;
                 document.getElementById('btn-batch-del').style.display = 'none';
@@ -2478,8 +2589,12 @@ window.emptyRecycleBin = async function() {
         if(res.isConfirmed) {
             Swal.fire({title: 'Memusnahkan Data...', background:'var(--card)', color:'var(--text)', didOpen: () => {Swal.showLoading()}});
             try {
-                for (let t of deletedTxs) {
-                    await deleteDoc(doc(db, 'users', currentUser.uid, 'transactions', t.id));
+                const CHUNK_SIZE = 400;
+                for (let i = 0; i < deletedTxs.length; i += CHUNK_SIZE) {
+                    const chunk = deletedTxs.slice(i, i + CHUNK_SIZE);
+                    const batch = writeBatch(db);
+                    chunk.forEach(t => batch.delete(doc(db, 'users', currentUser.uid, 'transactions', t.id)));
+                    await batch.commit();
                 }
                 Swal.fire({icon:'success', title:'Bersih Total!', background:'var(--card)', color:'var(--text)', timer:800, showConfirmButton:false});
             } catch(e) {
@@ -2706,6 +2821,7 @@ function renderSumGrid(el, arr, isDash = false) {
 }
 
 const escapeHTML = (str) => str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
+window.escapeHTML = escapeHTML;
 
 const createTxCard = (t) => { 
     let icon = t.type === 'income' ? '↑' : t.type === 'expense' ? '↓' : t.type === 'debt' ? '💳' : t.type === 'transfer' ? '🔄' : '💸'; 
