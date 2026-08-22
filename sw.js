@@ -1,28 +1,72 @@
-const CACHE_NAME = 'rhn-capital-cache-v1';
-const urlsToCache = [
+// sw.js - RHN CAPITAL offline cache
+const CACHE_VERSION = 'rhn-capital-v1';
+const PRECACHE_URLS = [
   './',
-  './index.html',
+  './arus.html',
+  './aset.html',
+  './data.html',
+  './jurnal.html',
+  './latar.html',
+  './manifest.json',
   './RHN LOGO.jpg',
-  './manifest.json'
+  './qris.jpg'
 ];
 
-// Install Service Worker dan Cache File
-self.addEventListener('install', event => {
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(urlsToCache);
-      })
+    caches.open(CACHE_VERSION).then((cache) => {
+      return Promise.all(
+        PRECACHE_URLS.map((url) =>
+          cache.add(new Request(url, { cache: 'reload' })).catch(() => {})
+        )
+      );
+    })
   );
 });
 
-// Ambil File dari Cache Kalau Offline
-self.addEventListener('fetch', event => {
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.filter((key) => key !== CACHE_VERSION).map((key) => caches.delete(key))
+      )
+    ).then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  const req = event.request;
+  if (req.method !== 'GET') return;
+
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return; // biarkan Firebase/API online lewat langsung
+
+  if (req.mode === 'navigate') {
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          const resClone = res.clone();
+          caches.open(CACHE_VERSION).then((cache) => cache.put(req, resClone));
+          return res;
+        })
+        .catch(() =>
+          caches.match(req).then((cached) => cached || caches.match('./arus.html'))
+        )
+    );
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Balikin cache kalau ada, kalau gak ada ambil dari internet
-        return response || fetch(event.request);
-      })
+    caches.match(req).then((cached) => {
+      if (cached) return cached;
+      return fetch(req)
+        .then((res) => {
+          const resClone = res.clone();
+          caches.open(CACHE_VERSION).then((cache) => cache.put(req, resClone));
+          return res;
+        })
+        .catch(() => cached);
+    })
   );
 });
